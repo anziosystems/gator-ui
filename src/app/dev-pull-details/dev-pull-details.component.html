@@ -4,7 +4,7 @@
   </a>
   <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:3px" class="flex-item">
     <div style="font-size: large; color:greenyellow">{{ dev.Login }}</div>
-    <div style="font-size: large; color:rgb(212, 212, 73)">{{ dev.state }}: {{ dev.Repo }}</div>
+    <div style="font-size: large; color:rgb(212, 212, 73)">{{ dev.State }}: {{ dev.Repo }}</div>
     <div style="font-size: large; color: honeydew ">{{ dev.title }}</div>
     <div style="font-size: large; color: white">{{ dev.body }}</div>
     <div style="font-size: large; color: white"><a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: hotpink"> ...more </a></div>
