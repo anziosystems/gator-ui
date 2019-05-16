@@ -49,7 +49,7 @@ export class TopDevelopersComponent implements OnInit {
     this.developers = [];
     this.avatar = [];
     this.gitService.Ready().then(result => {
-      this.gitService.GetTopDevelopers(this.gitService.currentOrg, 7).subscribe(val => {
+      this.gitService.GetTopDevelopers(this.gitService.currentOrg, 15).subscribe(val => {
         const devs = val.map(item => item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
         devs.map(item => {
           const arr = _.split(item, '--');
@@ -61,5 +61,7 @@ export class TopDevelopersComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 }

@@ -73,6 +73,9 @@ export class StatusComponent implements OnInit {
   ngOnInit() {}
 
   dashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard']).then(() => {
+      window.location.reload();
+    });
+
   }
 }

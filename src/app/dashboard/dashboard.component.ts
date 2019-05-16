@@ -24,7 +24,12 @@ type PaneType = 'left' | 'right';
 })
 export class DashboardComponent implements OnInit {
   orgs: any;
-  constructor(private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {}
+  constructor(private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
+    setInterval(() => { 
+     location.reload(); 
+  }, 600000); //every 10 min
+  }
+
 
   ngOnInit() {
     let token = this.storage.get('token');

@@ -36,7 +36,7 @@ export class TopRepositoryComponent implements OnInit {
   initializeData() {
     this.repositories = [];
     this.gitService.Ready().then(result => {
-      this.gitService.GetTopRepositories(this.gitService.currentOrg, 7).subscribe(val => {
+      this.gitService.GetTopRepositories(this.gitService.currentOrg, 15).subscribe(val => {
         // Filter out the duplicates
         this.repositories = val.map(item => item.Repo).filter((value, index, self) => self.indexOf(value) === index);
       });
