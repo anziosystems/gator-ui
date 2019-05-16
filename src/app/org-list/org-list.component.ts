@@ -16,9 +16,9 @@ export class OrgListComponent implements OnInit {
     this.back_colors = [];
     this.back_colors.push('blue');
     this.back_colors.push('magenta');
-    this.back_colors.push('red');
-    this.back_colors.push('Yellow');
     this.back_colors.push('green');
+    this.back_colors.push('Yellow');
+    this.back_colors.push('red');
 
     this.colors = [];
     this.colors.push('white');

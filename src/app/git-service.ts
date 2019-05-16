@@ -17,8 +17,8 @@ export class GitService {
   tenant: string;
   public organization: string;
 
- // public gatorApiUrl = 'http://localhost:3000';
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
+  public gatorApiUrl = 'http://localhost:3000';
+ // public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
   public gitApiUrl: string = this.gatorApiUrl + '/service/'; //'http://localhost:3000/service/'; //'https://gator-be.azurewebsites.net/service/'; //'http://localhost:3000/service/';
 
   //Components listen to each other using this
@@ -65,7 +65,7 @@ export class GitService {
   GetOrgList():any {
     this.AttachToken(true);
     console.log('calling GetOrgList API');
-    const q = `GetOrg`;
+    const q = `GetOrg?bustTheCache=false&getFromGit=true`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
     
     // .subscribe (data => {
@@ -86,15 +86,22 @@ export class GitService {
     // });
   }
 
+  /*
+  This is not called very often, only called from status - So it is ok to go to git
+  */
+
   GetRepoList(org: string): any {
     this.AttachToken();
-    const q = `GetRepos?org=${org}&bustTheCache=false&getFromGit=false`;
+    const q = `GetRepos?org=${org}&bustTheCache=false&getFromGit=true`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+   /*
+  This is not called very often, only called from status - So it is ok to go to git
+  */
   GetPullRequest(org: string): any {
     this.AttachToken();
-    const q = `GetPRfromGit?org=${org}`;
+    const q = `GetPRfromGit?org=${org}&bustTheCache=false&getFromGit=true`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
