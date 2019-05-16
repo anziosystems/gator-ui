@@ -43,7 +43,6 @@ export class TopDevelopersComponent implements OnInit {
 
   data(developer: string) {
     this.gitService.trigger(developer);
-    // this.messageEvent.emit (developer); Didn't work! Investigate
   }
 
   initializeData() {

@@ -43,7 +43,7 @@ export class PullRequestCountComponent implements OnInit {
   }
 
   data(action: string, day: number) {
-    this.gitService.trigger(action + '-' + day.toString());
+    this.gitService.trigger(action + '+' + day.toString());
   }
 
   initializeData() {

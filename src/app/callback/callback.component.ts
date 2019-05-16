@@ -2,7 +2,7 @@ import {Component, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
-import {Injectable, Input} from '@angular/core';
+
 
 @Component({
   selector: 'app-callback',
