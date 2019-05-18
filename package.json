@@ -1,13 +1,14 @@
 {
   "name": "gator",
   "version": "0.1.0",
+  "main": "./dist/gator/app.js",
   "engines": {
     "node": "10.15.2",
     "npm": "6.4.1"
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node ./dist/gator/app.js",
     "build": "ng build",
     "build:prod": "ng build --configuration=production",
     "test": "ng test",
