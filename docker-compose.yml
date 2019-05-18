@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  gator-ui:
+    image: gator-ui
+    build: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3001:3001

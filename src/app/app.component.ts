@@ -4,7 +4,7 @@ import {ChangeDetectorRef} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {ChangeDetectionStrategy, Input} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
-import { CookieService } from 'ngx-cookie-service'; 
+import {CookieService} from 'ngx-cookie-service';
 
 export const STATE = () => ({
   items: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],

@@ -17,8 +17,8 @@ export class GitService {
   tenant: string;
   public organization: string;
 
-  public gatorApiUrl = 'http://localhost:3000';
- // public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
+  // public gatorApiUrl = 'http://localhost:3000';
+  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
   public gitApiUrl: string = this.gatorApiUrl + '/service/'; //'http://localhost:3000/service/'; //'https://gator-be.azurewebsites.net/service/'; //'http://localhost:3000/service/';
 
   //Components listen to each other using this
@@ -62,12 +62,12 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetOrgList():any {
+  GetOrgList(): any {
     this.AttachToken(true);
     console.log('calling GetOrgList API');
     const q = `GetOrg?bustTheCache=false&getFromGit=true`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
-    
+
     // .subscribe (data => {
     //   //{val: false, code: 404, message: "Auth Failed"}';
     //   let decodedString = String.fromCharCode.apply(null, new Uint8Array(data));
@@ -96,7 +96,7 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-   /*
+  /*
   This is not called very often, only called from status - So it is ok to go to git
   */
   GetPullRequest(org: string): any {
@@ -159,8 +159,7 @@ export class GitService {
   }
 
   GetDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
-    if (!day)
-      day = 7;
+    if (!day) day = 7;
 
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
     this.AttachToken();

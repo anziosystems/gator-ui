@@ -12,7 +12,7 @@ import {CallbackComponent} from './callback/callback.component';
 import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
-import { CookieService } from 'ngx-cookie-service'; 
+import {CookieService} from 'ngx-cookie-service';
 
 import {GitService} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
@@ -44,13 +44,13 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
-    
-   // AppRoutingModule, // TopNavModule, LeftNavModule, //FitWindowModule,
+
+    // AppRoutingModule, // TopNavModule, LeftNavModule, //FitWindowModule,
     StorageServiceModule,
     HttpClientModule,
     BrowserAnimationsModule,
   ],
-  providers: [ GitService, CookieService],
+  providers: [GitService, CookieService],
   exports: [RouterModule],
   bootstrap: [AppComponent],
 })

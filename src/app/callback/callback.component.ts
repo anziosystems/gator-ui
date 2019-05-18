@@ -3,7 +3,6 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
-
 @Component({
   selector: 'app-callback',
   templateUrl: './callback.component.html',
