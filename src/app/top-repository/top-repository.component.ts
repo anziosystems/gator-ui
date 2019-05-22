@@ -24,6 +24,10 @@ export class TopRepositoryComponent implements OnInit {
     });
   }
 
+  data(repo: string) {
+    this.gitService.trigger('repo-' + repo);
+  }
+
   ngOnDestroy() {
     // avoid memory leaks here by cleaning up after ourselves. If we
     // don't then we will continue to run our initialiseInvites()

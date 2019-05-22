@@ -42,7 +42,22 @@ export class DevPullDetailsComponent implements OnInit {
         if (val.lastIndexOf('+') > 0) {
           const arr = _.split(val, '+');
           this.getActionDetails(arr[0], Number(arr[1]));
-        } else this.getDeveloperDetails(val);
+        } else {
+          if (val.lastIndexOf('repo-') > 0) {
+            const arr = _.split(val, '-');
+            this.gitService.GetRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50 ).subscribe(val => {
+              this.devDetails = val;
+              this.devDetails.map(v => {
+                let s = v.pullrequesturl;
+                s = s.replace('https://api.github.com/repos', 'https://github.com');
+                s = s.replace('pulls', 'pull');
+                s = s.replace('comments', ' ');
+                v.pullrequesturl = s;
+              });
+            });
+          } else
+            this.getDeveloperDetails(val);
+        }
       });
     });
   }

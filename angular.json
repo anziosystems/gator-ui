@@ -17,7 +17,6 @@
       },
       "architect": {
         "build": {
-        
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/gator",
@@ -27,7 +26,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/web.config"
             ],
             "styles": [
               "src/styles.less"

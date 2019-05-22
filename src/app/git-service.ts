@@ -17,7 +17,8 @@ export class GitService {
   tenant: string;
   public organization: string;
 
-  // public gatorApiUrl = 'http://localhost:3000';
+  
+  //public gatorApiUrl = 'http://localhost:3000';
   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
   public gitApiUrl: string = this.gatorApiUrl + '/service/'; //'http://localhost:3000/service/'; //'https://gator-be.azurewebsites.net/service/'; //'http://localhost:3000/service/';
 
@@ -145,7 +146,11 @@ export class GitService {
     return new Promise((resolve, reject) => {
       if (this.currentOrg === undefined) {
         this.GetOrgList().subscribe(result => {
+          if (result.code === 404) {
+            this.router.navigate(['/login']);
+          }
           if (result.length > 0) {
+
             this.currentOrg = result[0].Org;
             resolve();
           } else {
@@ -162,6 +167,14 @@ export class GitService {
     if (!day) day = 7;
 
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
+    this.AttachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  GetRepositoryPR(org: string, day: number = 7, repo: string, pageSize: number = 40): Observable<any> {
+    if (!day) day = 7;
+
+    const q = `GetRepositoryPR?org=${org}&day=${day}&repo=${repo}&pageSize=${pageSize}`;
     this.AttachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
