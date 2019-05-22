@@ -43,9 +43,9 @@ export class DevPullDetailsComponent implements OnInit {
           const arr = _.split(val, '+');
           this.getActionDetails(arr[0], Number(arr[1]));
         } else {
-          if (val.lastIndexOf('repo-') > 0) {
-            const arr = _.split(val, '-');
-            this.gitService.GetRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50 ).subscribe(val => {
+          if (val.startsWith('repo-')) {
+            const arr = _.split(val, 'repo-');
+            this.gitService.GetRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50).subscribe(val => {
               this.devDetails = val;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
@@ -55,8 +55,7 @@ export class DevPullDetailsComponent implements OnInit {
                 v.pullrequesturl = s;
               });
             });
-          } else
-            this.getDeveloperDetails(val);
+          } else this.getDeveloperDetails(val);
         }
       });
     });
