@@ -17,7 +17,6 @@ export class GitService {
   tenant: string;
   public organization: string;
 
-  
   //public gatorApiUrl = 'http://localhost:3000';
   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
   public gitApiUrl: string = this.gatorApiUrl + '/service/'; //'http://localhost:3000/service/'; //'https://gator-be.azurewebsites.net/service/'; //'http://localhost:3000/service/';
@@ -150,7 +149,6 @@ export class GitService {
             this.router.navigate(['/login']);
           }
           if (result.length > 0) {
-
             this.currentOrg = result[0].Org;
             resolve();
           } else {
