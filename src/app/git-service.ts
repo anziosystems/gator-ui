@@ -62,46 +62,30 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetOrgList(): any {
+  //Only status ask for Git call, everyone else go to SQL
+  GetOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
     this.AttachToken(true);
     console.log('calling GetOrgList API');
-    const q = `GetOrg?bustTheCache=false&getFromGit=true`;
-    return this.http.get(this.gitApiUrl + q, this.httpOptions);
-
-    // .subscribe (data => {
-    //   //{val: false, code: 404, message: "Auth Failed"}';
-    //   let decodedString = String.fromCharCode.apply(null, new Uint8Array(data));
-    //   let result = JSON.parse(decodedString);
-    //   if (result) {
-    //     if (result.code) {
-    //       if (result.code === 404) {
-    //         this.router.navigate(['/login']);
-    //       }
-    //     }
-    //   }
-    //   let oboo = new Subject<string>();
-    //   let oo = oboo.asObservable();
-    //   oboo.next(result);
-    //   return oo;
-    // });
-  }
-
-  /*
-  This is not called very often, only called from status - So it is ok to go to git
-  */
-
-  GetRepoList(org: string): any {
-    this.AttachToken();
-    const q = `GetRepos?org=${org}&bustTheCache=false&getFromGit=true`;
+    const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   /*
   This is not called very often, only called from status - So it is ok to go to git
   */
-  GetPullRequest(org: string): any {
+
+  GetRepoList(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
     this.AttachToken();
-    const q = `GetPRfromGit?org=${org}&bustTheCache=false&getFromGit=true`;
+    const q = `GetRepos?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  /*
+  This is not called very often, only called from status - only status goes to git
+  */
+  GetPullRequest(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
+    this.AttachToken();
+    const q = `GetPRfromGit?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
