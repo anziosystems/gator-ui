@@ -2,6 +2,7 @@ import {Component, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-callback',
@@ -15,9 +16,14 @@ export class CallbackComponent implements OnInit {
       if (token) {
         this.gitService.token = token;
         this.storage.set('token', token);
+        this.sleep(2000);
         this.router.navigate(['/status']);
       }
     });
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   ngOnInit() {}

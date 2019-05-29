@@ -61,14 +61,6 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  //Only status ask for Git call, everyone else go to SQL
-  GetOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
-    this.AttachToken(true);
-    console.log('calling GetOrgList API');
-    const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
-    return this.http.get(this.gitApiUrl + q, this.httpOptions);
-  }
-
   /*
   This is not called very often, only called from status - So it is ok to go to git
   */
@@ -88,17 +80,22 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  //Only status ask for Git call, everyone else go to SQL
+  GetOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
+    this.AttachToken(true);
+    const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
   AttachToken(skipOrgCheck: boolean = false) {
     if (!skipOrgCheck) {
-      this.CheckOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it infitite loop
+      this.CheckOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
     }
     if (!this.token) {
       this.token = this.storage.get('token');
-      this.tenant = this.token; //Today token and tenant is same
+      this.tenant = this.token; //Token and tenant is same
     }
-
     try {
-      // console.log('token: ' + this.token);
       if (this.token) {
         this.httpOptions = {
           headers: new HttpHeaders({
@@ -116,31 +113,35 @@ export class GitService {
     }
   }
 
+ /*
+  If current org is undefined, then get the org list and we get 404 then go back to login. 
+  */
+ async CheckOrg() {
+  return new Promise((resolve, reject) => {
+    if (this.currentOrg === undefined) {
+      this.GetOrgList().subscribe(result => {
+        if (result.code === 404) {
+          this.router.navigate(['/login']);
+        }
+        if (result.length > 0) {
+          this.currentOrg = result[0].Org;
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    } else {
+      resolve();
+    }
+  });
+}
+
+//All componenets call this to make sure that token is in place to call other calls.
   async Ready(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.CheckOrg().then(result => {
         resolve(true);
       });
-    });
-  }
-
-  async CheckOrg() {
-    return new Promise((resolve, reject) => {
-      if (this.currentOrg === undefined) {
-        this.GetOrgList().subscribe(result => {
-          if (result.code === 404) {
-            this.router.navigate(['/login']);
-          }
-          if (result.length > 0) {
-            this.currentOrg = result[0].Org;
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      } else {
-        resolve();
-      }
     });
   }
 

@@ -15,12 +15,13 @@ export class StatusComponent implements OnInit {
   orgList: any;
   messages: string[];
   errMessages: string[];
-  buttonDisabled:boolean = true;
+  buttonDisabled: boolean = true;
 
   constructor(private gitService: GitService, private router: Router) {
     //Get Org Details
     this.messages = [];
     this.errMessages = [];
+
     this.messages.push('Please wait, getting Org List');
     this.gitService.GetOrgList(true, true).subscribe(result => {
       if (result.length > 0) {
@@ -48,7 +49,7 @@ export class StatusComponent implements OnInit {
             }
           });
           //Get Repos
-          this.gitService.GetRepoList(element.Org,true,true).subscribe(result => {
+          this.gitService.GetRepoList(element.Org, true, true).subscribe(result => {
             //TODO: Turn the result into true and false
             if (result.length > 0) {
               this.repoStatus = true;
@@ -64,7 +65,6 @@ export class StatusComponent implements OnInit {
             //TODO: Turn the result into true and false
             this.messages.push('Done! Getting pull request for ' + element.Org + ' from ' + result + ' repositories');
             this.buttonDisabled = false;
-
           });
         });
       }
