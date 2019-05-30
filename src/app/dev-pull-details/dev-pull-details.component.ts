@@ -37,7 +37,7 @@ export class DevPullDetailsComponent implements OnInit {
   initializeData() {
     this.devDetails = [];
     this.developer = '';
-    this.gitService.Ready().then(result => {
+    this.gitService.ready().then(result => {
       this.gitService.onMyEvent.subscribe((val: string) => {
         if (val.lastIndexOf('+') > 0) {
           const arr = _.split(val, '+');
@@ -45,7 +45,7 @@ export class DevPullDetailsComponent implements OnInit {
         } else {
           if (val.startsWith('repo-')) {
             const arr = _.split(val, 'repo-');
-            this.gitService.GetRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50).subscribe(val => {
+            this.gitService.getRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50).subscribe(val => {
               this.devDetails = val;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
@@ -62,8 +62,8 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   getDeveloperDetails(developer: string) {
-    this.gitService.Ready().then(result => {
-      this.gitService.GetDeveloperDetail(this.gitService.currentOrg, 15, developer, 'null', 50).subscribe(val => {
+    this.gitService.ready().then(result => {
+      this.gitService.getDeveloperDetail(this.gitService.currentOrg, 15, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;
@@ -78,8 +78,8 @@ export class DevPullDetailsComponent implements OnInit {
 
   //action => opened, closed
   getActionDetails(action: string, day: number) {
-    this.gitService.Ready().then(result => {
-      this.gitService.GetDeveloperDetail(this.gitService.currentOrg, day, 'null', action, 50).subscribe(val => {
+    this.gitService.ready().then(result => {
+      this.gitService.getDeveloperDetail(this.gitService.currentOrg, day, 'null', action, 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;

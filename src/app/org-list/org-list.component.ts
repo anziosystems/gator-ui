@@ -1,6 +1,7 @@
 import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-org-list',
@@ -12,7 +13,7 @@ export class OrgListComponent implements OnInit {
   back_colors: string[];
   colors: string[];
 
-  constructor(private gitService: GitService, private router: Router) {
+  constructor(private gitService: GitService, private route: ActivatedRoute , private router: Router) {
     this.back_colors = [];
     this.back_colors.push('blue');
     this.back_colors.push('magenta');
@@ -33,13 +34,14 @@ export class OrgListComponent implements OnInit {
     this.router.onSameUrlNavigation = 'reload';
     this.router.initialNavigation();
     this.router.navigate(['/dashboard'], {
-      queryParams: {refresh: new Date().getTime()},
+      queryParams: {Org: org.Org, refresh: new Date().getTime()},
     });
-    console.log('from orgList' + this.gitService.currentOrg);
+   
   }
 
   ngOnInit() {
-    this.gitService.GetOrgList().subscribe(result => {
+    this.gitService.currentOrg  = this.route.snapshot.queryParamMap.get("Org")
+    this.gitService.getOrgList().subscribe(result => {
       this.orgList = result;
     });
   }

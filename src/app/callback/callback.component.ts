@@ -16,7 +16,7 @@ export class CallbackComponent implements OnInit {
       if (token) {
         this.gitService.token = token;
         this.storage.set('token', token);
-        this.sleep(5000).then ( res => {
+        this.sleep(800).then ( res => {
           this.router.navigate(['/status'])
         });
       }

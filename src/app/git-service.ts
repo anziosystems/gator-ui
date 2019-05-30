@@ -16,9 +16,9 @@ export class GitService {
   token: string;
   tenant: string;
   public organization: string;
-  //public gatorApiUrl = 'http://localhost:3000';
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; //'https://gator-api.azurewebsites.net' ;
-  public gitApiUrl: string = this.gatorApiUrl + '/service/'; //'http://localhost:3000/service/'; //'https://gator-be.azurewebsites.net/service/'; //'http://localhost:3000/service/';
+ 
+  public gatorApiUrl =  'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gitApiUrl: string = this.gatorApiUrl + '/service/';  
 
   //Components listen to each other using this
   private _onMyEvent = new Subject<string>();
@@ -46,17 +46,17 @@ export class GitService {
     if (parentmodule) {
       throw new Error('GitService is already loaded. Import it in ONLY AppModule');
     }
-    this.CheckOrg();
+    this.checkOrg();
   }
 
-  GetHookStatus(org: string): any {
-    this.AttachToken();
+  getHookStatus(org: string): any {
+    this.attachToken();
     const q = `GetHookStatus?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  SetupWebHook(org: string): any {
-    this.AttachToken();
+  setupWebHook(org: string): any {
+    this.attachToken();
     const q = `SetupWebHook?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
@@ -65,8 +65,8 @@ export class GitService {
   This is not called very often, only called from status - So it is ok to go to git
   */
 
-  GetRepoList(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
-    this.AttachToken();
+  getRepoList(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
+    this.attachToken();
     const q = `GetRepos?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
@@ -74,22 +74,22 @@ export class GitService {
   /*
   This is not called very often, only called from status - only status goes to git
   */
-  GetPullRequest(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
-    this.AttachToken();
+  getPullRequest(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
+    this.attachToken();
     const q = `GetPRfromGit?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   //Only status ask for Git call, everyone else go to SQL
-  GetOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
-    this.AttachToken(true);
+  getOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
+    this.attachToken(true);
     const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  AttachToken(skipOrgCheck: boolean = false) {
+  attachToken(skipOrgCheck: boolean = false) {
     if (!skipOrgCheck) {
-      this.CheckOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
+      this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
     }
     if (!this.token) {
       this.token = this.storage.get('token');
@@ -116,15 +116,17 @@ export class GitService {
  /*
   If current org is undefined, then get the org list and we get 404 then go back to login. 
   */
- async CheckOrg() {
+ async checkOrg() {
   return new Promise((resolve, reject) => {
     if (this.currentOrg === undefined) {
-      this.GetOrgList().subscribe(result => {
+      this.getOrgList().subscribe(result => {
         if (result.code === 404) {
           this.router.navigate(['/login']);
         }
         if (result.length > 0) {
-          this.currentOrg = result[0].Org;
+          if (!this.currentOrg) {
+              this.currentOrg = result[0].Org;
+          }
           resolve();
         } else {
           reject();
@@ -137,54 +139,54 @@ export class GitService {
 }
 
 //All componenets call this to make sure that token is in place to call other calls.
-  async Ready(): Promise<boolean> {
+  async ready(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.CheckOrg().then(result => {
+      this.checkOrg().then(result => {
         resolve(true);
       });
     });
   }
 
-  GetDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
+  getDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
     if (!day) day = 7;
 
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
-    this.AttachToken();
+    this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetRepositoryPR(org: string, day: number = 7, repo: string, pageSize: number = 40): Observable<any> {
+  getRepositoryPR(org: string, day: number = 7, repo: string, pageSize: number = 40): Observable<any> {
     if (!day) day = 7;
 
     const q = `GetRepositoryPR?org=${org}&day=${day}&repo=${repo}&pageSize=${pageSize}`;
-    this.AttachToken();
+    this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   // GetPullRequestCount for last 7 days, 30 days etc
-  GetPullRequestCount(org: string, day: number = 7): Observable<any> {
-    this.AttachToken();
+  getPullRequestCount(org: string, day: number = 7): Observable<any> {
+    this.attachToken();
     const q = `PullRequestCountForLastXDays?org=${org}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   // GetTopRepositories for last 7 days, 30 days etc
-  GetTopRepositories(org: string, day: number = 7): Observable<any> {
-    this.AttachToken();
+  getTopRepositories(org: string, day: number = 7): Observable<any> {
+    this.attachToken();
     // tslint:disable-next-line: max-line-length
     const q = `GetTopRespositories4XDays?org=${org}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetTopDevelopers(org: string, day: number): Observable<any> {
-    this.AttachToken();
+  getTopDevelopers(org: string, day: number): Observable<any> {
+    this.attachToken();
     const q = `TopDevForLastXDays?org=${org}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   //Gets detail pull request
-  GetPullRequestForPastXDay(tenant: string, day: number): Observable<any> {
-    this.AttachToken();
+  getPullRequestForPastXDay(tenant: string, day: number): Observable<any> {
+    this.attachToken();
     // tslint:disable-next-line: max-line-length
     const q = `PullRequestForLastXDays?day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);

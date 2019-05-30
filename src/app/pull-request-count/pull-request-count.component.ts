@@ -54,9 +54,9 @@ export class PullRequestCountComponent implements OnInit {
     this.count = 0;
     this.closeCount = 0;
 
-    this.gitService.Ready().then(result => {
-      console.log('Ready Done: ' + this.gitService.currentOrg);
-      this.gitService.GetPullRequestCount(this.gitService.currentOrg, 1).subscribe(val => {
+    this.gitService.ready().then(result => {
+   
+      this.gitService.getPullRequestCount(this.gitService.currentOrg, 1).subscribe(val => {
         if (val[1]) {
           this.todayCount = val[1].ctr;
         }
@@ -66,8 +66,8 @@ export class PullRequestCountComponent implements OnInit {
       });
     });
 
-    this.gitService.Ready().then(result => {
-      this.gitService.GetPullRequestCount(this.gitService.currentOrg, 7).subscribe(val => {
+    this.gitService.ready().then(result => {
+      this.gitService.getPullRequestCount(this.gitService.currentOrg, 7).subscribe(val => {
         if (val[1]) {
           this.weekCount = val[1].ctr;
         }
@@ -77,8 +77,8 @@ export class PullRequestCountComponent implements OnInit {
       });
     });
 
-    this.gitService.Ready().then(result => {
-      this.gitService.GetPullRequestCount(this.gitService.currentOrg, 30).subscribe(val => {
+    this.gitService.ready().then(result => {
+      this.gitService.getPullRequestCount(this.gitService.currentOrg, 30).subscribe(val => {
         if (val[1]) {
           this.count = val[1].ctr;
         }

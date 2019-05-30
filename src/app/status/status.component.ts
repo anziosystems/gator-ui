@@ -23,20 +23,22 @@ export class StatusComponent implements OnInit {
     this.errMessages = [];
 
     this.messages.push('Please wait, getting Org List');
-    this.gitService.GetOrgList(true, true).subscribe(result => {
+    this.gitService.getOrgList(true, true).subscribe(result => {
       if (result.length > 0) {
         this.orgStatus = true;
         this.orgList = result;
-        this.gitService.currentOrg = this.orgList[0].Org;
+        if (this.gitService.currentOrg == undefined) {
+          this.gitService.currentOrg = this.orgList[0].Org;
+        }
         //for every org check the hook
         this.orgList.forEach(element => {
           this.messages.push('Checking Gator hook in ' + element.Org);
-          this.gitService.GetHookStatus(element.Org).subscribe(result => {
+          this.gitService.getHookStatus(element.Org).subscribe(result => {
             this.hookStatus = result.val;
             if (!this.hookStatus) {
               //lets install the hook
               this.messages.push('Installing web hook ...');
-              this.gitService.SetupWebHook(element.Org).subscribe(result => {
+              this.gitService.setupWebHook(element.Org).subscribe(result => {
                 this.hookStatus = result.val;
                 if (this.hookStatus) {
                   this.messages.push('Gator hook is installed!');
@@ -49,7 +51,7 @@ export class StatusComponent implements OnInit {
             }
           });
           //Get Repos
-          this.gitService.GetRepoList(element.Org, true, true).subscribe(result => {
+          this.gitService.getRepoList(element.Org, true, true).subscribe(result => {
             //TODO: Turn the result into true and false
             if (result.length > 0) {
               this.repoStatus = true;
@@ -61,7 +63,7 @@ export class StatusComponent implements OnInit {
           this.messages.push('Getting last 10 pull request from all repositories for ' + element.Org + ' Please wait ..');
 
           //Get Pull Request
-          this.gitService.GetPullRequest(element.Org, true, true).subscribe(result => {
+          this.gitService.getPullRequest(element.Org, true, true).subscribe(result => {
             //TODO: Turn the result into true and false
             this.messages.push('Done! Getting pull request for ' + element.Org + ' from ' + result + ' repositories');
             this.buttonDisabled = false;

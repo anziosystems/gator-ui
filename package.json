@@ -66,5 +66,17 @@
     "ts-node": "~7.0.0",
     "tslint": "^5.14.0",
     "typescript": "^3.2.4"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.5.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anziosystems/gator-ui.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anziosystems/gator-ui/issues"
+  },
+  "homepage": "https://github.com/anziosystems/gator-ui#readme"
 }
