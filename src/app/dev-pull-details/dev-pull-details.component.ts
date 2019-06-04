@@ -5,6 +5,8 @@ import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import * as _ from 'lodash';
+import { UsageService } from '@labshare/ngx-core-services';
+import { getLocaleDateTimeFormat } from '@angular/common';
 
 @Component({
   selector: 'app-dev-pull-details',
@@ -16,11 +18,11 @@ export class DevPullDetailsComponent implements OnInit {
   developer: string;
   navigationSubscription: any;
 
-  constructor(private gitService: GitService, private router: Router) {
+  constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-        this.initializeData();
+        // this.initializeData();
       }
     });
   }
@@ -35,6 +37,9 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   initializeData() {
+    let x = Date.now.toString();
+    this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
+ 
     this.devDetails = [];
     this.developer = '';
     this.gitService.ready().then(result => {
@@ -91,7 +96,8 @@ export class DevPullDetailsComponent implements OnInit {
       });
     });
   }
+
   ngOnInit() {
     this.initializeData();
-  }
+   }
 }

@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import {Router, NavigationEnd} from '@angular/router';
+import { UsageService } from '@labshare/ngx-core-services';
 
 @Component({
   selector: 'app-top-repository',
@@ -15,7 +16,7 @@ export class TopRepositoryComponent implements OnInit {
 
   navigationSubscription: any;
 
-  constructor(private gitService: GitService, private router: Router) {
+  constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -26,6 +27,9 @@ export class TopRepositoryComponent implements OnInit {
 
   data(repo: string) {
     this.gitService.trigger('repo-' + repo);
+    const date = new Date();
+
+    this.usageService.send ({event: 'Repo Details', info: 'Repo: ' + repo,  LogTime: date.toUTCString()});
   }
 
   ngOnDestroy() {

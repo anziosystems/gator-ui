@@ -13,11 +13,12 @@ import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
-
+import {environment} from '../environments/environment';
 import {GitService} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
+import { AuthService,AuthWebService, AuthInterceptor, OidcNavigationService, NgxCoreServicesModule, Config ,ConfigService,SessionStorageService} from '@labshare/ngx-core-services';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -40,9 +41,11 @@ const routes: Routes = [
     CallbackComponent,
     StatusComponent,
     OrgListComponent,
+    
   ],
   imports: [
     BrowserModule,
+    NgxCoreServicesModule.forRoot(environment as Config),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
 
     // AppRoutingModule, // TopNavModule, LeftNavModule, //FitWindowModule,

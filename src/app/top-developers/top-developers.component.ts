@@ -5,6 +5,7 @@ import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import * as _ from 'lodash';
+import { UsageService } from '@labshare/ngx-core-services';
 
 @Component({
   selector: 'app-top-developers',
@@ -20,7 +21,7 @@ export class TopDevelopersComponent implements OnInit {
   @Output()
   messageEvent = new EventEmitter<string>();
 
-  constructor(private gitService: GitService, private router: Router) {
+  constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.developers = [];
     this.avatar = [];
 
@@ -42,6 +43,10 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   data(developer: string) {
+    const date = new Date();
+
+    this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+ 
     this.gitService.trigger(developer);
   }
 
