@@ -20,7 +20,8 @@ steps:
     - task: Npm@1
       inputs:
         command: 'install'
-        verbose: true
+        customRegistry: 'useFeed'
+        customFeed: '367f7b6e-25d8-4b1f-b4ca-117597495a63'
     npm install
     ng build --prod
   displayName: 'npm install and build'
