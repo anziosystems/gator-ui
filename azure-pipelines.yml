@@ -14,10 +14,10 @@ steps:
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
-- task: AzureRmWebAppDeployment@3
+- task: npmAuthenticate@0
   inputs:
-    azureSubscription: 'gator-npm'
-    WebAppName: 'gator-ui'
+    customEndpoint: 'gator-npm'
+    workingFile: '.npmrc'
     
 - script: |
     npm install -g @angular/cli
