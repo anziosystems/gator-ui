@@ -31,5 +31,5 @@ steps:
     azureSubscription: 'Axle - MPN - Rafat(1c2b7486-ccf8-41e0-bdfa-ab797f153518)'
     appType: 'webAppLinux'
     WebAppName: 'gator-ui-release'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/dist'
-    RuntimeStack: 'NODE|10.10'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/dist/gator'
+    RuntimeStack: 'TOMCAT|8.5-java11'
