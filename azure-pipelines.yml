@@ -26,21 +26,10 @@ steps:
 - script: npm run build:prod
 
 
-#- task: AzureRmWebAppDeployment@4
-#  inputs:
-#    ConnectionType: 'AzureRM'
-#    azureSubscription: 'Axle - MPN - Rafat(1c2b7486-ccf8-41e0-bdfa-ab797f153518)'
-#    appType: 'webAppLinux'
-#    WebAppName: 'gator-ui-release'
-#    packageForLinux: '$(System.DefaultWorkingDirectory)/dist/gator'
-#    RuntimeStack: 'TOMCAT|9.0-jre8'
-
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Axle - MPN - Rafat(1c2b7486-ccf8-41e0-bdfa-ab797f153518)'
-    appType: 'webAppLinux'
-    WebAppName: 'gator-ui-release'
-    packageForLinux: '$(System.DefaultWorkingDirectory)'
-    RuntimeStack: 'NODE|10.14'
-    StartupCommand: 'ng serve'
+    appType: 'webApp'
+    WebAppName: 'gator-ui'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/dist/gator'
