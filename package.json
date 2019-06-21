@@ -23,9 +23,8 @@
     "tslint:fix": "npm run tslint -- --fix",
     "posttest": "npm run lint",
     "build:electron": "tsc -p ./electron/tsconfig.electron.json",
-    "start:electron": "ng build --base-href ./ && npm run build:electron && electron ./dist/electron/main.js",
-    "refreshVSToken" : "vsts-npm-auth -config .npmrc"
-    },
+    "start:electron": "ng build --base-href ./ && npm run build:electron && electron ./dist/electron/main.js"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^7.2.9",
