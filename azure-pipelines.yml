@@ -23,6 +23,8 @@ steps:
     command: 'install'
     customEndpoint: 'gatornpm'
 
+- script: npm run build:prod
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
