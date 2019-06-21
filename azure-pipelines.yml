@@ -11,25 +11,14 @@ pool:
 
 steps:
 - task: NodeTool@0
+  displayName: 'Install Node.js'
   inputs:
     versionSpec: '10.x'
-  displayName: 'Install Node.js'
-- task: npmAuthenticate@0
-  inputs:
-    customEndpoint: 'gatornpm'
-    workingFile: '.npmrc'
+  
+- script: |
+    npm install -g @angular/cli
+    
 - task: Npm@1
   inputs:
     command: 'install'
-    customRegistry: 'useFeed'
-    customFeed: '367f7b6e-25d8-4b1f-b4ca-117597495a63'
-- script: |
-    npm install -g @angular/cli
-    - task: Npm@1
-      inputs:
-        command: 'install'
-        customEndpoint: 'gatornpm'
-    
-    npm install
-    ng build --prod
-  displayName: 'npm install and build'
+    customEndpoint: 'gatornpm'
