@@ -25,6 +25,7 @@ steps:
 
 - script: npm run build:prod
 
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -32,4 +33,4 @@ steps:
     appType: 'webAppLinux'
     WebAppName: 'gator-ui-release'
     packageForLinux: '$(System.DefaultWorkingDirectory)/dist/gator'
-    RuntimeStack: 'TOMCAT|8.5-java11'
+    RuntimeStack: 'TOMCAT|9.0-jre8'
