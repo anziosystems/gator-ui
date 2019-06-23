@@ -21,8 +21,9 @@ export class DevPullDetailsComponent implements OnInit {
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
+      
       if (e instanceof NavigationEnd) {
-        // this.initializeData();
+          this.initializeData();
       }
     });
   }
@@ -58,6 +59,8 @@ export class DevPullDetailsComponent implements OnInit {
                 s = s.replace('pulls', 'pull');
                 s = s.replace('comments', ' ');
                 v.pullrequesturl = s;
+                v.body = v.body.replace(/\+/g,' ');
+                v.title = v.title.replace(/\+/g,' ');
               });
             });
           } else this.getDeveloperDetails(val);
@@ -76,6 +79,8 @@ export class DevPullDetailsComponent implements OnInit {
           s = s.replace('pulls', 'pull');
           s = s.replace('comments', ' ');
           v.pullrequesturl = s;
+          v.body = v.body.replace(/\+/g,' ');
+          v.title = v.title.replace(/\+/g,' ');
         });
       });
     });
@@ -92,6 +97,8 @@ export class DevPullDetailsComponent implements OnInit {
           s = s.replace('pulls', 'pull');
           s = s.replace('comments', ' ');
           v.pullrequesturl = s;
+          v.body = v.body.replace(/\+/g,' ');
+          v.title = v.title.replace(/\+/g,' ');
         });
       });
     });
