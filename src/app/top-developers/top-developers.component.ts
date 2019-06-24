@@ -6,14 +6,29 @@ import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import * as _ from 'lodash';
 import { UsageService } from '@labshare/ngx-core-services';
+import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
 
 @Component({
   selector: 'app-top-developers',
   templateUrl: './top-developers.component.html',
   styleUrls: ['./top-developers.component.less'],
-})
+  animations: [
+    trigger('listAnimation', [
+      transition('* => *', [
+         query (':enter', style ({ opacity:0}), {optional: true}),
+         query (':enter', stagger ('300ms', [
+           animate ('1s easae-in', keyframes ([
+             style ({opacity:0, transform:'translateY(-75px)', offset:0}),
+             style ({opacity:.5, transform:'translateY(35px)', offset:0.3}),
+             style ({opacity:1, transform:'translateY(0)', offset:1}),
+           ]))
+         ]),{optional: true})
+      ])
+  ])]
+}) 
+
 export class TopDevelopersComponent implements OnInit {
-  developers: any[];
+  developers: any[] ;
   avatar: any[];
   devDetails: any[];
   navigationSubscription: any;
@@ -24,7 +39,7 @@ export class TopDevelopersComponent implements OnInit {
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.developers = [];
     this.avatar = [];
-
+   
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -51,6 +66,7 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   initializeData() {
+  
     this.developers = [];
     this.avatar = [];
     this.gitService.ready().then(result => {

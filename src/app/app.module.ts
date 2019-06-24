@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-//import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {PullRequestCountComponent} from './pull-request-count/pull-request-count.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -40,15 +39,13 @@ const routes: Routes = [
     DashboardComponent,
     CallbackComponent,
     StatusComponent,
-    OrgListComponent,
-    
-  ],
+    OrgListComponent
+  
+    ],
   imports: [
     BrowserModule,
     NgxCoreServicesModule.forRoot(environment as Config),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
-
-    // AppRoutingModule, // TopNavModule, LeftNavModule, //FitWindowModule,
     StorageServiceModule,
     HttpClientModule,
     BrowserAnimationsModule,
