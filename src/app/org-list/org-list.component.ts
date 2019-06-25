@@ -42,17 +42,26 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
   ) {
     super(inj, STATE, statefulParent, statefulService, appRef);    
     this.back_colors = [];
-    this.back_colors.push('blue');
-    this.back_colors.push('magenta');
-    this.back_colors.push('green');
-    this.back_colors.push('Yellow');
-    this.back_colors.push('red');
-
+    this.back_colors.push('#01A9DB');
+    this.back_colors.push('#74DF00');
+    this.back_colors.push('#DBA901');
+    this.back_colors.push('#FF4000');
+    this.back_colors.push('#0404B4');
+    this.back_colors.push('#01A9DB');
+    this.back_colors.push('#74DF00');
+    this.back_colors.push('#DBA901');
+    this.back_colors.push('#FF4000');
+    this.back_colors.push('#0404B4');
     this.colors = [];
     this.colors.push('white');
     this.colors.push('white');
     this.colors.push('white');
-    this.colors.push('black');
+    this.colors.push('white');
+    this.colors.push('white');
+    this.colors.push('white');
+    this.colors.push('white');
+    this.colors.push('white');
+    this.colors.push('white');
     this.colors.push('white');
   }
 

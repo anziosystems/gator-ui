@@ -1,6 +1,6 @@
 <div id="flex-container" >
-  <div div class="flex-item" style="font-size: 25px; color:white"> Developers </div>
-  <div *ngFor="let dev of developers;  let i = index">
+  <div id="container"  [@listAnimation]="developers.length" class="flex-item" style="font-size: 25px; color:white"> Developers </div>
+  <div *ngFor="let dev of developers;  let i = index" >
       <div div class="flex-item" (click)="data(dev)" style="vertical-align:center; align-content: flex-end ; cursor: pointer;">
         <div style="display: flex; direction: row;cursor: pointer;">
           <img src="{{avatar[i]}}" style="height:50px; width:50px;  margin-right: 7px;   border-radius: 50%; cursor: pointer;" />
