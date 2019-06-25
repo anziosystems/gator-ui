@@ -36,6 +36,8 @@
     "@angular/platform-browser-dynamic": "^7.2.9",
     "@angular/router": "^7.2.9",
     "@labshare/ngx-core-services": "^1.0.3",
+    "@labshare/ngx-stateful": "^2.0.9",
+    "@labshare/stateful-components": "^1.13.2",
     "angular-webstorage-service": "^1.0.2",
     "core-js": "^2.5.4",
     "lint": "^1.1.2",
