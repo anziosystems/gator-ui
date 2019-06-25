@@ -19,6 +19,7 @@ import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import { AuthService,AuthWebService, AuthInterceptor, OidcNavigationService, NgxCoreServicesModule, Config ,ConfigService,SessionStorageService} from '@labshare/ngx-core-services';
+import {LeftNavModule, FitWindowModule, TopNavModule} from '@labshare/stateful-components';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -52,6 +53,12 @@ const routes: Routes = [
     StorageServiceModule,
     HttpClientModule,
     BrowserAnimationsModule,
+
+    /* TODO: Use micromodules */
+    /* LeftNav from stateful-components */
+    LeftNavModule,
+    FitWindowModule,
+    TopNavModule
   ],
   providers: [GitService, CookieService],
   exports: [RouterModule],
