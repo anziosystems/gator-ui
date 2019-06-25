@@ -33,7 +33,12 @@ export class StatusComponent implements OnInit {
     let t = setInterval(() => {
       let elem = document.getElementById("myBar");
       statusbarWidth = statusbarWidth + 1;
-      elem.style.width = statusbarWidth + '%'; 
+      if (statusbarWidth < 100) {
+        elem.style.width = statusbarWidth + '%'; 
+      }
+      else {
+           clearTimeout (t);
+      }
     }, 200); //every 200 ms
 
     this.messages.push('Please wait, getting Org List ...');
@@ -48,7 +53,7 @@ export class StatusComponent implements OnInit {
         //for every org check the hook
         this.orgList.forEach(element => {
           this.messages.push('Checking Gator hook in ' + element.Org);
-          this.gitService.getHookStatus(element.Org).subscribe(result => {
+            this.gitService.getHookStatus(element.Org).subscribe(result => {
             this.hookStatus = result.val;
             if (!this.hookStatus) {
               //lets install the hook
@@ -76,6 +81,10 @@ export class StatusComponent implements OnInit {
             } else {
               this.warningMessages.push('No Repositories found for organization: ' + element.Org);
             }
+          }, error => {
+            this.errMessages.push('Sorry, seems like something is wrong getting repository list. Please refresh the page. ');
+            this.errMessages.push(error.statusText);
+            clearTimeout (t);
           });
 
           this.messages.push('Getting last 10 pull request from all repositories for ' + element.Org + ' Please wait ..');
@@ -88,8 +97,12 @@ export class StatusComponent implements OnInit {
             let elem = document.getElementById("myBar");
             elem.style.width = '100%'; 
             clearTimeout (t);
+          }, error => {
+            this.errMessages.push('Sorry, seems like something is wrong getting PR. Please refresh the page. ');
+            this.errMessages.push(error.statusText);
+            clearTimeout (t);
           });
-        });
+        }); //org list loop
       } else {
         this.warningMessages.push('Did not get any orgnazation for this login. Please check in git hub and make sure you belong to an organization.');
         this.warningMessages.push('Exiting!!!');
@@ -97,6 +110,10 @@ export class StatusComponent implements OnInit {
         elem.style.width = '100%'; 
         clearTimeout (t);
       }
+    }, error => {
+      this.errMessages.push('Sorry, seems like something is wrong. Please refresh the page. Please feel free to send us message at support@anziosystems.com ');
+      this.errMessages.push(error.message);
+      clearTimeout (t);
     });
 
     
