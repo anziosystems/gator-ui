@@ -1,10 +1,28 @@
 <div style=" color: white; width:100%;height:100%; display:flex; flex-direction:column; align-content: center">
   <div name="TopMenu" style="background-color:rgb(39, 120, 202); width:100%;display:flex; flex-direction:row;justify-content: center;"></div>
   <div name="wrapper" style="background-color:black; width:100%; height: 100%;  display:flex;flex-direction: row">
-    <div name="leftNav" style="width: auto; display:inline-block;flex-direction: row">
-      <app-org-list></app-org-list>
-    </div>
-    <div name="contentarea">
+    <app-org-list #orgList
+      [liftedStateCurrentOrg]="state.slice('menu', 'selectedSection')">
+      <sc-fit-window #fitWindow></sc-fit-window>
+      <sc-left-nav 
+        [liftedStateSelectedSection]="state.slice('menu', 'selectedSection')"
+        [liftedStateHeight]="fitWindow.state.slice('height')"
+        [liftedStateSectionItems]="orgList.state.slice('orgList')"
+        [liftedStateMenuBackground]="state.slice('menu', 'background')"
+        [liftedStateLeftBar]="state.slice('menu', 'leftBar')"
+        [liftedStateUi]="state.slice('menu', 'ui')"
+        [liftedStateLogoBackground]="state.slice('menu', 'leadBackground')"
+        [liftedStatePreserveMenu]="state.slice('menu', 'preserveMenu')"
+        [liftedStatePreserveSection]="state.slice('menu', 'preserveSection')"
+        [liftedStateLastLogoutClick]="state.slice('menu', 'lastLogoutClick')"
+        [liftedStateAddMessage]="state.slice('menu', 'addMessage')">
+      </sc-left-nav>
+    </app-org-list>
+    <div name="contentarea" class="content-area">
+      <sc-top-nav
+        [liftedStateBackground]="state.slice('topNav', 'background')"
+        [liftedStateIconColor]="state.slice('topNav', 'iconColor')">
+      </sc-top-nav>      
       <div id="flex-column-container">
         <div class="flex-item" style="margin-top:12px; height:150px">
           <app-pull-request-count></app-pull-request-count>
