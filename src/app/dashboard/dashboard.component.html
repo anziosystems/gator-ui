@@ -15,10 +15,13 @@
         [liftedStatePreserveMenu]="state.slice('menu', 'preserveMenu')"
         [liftedStatePreserveSection]="state.slice('menu', 'preserveSection')"
         [liftedStateLastLogoutClick]="state.slice('menu', 'lastLogoutClick')"
+        [liftedStateMenuOpen]="state.slice('menu', 'menuOpen')"
+        [liftedStateDisplayProfileIcon]="state.slice('menu', 'profileIcon')"
         [liftedStateAddMessage]="state.slice('menu', 'addMessage')">
-        <img src= "../assets/Gator-Logo.png" style="width: 100px; height:100px; margin-top:12px; margin-left: 5px" >
       </sc-left-nav>
     </app-org-list>
+    <img src= "../assets/Gator-Logo.png" class="gator-logo" />
+
     <div name="contentarea" class="content-area">
       <sc-top-nav
         [liftedStateBackground]="state.slice('topNav', 'background')"

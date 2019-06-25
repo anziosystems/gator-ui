@@ -80,7 +80,7 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
 
       /* Map to LeftNav sectionItems property */
       let sectionItems = result.map(r => ({
-        name: r.Org,
+        name: r.Org.toUpperCase().slice(0, 4),
         id: r.Org,
         icon: null
       }))

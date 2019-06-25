@@ -19,6 +19,7 @@ export const STATE = () => {
     sectionItems: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
     currentOrg: null,
     menu: {
+      menuOpen: false,
       background: 'rgb(51, 51, 52)',
       leftBar: {
         ...leftBar,
@@ -32,16 +33,23 @@ export const STATE = () => {
       },
       ui: {
         ...rootUi,
-        arrowBorderColor: 'rgb(50, 50, 50)',
+        /* TODO: Reenable after hack */
+        //arrowBorderColor: 'rgb(50, 50, 50)',
         arrowBackground: 'rgb(50, 50, 50)',
-        arrowColor: 'rgb(255, 255, 255)'
+        arrowColor: 'rgb(255, 255, 255)',
+
+        /* HACK, remove later */
+        displayArrow: false,
+        arrowBorderColor: 'rgb(36, 35, 35)',
       },
       leadBackground: 'rgb(36, 35, 35)',
+      /* TODO: Revert to 1 */
       preserveMenu: 0,
       preserveSection: true,
       addMessage: 'Add Custom Team',
       selectedSection: null,
-      lastLogoutClick: null
+      lastLogoutClick: null,
+      profileIcon: false
     },
     topNav: {
       iconColor: 'rgb(150, 150, 150)',
