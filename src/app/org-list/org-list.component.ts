@@ -94,11 +94,9 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
 
   onStatefulChanges() {
     this.currState = this.state.read();
-
     if(this.currState.currentOrg !== this.prevState.currentOrg) {
       this.data(this.currState.currentOrg);
     }
-
     this.prevState = this.currState;
   }
 }
