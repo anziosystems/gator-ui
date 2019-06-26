@@ -25,7 +25,7 @@ export const STATE = () => {
         ...leftBar,
         ui: {
           ...ui,
-          background: '#141414',
+          background: '#262525cc',
           mainTenantTextColor: '#fff',
           selectedItemBackground: 'rgb(36, 35, 35)',
           addTenantBackground: 'rgb(51, 51, 52)'

@@ -17,7 +17,8 @@
         [liftedStateLastLogoutClick]="state.slice('menu', 'lastLogoutClick')"
         [liftedStateMenuOpen]="state.slice('menu', 'menuOpen')"
         [liftedStateDisplayProfileIcon]="state.slice('menu', 'profileIcon')"
-        [liftedStateAddMessage]="state.slice('menu', 'addMessage')">
+        [liftedStateAddMessage]="state.slice('menu', 'addMessage')"
+        >
       </sc-left-nav>
     </app-org-list>
     <img src= "../assets/Gator-Logo.png" class="gator-logo" />
@@ -28,7 +29,7 @@
         [liftedStateIconColor]="state.slice('topNav', 'iconColor')">
       </sc-top-nav>      
       <div id="flex-column-container">
-        <div class="flex-item" style="margin-top:12px; height:150px">
+        <div class="flex-item" style="margin-top:3px; height:150px">
           <app-pull-request-count></app-pull-request-count>
         </div>
         <div class="flex-item">
