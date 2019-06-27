@@ -59,7 +59,7 @@ export class PullRequestCountComponent implements OnInit {
         cctr = val[0].ctr ;
       } else {
         if (val[0].state === 'commit') { //sometime there is no close only commit
-          cctr =  val[0].ctr ;
+        //  cctr =  val[0].ctr ;
         } else {
           ctr = val[0].ctr ; //must be only open then 
         }
@@ -67,7 +67,7 @@ export class PullRequestCountComponent implements OnInit {
     }
     if (val[1]) {
       if (val[1].state === 'commit') {
-        cctr =  cctr + val[1].ctr ;
+      //  cctr =  cctr + val[1].ctr ;
       } else {
         if (val[1].state === 'close') {
           cctr =  cctr + val[1].ctr ;
