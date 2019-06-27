@@ -70,7 +70,7 @@ export class PullRequestCountComponent implements OnInit {
       //  cctr =  cctr + val[1].ctr ;
       } else {
         if (val[1].state === 'close') {
-          cctr =  cctr + val[1].ctr ;
+           cctr =  cctr + val[1].ctr ;
         } else {
           ctr = val[1].ctr ; //must be only open then 
         }
