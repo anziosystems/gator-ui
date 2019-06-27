@@ -19,12 +19,14 @@ import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import { AuthService,AuthWebService, AuthInterceptor, OidcNavigationService, NgxCoreServicesModule, Config ,ConfigService,SessionStorageService} from '@labshare/ngx-core-services';
 import {LeftNavModule, FitWindowModule, TopNavModule} from '@labshare/stateful-components';
+import { HookErrorComponent } from './hook-error/hook-error.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'status', component: StatusComponent},
   {path: 'orglist', component: OrgListComponent},
+  {path: 'hook-error', component: HookErrorComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: '', component: DashboardComponent},
 ];
@@ -40,7 +42,8 @@ const routes: Routes = [
     DashboardComponent,
     CallbackComponent,
     StatusComponent,
-    OrgListComponent
+    OrgListComponent,
+    HookErrorComponent
   
     ],
   imports: [

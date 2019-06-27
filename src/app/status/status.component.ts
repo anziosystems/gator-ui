@@ -63,20 +63,20 @@ export class StatusComponent implements OnInit {
                 this.gitService.setupWebHook(element.Org).subscribe(result => {
                   let hookReturn = result.val;
                   if (hookReturn === 201) {
-                    this.successMessages.push('Gator hook is installed for org' +  element.Org );
+                    this.successMessages.push('GitGator hook is installed for org ' +  element.Org );
                   } else {
                     if (hookReturn === 422) {
-                      this.messages.push('Gator hook is already installed for org' +  element.Org);
+                      this.messages.push('GitGator hook is already installed for org ' +  element.Org);
                     } else {
                       if (hookReturn === 404) {
-                        this.errMessages.push("Couldn't install Gator hook. Please install manually for org"  + element.Org);
+                        this.errMessages.push("Couldn't install GitGator hook. Please install manually for org: "  + element.Org);
                         this.hookFail = true;
                       }
                     }
                   }
                 });
               } else {
-                  this.messages.push('Gator hook is already installed in ' + element.Org);
+                  this.messages.push('GitGator hook is already installed in ' + element.Org);
               }
             });
             //Get Repos
