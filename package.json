@@ -39,6 +39,7 @@
     "@labshare/ngx-stateful": "^2.0.9",
     "@labshare/stateful-components": "^1.13.2",
     "angular-webstorage-service": "^1.0.2",
+    "chart.js": "^2.8.0",
     "component": "^1.1.0",
     "core-js": "^2.5.4",
     "lint": "^1.1.2",
