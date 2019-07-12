@@ -111,7 +111,7 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
 
   logout() {
     this.storage.remove('token');
-    this.router.navigate(['/'])
+    location.reload();
   }
 
   changeSection(section) {
