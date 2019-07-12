@@ -61,6 +61,13 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  getGraphData4XDays(org: string, day: number): any {
+    this.attachToken();
+    // let org = this.currentOrg ;
+    const q = `GetGraphData4XDays?org=${org}&day=${day}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
   /*
   This is not called very often, only called from status - So it is ok to go to git
   */

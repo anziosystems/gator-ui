@@ -1,0 +1,22 @@
+ 
+ <div style="background: black; color: white">
+    <h1>Webhook installtion failed, because you may not have the permission. Please install it manually. </h1>
+    <P></P>
+    <h2>Without webhooks GitGator will not update your data. Please ask the admin of your orgnization to install webhook.</h2>
+    <h3>Follow these simple steps to  Manually Install web hook? </h3>
+  
+    1.  Goto your organization page on the github <br />
+    2.  Navigate to the "Settings" tab. <br />
+    3.  Select the "Webhooks" option on the left menu. <br />
+    4.  Click "Add Webhook" <br />
+    5.  put 'https://gatorgithook.azurewebsites.net/api/httptrigger' in payload URL <br />
+    6.  Select "application/json" as the encoding type. <br />
+    7.  select radio button 'Let me select individual events.' <br />
+    8.  check 'Pull requests' <br />
+    9.  click on Add webhook <br />
+
+    <p></p>
+
+    <p style="color:magenta">Someone else may have already installed the hook. We need only one hook per organization. Let me <a href="dashboard"> try </a></p> 
+  
+</div>  

@@ -2,13 +2,15 @@
   <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
     <div div class="flex-item" style=" color:white">{{ devDetails[0]?.login }}</div>
   </a>
-  <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:3px" class="flex-item">
-    <div style="font-size: large; color:gainsboro">{{ dev.Login }}</div>
+  <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px" class="flex-item">
+    <div style="font-size: large; color:gainsboro">{{ dev.Login }} </div> 
     <div *ngIf="dev.State === 'open'">
-      <div style="font-size: large; color:rgb(212, 89, 73)">{{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:#f713bc;">{{ dev.State }}: {{ dev.Repo }}
+      </div>
     </div>
     <div *ngIf="dev.State === 'closed'">
-      <div style="font-size: large; color:rgb(73, 212, 126)">{{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:rgb(73, 212, 126)"> {{ dev.State }}: {{ dev.Repo }} 
+     </div>
     </div>
     <div style="display: flex;flex-direction: row;">
       <div style="font-size: large; color: white "><a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a></div>

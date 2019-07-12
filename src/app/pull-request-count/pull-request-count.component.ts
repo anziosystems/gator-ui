@@ -46,6 +46,58 @@ export class PullRequestCountComponent implements OnInit {
     this.gitService.trigger(action + '+' + day.toString());
   }
 
+  //0: {state: "closed", ctr: 27}
+  // {state: "commit", ctr: 16}
+  // {state: "open", ctr: 30}
+   
+  assignValues (val: any, day: number) {
+    let ctr: number = 0 
+    let cctr: number = 0;
+
+    if (val[0]) {
+      if (val[0].state === 'closed') {
+        cctr = val[0].ctr ;
+      } else {
+        if (val[0].state === 'commit') { //sometime there is no close only commit
+        //  cctr =  val[0].ctr ;
+        } else {
+          ctr = val[0].ctr ; //must be only open then 
+        }
+      }
+    }
+    if (val[1]) {
+      if (val[1].state === 'commit') {
+      //  cctr =  cctr + val[1].ctr ;
+      } else {
+        if (val[1].state === 'close') {
+           cctr =  cctr + val[1].ctr ;
+        } else {
+          ctr = val[1].ctr ; //must be only open then 
+        }
+      }
+    }
+
+    if (val[2]) {
+      if (val[2].state === 'open') {
+        ctr = val[2].ctr ;
+      }
+    }
+
+    if (day === 1) {
+      this.todayCount = ctr;
+      this.todayCloseCount = cctr;
+    }
+    if (day === 7) {
+      this.weekCount = ctr;
+      this.weekCloseCount = cctr;
+    }
+    if (day === 30) {
+      this.count = ctr;
+      this.closeCount = cctr;
+    }
+
+  }
+
   initializeData() {
     this.todayCount = 0;
     this.todayCloseCount = 0;
@@ -55,40 +107,25 @@ export class PullRequestCountComponent implements OnInit {
     this.closeCount = 0;
 
     this.gitService.ready().then(result => {
-   
       this.gitService.getPullRequestCount(this.gitService.currentOrg, 1).subscribe(val => {
-        if (val[1]) {
-          this.todayCount = val[1].ctr;
-        }
-        if (val[0]) {
-          this.todayCloseCount = val[0].ctr;
-        }
+        this.assignValues (val,1) ;    
       });
     });
 
     this.gitService.ready().then(result => {
       this.gitService.getPullRequestCount(this.gitService.currentOrg, 7).subscribe(val => {
-        if (val[1]) {
-          this.weekCount = val[1].ctr;
-        }
-        if (val[0]) {
-          this.weekCloseCount = val[0].ctr;
-        }
+        this.assignValues (val,7) ;
       });
     });
 
     this.gitService.ready().then(result => {
       this.gitService.getPullRequestCount(this.gitService.currentOrg, 30).subscribe(val => {
-        if (val[1]) {
-          this.count = val[1].ctr;
-        }
-        if (val[0]) {
-          this.closeCount = val[0].ctr;
-        }
-      });
+        this.assignValues (val, 30) ;
     });
-  }
-  ngOnInit() {
+  });
+}
+
+ngOnInit() {
     this.initializeData();
   }
 }
