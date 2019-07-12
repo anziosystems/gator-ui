@@ -8,49 +8,14 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import {ChangeDetectorRef, forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core'; 
 import {StatefulComponent, StatefulParent, StatefulService} from '@labshare/ngx-stateful';
 /* Import defaults for LeftNavComponent State */
-import {leftNavStateFunction} from '@labshare/stateful-components'
 
 export const STATE = () => {
   /* Get defaults for leftNav's leftBar */
-  const {leftBar, ui: rootUi} = leftNavStateFunction();
-  const {ui} = leftBar;
+
   return {
     items: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
     sectionItems: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
     currentOrg: null,
-    menu: {
-      menuOpen: false,
-      background: 'rgb(51, 51, 52)',
-      leftBar: {
-        ...leftBar,
-        ui: {
-          ...ui,
-          background: '#141414',
-          mainTenantTextColor: '#fff',
-          selectedItemBackground: 'rgb(36, 35, 35)',
-          addTenantBackground: 'rgb(51, 51, 52)'
-        }
-      },
-      ui: {
-        ...rootUi,
-        /* TODO: Reenable after hack */
-        //arrowBorderColor: 'rgb(50, 50, 50)',
-        arrowBackground: 'rgb(50, 50, 50)',
-        arrowColor: 'rgb(255, 255, 255)',
-
-        /* HACK, remove later */
-        displayArrow: false,
-        arrowBorderColor: 'rgb(36, 35, 35)',
-      },
-      leadBackground: 'rgb(36, 35, 35)',
-      /* TODO: Revert to 1 */
-      preserveMenu: 0,
-      preserveSection: true,
-      addMessage: 'Add Custom Team',
-      selectedSection: null,
-      lastLogoutClick: null,
-      profileIcon: false
-    },
     topNav: {
       iconColor: 'rgb(150, 150, 150)',
       background: 'rgb(36, 35, 35)'
@@ -82,6 +47,42 @@ type PaneType = 'left' | 'right';
 })
 export class DashboardComponent extends StatefulComponent implements OnInit {
   orgs: any;
+
+  menu = {
+    menuOpen: false,
+    background: 'rgb(51, 51, 52)',
+    leftBar: {
+      ui: {
+        width: 80,
+        textColor: 'rgb(255, 255, 255)',
+        tooltip: true,
+        
+        background: '#141414',
+        mainTenantTextColor: '#fff',
+        selectedItemBackground: 'rgb(36, 35, 35)',
+        addTenantBackground: 'rgb(51, 51, 52)'
+      }
+    },
+    ui: {
+      font: 'Roboto',
+      /* TODO: Reenable after hack */
+      //arrowBorderColor: 'rgb(50, 50, 50)',
+      arrowBackground: 'rgb(50, 50, 50)',
+      arrowColor: 'rgb(255, 255, 255)',
+
+      /* HACK, remove later */
+      displayArrow: false,
+      arrowBorderColor: 'rgb(36, 35, 35)',
+    },
+    leadBackground: 'rgb(36, 35, 35)',
+    /* TODO: Revert to 1 */
+    preserveMenu: 0,
+    preserveSection: true,
+    addMessage: 'Add Custom Team',
+    selectedSection: null,
+    profileIcon: false
+  }
+
   constructor(
     private router: Router, 
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
@@ -108,19 +109,21 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
     }
   }
 
+  logout() {
+    this.storage.remove('token');
+    location.reload();
+  }
+
+  changeSection(section) {
+    this.menu = {...this.menu, selectedSection: section.id}
+  }
+
   /* TODO: Remove once diff feature implemented in NgxStateful */
   prevState = STATE();
   currState = STATE();
 
   onStatefulChanges() {
     this.currState = this.state.read();
-
-    if(this.currState.menu.lastLogoutClick !== this.prevState.menu.lastLogoutClick) {
-      /* TODO: Use props once available */
-      this.storage.remove('token');
-      this.router.navigate(['/'])
-    }
-
     this.prevState = this.currState;
   }
 }

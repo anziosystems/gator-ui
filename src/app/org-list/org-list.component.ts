@@ -8,8 +8,6 @@ import {ChangeDetectorRef, forwardRef, Optional, SkipSelf, ApplicationRef} from 
 import {StatefulComponent, StatefulParent, StatefulService} from '@labshare/ngx-stateful';
 
 export const STATE = () => ({
-  orgList: [],
-  currentOrg: null
 })
 export const PROPS = {} 
 
@@ -28,7 +26,7 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
   back_colors: string[];
   colors: string[];
 
-  @Input() liftedStateCurrentOrg;
+  @Output() changeOrgList = new EventEmitter();
 
   constructor(
     private gitService: GitService, 
@@ -84,7 +82,8 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
         id: r.Org,
         icon: null
       }))
-      this.state.set('orgList', sectionItems);
+      this.orgList = sectionItems;
+      this.changeOrgList.emit(sectionItems);
     });
   }
 
@@ -92,11 +91,19 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
   prevState = STATE();
   currState = STATE();
 
+  orgList = []
+  
+  _currentOrg = null;
+  get currentOrg() {
+    return this._currentOrg;
+  }
+  @Input() set currentOrg(value) {
+    this._currentOrg = value;
+    this.data(value);
+  }
+
   onStatefulChanges() {
     this.currState = this.state.read();
-    if(this.currState.currentOrg !== this.prevState.currentOrg) {
-      this.data(this.currState.currentOrg);
-    }
     this.prevState = this.currState;
   }
 }

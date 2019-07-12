@@ -2,24 +2,24 @@
   <div name="TopMenu" style="background-color:rgb(39, 120, 202); width:100%;display:flex; flex-direction:row;justify-content: center;"></div>
   <div name="wrapper" style="background-color:black; width:100%; height: 100%;  display:flex;flex-direction: row">
     <app-org-list #orgList
-      [liftedStateCurrentOrg]="state.slice('menu', 'selectedSection')">
+      [currentOrg]="menu.selectedSection">
       <sc-fit-window #fitWindow></sc-fit-window>
-      <sc-left-nav 
-        [liftedStateSelectedSection]="state.slice('menu', 'selectedSection')"
-        [liftedStateHeight]="fitWindow.state.slice('height')"
-        [liftedStateSectionItems]="orgList.state.slice('orgList')"
-        [liftedStateMenuBackground]="state.slice('menu', 'background')"
-        [liftedStateLeftBar]="state.slice('menu', 'leftBar')"
-        [liftedStateUi]="state.slice('menu', 'ui')"
-        [liftedStateLogoBackground]="state.slice('menu', 'leadBackground')"
-        [liftedStatePreserveMenu]="state.slice('menu', 'preserveMenu')"
-        [liftedStatePreserveSection]="state.slice('menu', 'preserveSection')"
-        [liftedStateLastLogoutClick]="state.slice('menu', 'lastLogoutClick')"
-        [liftedStateMenuOpen]="state.slice('menu', 'menuOpen')"
-        [liftedStateDisplayProfileIcon]="state.slice('menu', 'profileIcon')"
-        [liftedStateAddMessage]="state.slice('menu', 'addMessage')"
-        >
-      </sc-left-nav>
+      <left-nav 
+        [selectedSection]="menu.selectedSection"
+        (sectionChange)="changeSection($event)"
+        [height]="fitWindow.state.read('height')"
+        [sectionItems]="orgList.orgList"
+        [menuBackground]="menu.background"
+        [leftBar]="menu.leftBar"
+        [ui]="menu.ui"
+        [logoBackground]="menu.leadBackground"
+        [preserveMenu]="menu.preserveMenu"
+        [preserveSection]="menu.preserveSection"
+        [menuOpen]="menu.menuOpen"
+        [displayProfileIcon]="menu.profileIcon"
+        [addMessage]="menu.addMessage"
+        (clickLogout)="logout()">
+      </left-nav>
     </app-org-list>
     <img src= "../assets/Gator-Logo.png" class="gator-logo" />
 
