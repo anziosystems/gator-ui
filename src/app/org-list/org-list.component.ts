@@ -26,6 +26,7 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
   back_colors: string[];
   colors: string[];
 
+  @Input() loggedIn: boolean;
   @Output() changeOrgList = new EventEmitter();
 
   constructor(
@@ -67,12 +68,16 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
     this.gitService.currentOrg = org;
     this.router.onSameUrlNavigation = 'reload';
     this.router.initialNavigation();
+    if (!this.loggedIn || org === null) return;
+
     this.router.navigate(['/dashboard'], {
       queryParams: {Org: org, refresh: new Date().getTime()},
     });
   }
 
   onStatefulInit() {
+    if (!this.loggedIn) return;
+
     this.gitService.currentOrg  = this.route.snapshot.queryParamMap.get("Org")
     this.gitService.getOrgList().subscribe(result => {
 

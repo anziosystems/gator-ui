@@ -15,11 +15,7 @@ export const STATE = () => {
   return {
     items: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
     sectionItems: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
-    currentOrg: null,
-    topNav: {
-      iconColor: 'rgb(150, 150, 150)',
-      background: 'rgb(36, 35, 35)'
-    }
+    currentOrg: null
   }
 };
 export const PROPS = {} 
@@ -48,41 +44,6 @@ type PaneType = 'left' | 'right';
 export class DashboardComponent extends StatefulComponent implements OnInit {
   orgs: any;
 
-  menu = {
-    menuOpen: false,
-    background: 'rgb(51, 51, 52)',
-    leftBar: {
-      ui: {
-        width: 80,
-        textColor: 'rgb(255, 255, 255)',
-        tooltip: true,
-        
-        background: '#141414',
-        mainTenantTextColor: '#fff',
-        selectedItemBackground: 'rgb(36, 35, 35)',
-        addTenantBackground: 'rgb(51, 51, 52)'
-      }
-    },
-    ui: {
-      font: 'Roboto',
-      /* TODO: Reenable after hack */
-      //arrowBorderColor: 'rgb(50, 50, 50)',
-      arrowBackground: 'rgb(50, 50, 50)',
-      arrowColor: 'rgb(255, 255, 255)',
-
-      /* HACK, remove later */
-      displayArrow: false,
-      arrowBorderColor: 'rgb(36, 35, 35)',
-    },
-    leadBackground: 'rgb(36, 35, 35)',
-    /* TODO: Revert to 1 */
-    preserveMenu: 0,
-    preserveSection: true,
-    addMessage: 'Add Custom Team',
-    selectedSection: null,
-    profileIcon: false
-  }
-
   constructor(
     private router: Router, 
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
@@ -107,15 +68,6 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
     if (!token) {
       this.router.navigate(['/login']);
     }
-  }
-
-  logout() {
-    this.storage.remove('token');
-    location.reload();
-  }
-
-  changeSection(section) {
-    this.menu = {...this.menu, selectedSection: section.id}
   }
 
   /* TODO: Remove once diff feature implemented in NgxStateful */
