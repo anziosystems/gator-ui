@@ -1,1 +1,42 @@
-<router-outlet></router-outlet>
+<div style=" color: white; width:100%;height:100%; display:flex; flex-direction:column; align-content: center">
+    <!-- <div name="TopMenu" style="background-color:rgb(39, 120, 202); width:100%;display:flex; flex-direction:row;justify-content: center;"></div> -->
+    <div name="wrapper" style="background-color:black; width:100%; height: 100%;  display:flex;flex-direction: row">
+  
+        <app-org-list #orgList
+            [loggedIn]="isLoggedIn"
+            [currentOrg]="menu.selectedSection || ((inDashboard && orgList.orgList[0]?.id) ? orgList.orgList[0]?.id : null)">
+        <sc-fit-window #fitWindow></sc-fit-window>
+
+        <left-nav 
+          [selectedSection]="menu.selectedSection"
+          (sectionChange)="changeSection($event)"
+          [height]="fitWindow.state.read('height')"
+          [sectionItems]="orgList.orgList"
+          [menuBackground]="menu.background"
+          [leftBar]="menu.leftBar"
+          [ui]="menu.ui"
+          [logoBackground]="menu.leadBackground"
+          [preserveMenu]="menu.preserveMenu"
+          [preserveSection]="menu.preserveSection"
+          [menuOpen]="menu.menuOpen"
+          [displayProfileIcon]="menu.profileIcon"
+          [addMessage]="menu.addMessage"
+          (clickLogout)="logout()">
+        </left-nav>
+        </app-org-list>        
+      <img src= "../assets/Gator-Logo.png" class="gator-logo" />
+  
+      <div name="contentarea" class="content-area">
+        <sc-top-nav
+          [liftedStateBackground]="state.slice('topNav', 'background')"
+          [liftedStateIconColor]="state.slice('topNav', 'iconColor')">
+        </sc-top-nav>      
+        <div style="float: left; width: 100%; max-height: calc(100% - 50px); overflow: auto;">
+            <router-outlet></router-outlet>
+        </div>
+      </div>
+      <!-- Content Area-->
+    </div>
+    <!-- wrapper-->
+  </div>
+

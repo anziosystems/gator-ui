@@ -30,7 +30,7 @@ const routes: Routes = [
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'prchart', component: PrchartComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
-  {path: '', component: DashboardComponent},
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
 
 @NgModule({
