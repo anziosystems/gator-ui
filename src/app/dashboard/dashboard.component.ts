@@ -3,9 +3,9 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {ChangeDetectionStrategy, Input} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
-
+import {GitService} from '../git-service';
 /* Imports for Stateful Component */
-import {ChangeDetectorRef, forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core'; 
+import {ChangeDetectorRef, forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core';
 import {StatefulComponent, StatefulParent, StatefulService} from '@labshare/ngx-stateful';
 /* Import defaults for LeftNavComponent State */
 
@@ -15,10 +15,10 @@ export const STATE = () => {
   return {
     items: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
     sectionItems: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
-    currentOrg: null
-  }
+    currentOrg: null,
+  };
 };
-export const PROPS = {} 
+export const PROPS = {};
 
 type PaneType = 'left' | 'right';
 
@@ -36,31 +36,41 @@ type PaneType = 'left' | 'right';
   /* For Stateful Component */
   providers: [
     {
-            provide: StatefulParent,
-            useExisting: forwardRef(() => DashboardComponent)
-    }
-  ] 
+      provide: StatefulParent,
+      useExisting: forwardRef(() => DashboardComponent),
+    },
+  ],
 })
 export class DashboardComponent extends StatefulComponent implements OnInit {
   orgs: any;
-
+  isShowDetail: boolean = false;
   constructor(
-    private router: Router, 
+    private gitService: GitService,
+    private router: Router,
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
-
     /* For Stateful Components */
     inj: ChangeDetectorRef,
     @Optional() @SkipSelf() public statefulParent: StatefulParent,
     public statefulService: StatefulService,
-    public appRef: ApplicationRef
-
+    public appRef: ApplicationRef,
   ) {
     /* Call StatefulComponent */
     super(inj, STATE, statefulParent, statefulService, appRef);
-
     setInterval(() => {
       location.reload();
     }, 600000); //every 10 min
+  }
+
+  ngOnInit() {
+    this.gitService.onComponentMessage.subscribe((val: string) => {
+      if (val === 'CLOSE_PULL_DETAILS') {
+        this.isShowDetail = false;
+      } 
+      if (val === 'SHOW_PULL_DETAILS') {
+        this.isShowDetail = true;
+      } 
+    
+    });
   }
 
   onStatefulInit() {

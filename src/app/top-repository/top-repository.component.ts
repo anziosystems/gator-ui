@@ -28,8 +28,9 @@ export class TopRepositoryComponent implements OnInit {
   data(repo: string) {
     this.gitService.trigger('repo-' + repo);
     const date = new Date();
+    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
 
-    this.usageService.send ({event: 'Repo Details', info: 'Repo: ' + repo,  LogTime: date.toUTCString()});
+   // this.usageService.send ({event: 'Repo Details', info: 'Repo: ' + repo,  LogTime: date.toUTCString()});
   }
 
   ngOnDestroy() {

@@ -1,4 +1,13 @@
-<div id="flex-container" style="width:500px">
+<!-- <div>  </div> -->
+<div id="flex-container">
+  <button style="    width: 15px;
+  height: 15px;
+  align-self: flex-end;
+  margin: 0%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: white;" (click)="closePane()" >X</button>
   <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
     <div div class="flex-item" style=" color:white">{{ devDetails[0]?.login }}</div>
   </a>

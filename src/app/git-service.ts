@@ -22,10 +22,15 @@ export class GitService {
 
   //Components listen to each other using this
   private _onMyEvent = new Subject<string>();
+  private _onComponentMessage = new Subject<string>();
 
   //return the event as observable so others can subscribe to it
   public get onMyEvent(): Observable<string> {
     return this._onMyEvent.asObservable();
+  }
+
+  public get onComponentMessage(): Observable<string> {
+    return this._onComponentMessage.asObservable();
   }
 
   public currentOrg: string;
@@ -40,6 +45,10 @@ export class GitService {
   */
   public trigger(value: string) {
     this._onMyEvent.next(value);
+  }
+
+  public broadcastComponentMessage(value: string) {
+    this._onComponentMessage.next(value);
   }
 
   constructor(private http: HttpClient, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, @Optional() @SkipSelf() parentmodule: GitService) {

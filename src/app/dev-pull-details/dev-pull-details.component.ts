@@ -37,9 +37,13 @@ export class DevPullDetailsComponent implements OnInit {
     }
   }
 
+  closePane (){
+    this.gitService.broadcastComponentMessage ('CLOSE_PULL_DETAILS');
+  }
+
   initializeData() {
     let x = Date.now.toString();
-    this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
+  //  this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
  
     this.devDetails = [];
     this.developer = '';
@@ -70,7 +74,7 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   getDeveloperDetails(developer: string) {
-    this.gitService.ready().then(result => {
+      this.gitService.ready().then(result => {
       this.gitService.getDeveloperDetail(this.gitService.currentOrg, 15, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {

@@ -34,7 +34,7 @@ export class TopDevelopersComponent implements OnInit {
   navigationSubscription: any;
 
   @Output()
-  messageEvent = new EventEmitter<string>();
+  messageEvent = new EventEmitter<string>();  //TODO: delete not used
 
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.developers = [];
@@ -60,9 +60,10 @@ export class TopDevelopersComponent implements OnInit {
   data(developer: string) {
     const date = new Date();
 
-    this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+   // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
  
     this.gitService.trigger(developer);
+    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
   }
 
   initializeData() {
@@ -75,7 +76,6 @@ export class TopDevelopersComponent implements OnInit {
         devs.map(item => {
           const arr = _.split(item, '--');
           this.avatar.push(arr[1]);
-          console.log(this.avatar);
           this.developers.push(arr[0]);
         });
       });
