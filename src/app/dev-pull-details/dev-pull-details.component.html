@@ -7,7 +7,7 @@
   padding: 0;
   background: transparent;
   border: none;
-  color: white;" (click)="closePane()" >X</button>
+  color: gainsboro;" (click)="closePane()" >X</button>
   <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
     <div div class="flex-item" style=" color:white">{{ devDetails[0]?.login }}</div>
   </a>
@@ -22,7 +22,7 @@
      </div>
     </div>
     <div style="display: flex;flex-direction: row;">
-      <div style="font-size: large; color: white "><a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a></div>
+      <div style="font-size: x-large; color: white "><a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a></div>
       
     </div>
     <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400}}</div>

@@ -17,6 +17,7 @@ export class DevPullDetailsComponent implements OnInit {
   devDetails: any[];
   developer: string;
   navigationSubscription: any;
+  bHideDetails: boolean = true;
 
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -39,6 +40,7 @@ export class DevPullDetailsComponent implements OnInit {
 
   closePane (){
     this.gitService.broadcastComponentMessage ('CLOSE_PULL_DETAILS');
+    this.bHideDetails = true;
   }
 
   initializeData() {

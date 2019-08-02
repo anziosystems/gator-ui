@@ -58,7 +58,7 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
     super(inj, STATE, statefulParent, statefulService, appRef);
     setInterval(() => {
       location.reload();
-    }, 600000); //every 10 min
+    }, 6000000); //every 100 min
   }
 
   ngOnInit() {

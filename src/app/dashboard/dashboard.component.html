@@ -1,20 +1,16 @@
 <div id="flex-column-container">
-  <div class="flex-item" style="margin-top:3px; height:120px" >
+  <div class="flex-item" style="margin-top:3px; width: 700px; height:120px">
     <app-pull-request-count></app-pull-request-count>
   </div>
-  <div class="flex-item" [hidden]="isShowDetail">
-    <div id="flex-row-container">
-      <div class="flex-item">
-        <app-top-developers></app-top-developers>
-      </div>
-      <div class="flex-item">
-        <app-top-repository></app-top-repository>
-      </div>
-     </div>
-  </div>
-  <div class="flex-detail-item" [hidden]="!isShowDetail">
-    <app-dev-pull-details></app-dev-pull-details>
+  <div id="flex-row-container">
+    <div class="flex-item">
+      <app-top-developers></app-top-developers>
+    </div>
+    <div class="flex-item">
+      <app-top-repository></app-top-repository>
+    </div>
+    <div class="flex-detail-item" [hidden]="!isShowDetail">
+      <app-dev-pull-details></app-dev-pull-details>
+    </div>
   </div>
 </div>
-
-
