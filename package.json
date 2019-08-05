@@ -30,7 +30,7 @@
     "@angular/animations": "^7.2.9",
     "@angular/common": "^7.2.9",
     "@angular/compiler": "^7.2.9",
-    "@angular/core": "^6.1.10",
+    "@angular/core": "^7.2.9",
     "@angular/forms": "^7.2.9",
     "@angular/platform-browser": "^7.2.9",
     "@angular/platform-browser-dynamic": "^7.2.9",
@@ -49,8 +49,12 @@
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
   },
+  "packageDependencies": {
+    "@labshare/shell-ui": "*"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.9",
+    "@labshare/shell-ui": "^1.0.0",
     "@angular/cli": "^7.3.9",
     "@angular/compiler-cli": "^7.2.9",
     "@angular/language-service": "^7.2.9",
@@ -70,7 +74,23 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "^5.14.0",
-    "typescript": "^3.2.4"
+    "typescript": "^3.2.4",
+    "angular-router-loader": "~0.8",
+    "angular2-template-loader": "^0.6.2",
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
+    "html-loader": "^0.5.5",
+    "@ngtools/webpack": "^6.2.9",
+    "webpack": "4.25.1",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-hot-middleware": "^2.21.1",
+    "webpack-merge": "^4.2.1",
+    "ng-annotate-loader": "^0.6.1",
+    "ng-annotate-patched": "^1.10.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "0.23.1",
+    "to-string-loader": "^1.1.5",
+    "ts-loader": "^4.5.0"
   },
   "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.5.",
   "repository": {
