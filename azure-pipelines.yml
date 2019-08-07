@@ -30,7 +30,8 @@ steps:
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Axle - MPN - Rafat(1c2b7486-ccf8-41e0-bdfa-ab797f153518)'
+    #azureSubscription: 'Axle - MPN - Rafat(1c2b7486-ccf8-41e0-bdfa-ab797f153518)'
+    azureSubscription: 'Rafat-Gator(87f0d394-7e24-4e5b-93b2-c48e695febe7)'
     appType: 'webApp'
     WebAppName: 'gator-ui'
     packageForLinux: '$(System.DefaultWorkingDirectory)/dist/gator'
