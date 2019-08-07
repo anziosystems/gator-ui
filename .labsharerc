@@ -1,0 +1,51 @@
+{
+   "tsConfig":"tsconfig.json",
+   "build":{
+      "main":"src/app",
+      "polyfills":"src/polyfills",
+      "assets":"src/assets",
+      "app":"src/app",
+      "index":"src/index.html"
+   },
+   "serve":{
+      "open":true,
+      "hot":true,
+      "port":8080,
+      "historyApiFallback":true,
+      "stats":"minimal"
+   },
+   "electron":{
+      "config":{
+         "mac":{
+            "target":"zip"
+         },
+         "win":{
+            "target":"zip"
+         },
+         "linux":{
+            "target":"deb"
+         }
+      }
+   },
+   "cordova":{
+      "config":{
+         "ios":{
+            "debug":{
+               "buildFlag":[
+                  "-UseModernBuildSystem=0"
+               ]
+            },
+            "release":{
+               "buildFlag":[
+                  "-UseModernBuildSystem=0"
+               ]
+            }
+         }
+      }
+   }
+}
+ 
+
+
+
+
