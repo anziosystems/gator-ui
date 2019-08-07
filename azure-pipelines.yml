@@ -16,14 +16,15 @@ steps:
     versionSpec: '10.x'
   
 - script: |
-    npm install -g @angular/cli
+    npm install -g @angular/cli @labshare/lsc
     
 - task: Npm@1
   inputs:
     command: 'install'
     customEndpoint: 'gatornpm'
 
-- script: npm run build:prod
+#- script: npm run build:prod
+- script: lsc build site --dest='dist/gator'
 
 
 - task: AzureRmWebAppDeployment@4
