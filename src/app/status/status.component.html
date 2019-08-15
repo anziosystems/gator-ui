@@ -1,39 +1,33 @@
 <div class="Aligner">
-  <div> Please wait initializing your account .... First use will take time <br />
-  </div>
+  <div>Please wait initializing your account .... First use will take time <br /></div>
 
   <div id="myProgress">
     <div id="myBar"></div>
   </div>
 
-  <div *ngFor= "let message of messages">
-    <div style="color: rgba(245, 245, 245, 0.561)"> &#8658; {{message}}</div>
- </div>
+  <div *ngFor="let message of messages">
+    <div style="color: rgba(245, 245, 245, 0.561)">&#8658; {{ message }}</div>
+  </div>
 
- <div *ngFor= "let message of warningMessages">
-  <div style="color: orange">&#9785; {{message}}</div>
+  <div *ngFor="let message of warningMessages">
+    <div style="color: orange">&#9785; {{ message }}</div>
+  </div>
+
+  <div *ngFor="let message of successMessages">
+    <div style="color: greenyellow">&#10004; {{ message }}</div>
+  </div>
+
+  <div *ngFor="let message of errMessages">
+    <div style="color: red">&#10006; {{ message }}</div>
+    <a href="hook-error"> Click here to learn about the error </a>
+  </div>
+
+  <p></p>
+
+  <div *ngFor="let message of progress">
+    <div style="color: rgb(152, 241, 19)">&#10004; {{ message }}</div>
+  </div>
+  <div class="Aligner">
+    <Button (click)="dashboard()" class="buttonstyle" [disabled]="buttonDisabled"> Get Started </Button>
+  </div>
 </div>
-
-<div *ngFor= "let message of successMessages">
-  <div style="color: greenyellow"> &#10004; {{message}}</div>
-</div>
-
- <div *ngFor= "let message of errMessages">
-  <div style="color: red"> &#10006; {{message}}</div>
-  <a href="hook-error"> Click here to learn about  the error </a>
-</div>
-
-
- <p></p>
- 
-<div *ngFor= "let message of progress">
-  <div style="color: rgb(152, 241, 19)"> &#10004; {{message}}</div>
-</div>
-
-    <div class="Aligner"> 
-        <Button (click) = "dashboard()" class="buttonstyle" [disabled]="buttonDisabled"> Get Started  </Button>
-    </div>
-</div>
-
-
-
