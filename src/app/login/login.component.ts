@@ -18,4 +18,10 @@ export class LoginComponent implements OnInit {
     const authURL = this.gitService.gatorApiUrl + '/auth/github?callbackUrl=' + location.origin + '/callback';
     window.location.href = authURL;
   }
+
+  Jiralogin() {
+    const authURL = this.gitService.gatorApiUrl + '/auth/atlassian?callbackUrl=' + location.origin + '/callback';
+    window.location.href = authURL;
+  }
+
 }
