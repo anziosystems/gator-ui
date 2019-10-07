@@ -20,6 +20,7 @@ export class StatusComponent implements OnInit {
   progress: string[];
   buttonDisabled: boolean = true;
   hookFail:boolean = true;
+  ctr = 0;
 
   constructor(private gitService: GitService, private router: Router) {
     this.loginAndSetup();
@@ -27,7 +28,7 @@ export class StatusComponent implements OnInit {
 
   loginAndSetup (){
       //Get Org Details
-      let ctr = 0;
+     
       this.messages = [];
       this.errMessages = [];
       this.warningMessages = [];
@@ -123,8 +124,8 @@ export class StatusComponent implements OnInit {
               );
             }); //org list loop
           } else {
-            ctr ++;
-            if (ctr < 2) {
+            this.ctr ++;
+            if (this.ctr < 2) {
               this.loginAndSetup();
             } else  {
             this.warningMessages.push('Did not get any orgnazation for this login. Please check in git hub and make sure you belong to an organization.');
