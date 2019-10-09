@@ -134,7 +134,7 @@ export class GitService {
   */
  async checkOrg() {
   return new Promise((resolve, reject) => {
-    if (this.currentOrg === undefined) {
+    if (this.currentOrg === undefined || this.currentOrg === null ) {
       this.getOrgList().subscribe(result => {
         if (result.code === 404) {
           this.router.navigate(['/login']);

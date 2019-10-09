@@ -1,14 +1,16 @@
 <!-- <div>  </div> -->
 <div id="flex-container">
   <button
-    style="    width: 15px;
-  height: 15px;
+    style="width: 50px;
+  height: 50px;
+  z-index: 1;
+  font-size: 20pt;
   align-self: flex-end;
   margin: 0%;
   padding: 0;
   background: transparent;
   border: none;
-  color: gainsboro;"
+  color: rgb(46, 44, 44);"
     (click)="closePane()"
   >
     X
@@ -16,8 +18,8 @@
   <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
     <div div class="flex-item" style=" color:white">{{ devDetails[0]?.login }}</div>
   </a>
-  <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px" class="flex-item">
-    <div style="font-size: large; color:gainsboro">{{ dev.Login }}</div>
+  <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
+    <div style="font-size: large; color:gainsboro;">{{ dev.Login }}</div>
     <div *ngIf="dev.State === 'open'">
       <div style="font-size: large; color:#f713bc;">{{ dev.State }}: {{ dev.Repo }}</div>
     </div>
@@ -31,6 +33,6 @@
     </div>
     <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
     <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at }}</div>
-    <hr style="width: 100%; color: rgb(29, 27, 27); border-style:solid; " />
+    <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid; " />
   </div>
 </div>

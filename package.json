@@ -39,6 +39,8 @@
     "@labshare/ngx-stateful": "^2.0.9",
     "@labshare/stateful-components": "^2.0.1",
     "angular-webstorage-service": "^1.0.2",
+    "angular2-draggable": "^2.3.2",
+    "animate.css": "^3.7.2",
     "chart.js": "^2.8.0",
     "component": "^1.1.0",
     "core-js": "^2.5.4",

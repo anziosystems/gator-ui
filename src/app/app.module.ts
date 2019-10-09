@@ -21,6 +21,9 @@ import { AuthService,AuthWebService, AuthInterceptor, OidcNavigationService, Ngx
 import {LeftNavModule, FitWindowModule, TopNavModule} from '@labshare/stateful-components';
 import { HookErrorComponent } from './hook-error/hook-error.component';
 import { PrchartComponent } from './prchart/prchart.component';
+import { AngularDraggableModule } from 'angular2-draggable';
+import { TweetsComponent } from './tweets/tweets.component';
+import { BreakingnewsComponent } from './breakingnews/breakingnews.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -46,7 +49,9 @@ const routes: Routes = [
     StatusComponent,
     OrgListComponent,
     HookErrorComponent,
-    PrchartComponent
+    PrchartComponent,
+    TweetsComponent,
+    BreakingnewsComponent
   
     ],
   imports: [
@@ -56,7 +61,7 @@ const routes: Routes = [
     StorageServiceModule,
     HttpClientModule,
     BrowserAnimationsModule,
-
+    AngularDraggableModule,
     /* TODO: Use micromodules */
     /* LeftNav from stateful-components */
     LeftNavModule,
