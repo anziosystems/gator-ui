@@ -16,13 +16,14 @@ export class BreakingnewsComponent implements OnInit {
   login;
   repo;
   desc;
+  pullReqUrl;
   constructor(public cd: ChangeDetectorRef, private gitService: GitService) {}
 
   ngOnInit() {
     this.updateBreakingNews();
   }
 
-  getData (){
+  getData() {
     this.gitService.ready().then(result => {
       this.gitService.getDeveloperDetail(this.gitService.currentOrg, 7, null, null, 50).subscribe(val => {
         this.devDetails = val;
@@ -44,15 +45,16 @@ export class BreakingnewsComponent implements OnInit {
     this.getData();
     this.timer = setInterval(() => {
       this.ctr = this.ctr + 1;
-      if (this.ctr > this.devDetails.length - 1)  {
+      if (this.ctr > this.devDetails.length - 1) {
         this.ctr = 0;
         this.getData();
       }
       this.login = this.devDetails[this.ctr].Login;
       this.repo = this.devDetails[this.ctr].Repo;
       this.desc = this.devDetails[this.ctr].title;
-      this.breakingNews = `${this.login} - ${this.repo}: ${this.desc}`;
+      this.pullReqUrl = this.devDetails[this.ctr].pullrequesturl;
+      this.breakingNews = `${this.desc} - ${this.login} - ${this.repo}`;
       this.cd.detectChanges();
-    }, 5000);
+    }, 8000);
   }
 }
