@@ -22,8 +22,7 @@ export class BreakingnewsComponent implements OnInit {
     this.updateBreakingNews();
   }
 
-  updateBreakingNews() {
-    this.breakingNews = 'Breaking news will come here';
+  getData (){
     this.gitService.ready().then(result => {
       this.gitService.getDeveloperDetail(this.gitService.currentOrg, 7, null, null, 50).subscribe(val => {
         this.devDetails = val;
@@ -38,14 +37,22 @@ export class BreakingnewsComponent implements OnInit {
         });
       });
     });
+  }
 
+  updateBreakingNews() {
+    this.breakingNews = 'Breaking news will come here..';
+    this.getData();
     this.timer = setInterval(() => {
       this.ctr = this.ctr + 1;
-      if (this.ctr > this.devDetails.length - 1) this.ctr = 0;
+      if (this.ctr > this.devDetails.length - 1)  {
+        this.ctr = 0;
+        this.getData();
+      }
       this.login = this.devDetails[this.ctr].Login;
       this.repo = this.devDetails[this.ctr].Repo;
       this.desc = this.devDetails[this.ctr].title;
+      this.breakingNews = `${this.login} - ${this.repo}: ${this.desc}`;
       this.cd.detectChanges();
-    }, 10000);
+    }, 5000);
   }
 }
