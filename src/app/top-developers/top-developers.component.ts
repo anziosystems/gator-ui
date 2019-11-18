@@ -66,6 +66,15 @@ export class TopDevelopersComponent implements OnInit {
     this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
   }
 
+  jiraData(developer: string) {
+    const date = new Date();
+
+   // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+ 
+    this.gitService.trigger(developer);
+    this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
+  }
+
   initializeData() {
   
     this.developers = [];

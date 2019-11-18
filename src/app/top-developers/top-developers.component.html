@@ -2,10 +2,11 @@
   <div id="container" [@listAnimation]="developers.length" class="flex-item" style="font-size: 25px; color:white">Developers</div>
   <hr style="width: 100%; color: rgb(29, 27, 27); border-style:solid; " />
   <div *ngFor="let dev of developers; let i = index">
-    <div div class="flex-item" (click)="data(dev)" style="vertical-align:center; align-content: flex-end ; cursor: pointer;">
+    <div div class="flex-item" style="vertical-align:center; align-content: flex-end ; cursor: pointer;">
       <div style="display: flex; direction: row;cursor: pointer;">
         <img src="{{ avatar[i] }}" style="height:50px; width:50px;  margin-right: 7px;   border-radius: 50%; cursor: pointer;" />
-        <div style="margin-top:8px; cursor: pointer;">{{ dev }}</div>
+        <div (click)="data(dev)" style="margin-top:8px; cursor: pointer;">{{ dev }}</div>
+        <img src="assets/jira.jpg" (click)="jiraData(dev)" style="height:20px; width:20px;  margin-right: 7px;margin-left: 10px; margin-top: 10px;   cursor: pointer;" />
       </div>
     </div>
   </div>

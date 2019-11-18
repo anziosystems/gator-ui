@@ -24,6 +24,7 @@ import { PrchartComponent } from './prchart/prchart.component';
 import { AngularDraggableModule } from 'angular2-draggable';
 import { TweetsComponent } from './tweets/tweets.component';
 import { BreakingnewsComponent } from './breakingnews/breakingnews.component';
+import { DevJiraDetailsComponent } from './dev-jira-details/dev-jira-details.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -51,7 +52,8 @@ const routes: Routes = [
     HookErrorComponent,
     PrchartComponent,
     TweetsComponent,
-    BreakingnewsComponent
+    BreakingnewsComponent,
+    DevJiraDetailsComponent
   
     ],
   imports: [

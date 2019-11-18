@@ -44,6 +44,7 @@ type PaneType = 'left' | 'right';
 export class DashboardComponent extends StatefulComponent implements OnInit {
   orgs: any;
   isShowDetail: boolean = false;
+  isJiraShowDetail: boolean = false;
   constructor(
     private gitService: GitService,
     private router: Router,
@@ -65,11 +66,19 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
     this.gitService.onComponentMessage.subscribe((val: string) => {
       if (val === 'CLOSE_PULL_DETAILS') {
         this.isShowDetail = false;
-      } 
+      }
       if (val === 'SHOW_PULL_DETAILS') {
         this.isShowDetail = true;
-      } 
-    
+        this.isJiraShowDetail = false;
+      }
+
+      if (val === 'CLOSE_JIRA_DETAILS') {
+        this.isJiraShowDetail = false;
+      }
+      if (val === 'SHOW_JIRA_DETAILS') {
+        this.isJiraShowDetail = true;
+        this.isShowDetail = false;
+      }
     });
   }
 

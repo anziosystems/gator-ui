@@ -7,6 +7,15 @@ import {promise} from 'protractor';
 import {resolve} from 'path';
 import {reject} from 'q';
 
+/*
+Jira calls must have following in the header
+
+req.headers['jiraOrg'];  //AccessibleResources Id
+req.headers['jiraAuthorization'];  //This is JiraTenant Id
+
+*/
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -205,6 +214,17 @@ export class GitService {
     this.attachToken();
     // tslint:disable-next-line: max-line-length
     const q = `PullRequestForLastXDays?day=${day}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+
+  //JIRA
+
+  getJiraTickets(org: string, day: number = 7, repo: string, pageSize: number = 40): Observable<any> {
+    if (!day) day = 7;
+
+    const q = `GetJiraTickets?org=${org}&day=${day}&repo=${repo}&pageSize=${pageSize}`;
+    this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 }
