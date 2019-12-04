@@ -19,9 +19,6 @@ export class LoginComponent implements OnInit {
     window.location.href = authURL;
   }
 
-  Jiralogin() {
-    const authURL = this.gitService.gatorApiUrl + '/auth/atlassian?callbackUrl=' + location.origin + '/callback';
-    window.location.href = authURL;
-  }
+
 
 }

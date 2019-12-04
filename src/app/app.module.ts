@@ -25,14 +25,20 @@ import { AngularDraggableModule } from 'angular2-draggable';
 import { TweetsComponent } from './tweets/tweets.component';
 import { BreakingnewsComponent } from './breakingnews/breakingnews.component';
 import { DevJiraDetailsComponent } from './dev-jira-details/dev-jira-details.component';
+import { JiraLoginInComponent } from './jira-login-in/jira-login-in.component';
+import { JiraCallBackComponent } from './jira-call-back/jira-call-back.component';
+import { JiraStatusComponent } from './jira-status/jira-status.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'callback', component: CallbackComponent},
+  {path: 'jiraCallback', component: JiraCallBackComponent},
   {path: 'status', component: StatusComponent},
+  {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'prchart', component: PrchartComponent},
+  {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 ];
@@ -53,7 +59,10 @@ const routes: Routes = [
     PrchartComponent,
     TweetsComponent,
     BreakingnewsComponent,
-    DevJiraDetailsComponent
+    DevJiraDetailsComponent,
+    JiraLoginInComponent,
+    JiraCallBackComponent,
+    JiraStatusComponent
   
     ],
   imports: [

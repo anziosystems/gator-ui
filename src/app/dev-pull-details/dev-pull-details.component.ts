@@ -49,6 +49,7 @@ export class DevPullDetailsComponent implements OnInit {
  
     this.devDetails = [];
     this.developer = '';
+    
     this.gitService.ready().then(result => {
       this.gitService.onMyEvent.subscribe((val: string) => {
         if (val.lastIndexOf('+') > 0) {

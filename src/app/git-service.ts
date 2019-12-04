@@ -21,21 +21,30 @@ req.headers['jiraAuthorization'];  //This is JiraTenant Id
 })
 export class GitService {
   httpOptions: any;
+  httpJirapOptions: any;
   query: string;
   token: string;
+  jiraToken: string;
   tenant: string;
+  jiraTenant: string;
   public organization: string;
+  public jiraCurrentOrg: string;
+  
  
-  public gatorApiUrl =  'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';  
 
   //Components listen to each other using this
   private _onMyEvent = new Subject<string>();
+  private _onJiraEvent = new Subject<string>();
   private _onComponentMessage = new Subject<string>();
 
   //return the event as observable so others can subscribe to it
   public get onMyEvent(): Observable<string> {
     return this._onMyEvent.asObservable();
+  }
+
+  public get onJiraEvent(): Observable<string> {
+    return this._onJiraEvent.asObservable();
   }
 
   public get onComponentMessage(): Observable<string> {
@@ -54,6 +63,10 @@ export class GitService {
   */
   public trigger(value: string) {
     this._onMyEvent.next(value);
+  }
+
+  public triggerJira(value: string) {
+    this._onJiraEvent.next(value);
   }
 
   public broadcastComponentMessage(value: string) {
@@ -220,11 +233,42 @@ export class GitService {
 
   //JIRA
 
-  getJiraTickets(org: string, day: number = 7, repo: string, pageSize: number = 40): Observable<any> {
-    if (!day) day = 7;
 
-    const q = `GetJiraTickets?org=${org}&day=${day}&repo=${repo}&pageSize=${pageSize}`;
-    this.attachToken();
-    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  /*
+      Attaches Authorization ticket which actually has the tenant information (tenantId).
+  */
+ 
+ attachJiraToken() {
+  if (!this.jiraToken) {
+    this.jiraToken = this.storage.get('JiraToken');
+    this.jiraTenant = this.jiraToken; //Token and tenant is same
   }
+  try {
+    if (this.jiraToken) {
+      this.httpJirapOptions = {
+        headers: new HttpHeaders({
+          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+          'Content-Type': 'text/html; charset=utf-8',
+          Authorization: this.jiraToken,
+        }),
+      };
+    }
+  } catch (ex) {
+    console.log(ex);
+  }
+}
+
+  //Tenent goes in header
+  getJiraTickets(org: string, dev:string,  pageSize: number = 40): Observable<any> {
+    const q = `GetJiraTickets?org=${org}&dev=${dev}&pageSize=${pageSize}`;
+    this.attachJiraToken();
+    return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
+  }
+
+  getJiraOrgs(bustTheCache: boolean = false): Observable<any> {
+    const q = `GetJiraOrgs?bustTheCache=${bustTheCache}`;
+    this.attachJiraToken();
+    return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
+  }
+
 }

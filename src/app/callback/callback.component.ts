@@ -1,3 +1,6 @@
+/*
+  After the successfull authentication call comes back to this page
+*/
 import {Component, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService} from '../git-service';
@@ -10,10 +13,12 @@ import {timer} from 'rxjs';
   styleUrls: ['./callback.component.less'],
 })
 export class CallbackComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute, private gitService: GitService, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
-    this.activatedRoute.queryParams.subscribe(params => {
-      const token = params['token'];
+  constructor(private activatedRoute: ActivatedRoute, 
+    private gitService: GitService, private router: Router, 
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
 
+      this.activatedRoute.queryParams.subscribe(params => {
+      const token = params['token'];
       if (token) {
         this.gitService.token = token;
         this.storage.set('token', token);
@@ -21,16 +26,7 @@ export class CallbackComponent implements OnInit {
           this.router.navigate(['/status']);
         });
       }
-      if (params['AltassianToken']) {
-        const AltassianToken = params['AltassianToken'];
-        if (AltassianToken) {
-          this.gitService.token = AltassianToken;
-          this.storage.set('AltassianToken', AltassianToken);
-          this.sleep(800).then(res => {
-            this.router.navigate(['/status']);
-          });
-        }
-      }
+   
     });
   }
 

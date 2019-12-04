@@ -135,7 +135,7 @@ export class StatusComponent implements OnInit {
                 );
               }); //org list loop
             } else {
-              this.warningMessages.push('Did not get any orgnazation for this login. Please check in git hub and make sure you belong to an organization.');
+              this.warningMessages.push('Did not get any orgnazation for this login. Please check in Jira and make sure you belong to an organization.');
               this.warningMessages.push('Exiting!!!');
               let elem = document.getElementById('myBar');
               elem.style.width = '100%';

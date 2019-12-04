@@ -87,6 +87,12 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
     if (!token) {
       this.router.navigate(['/login']);
     }
+
+    //Jira
+    let jiratoken = this.storage.get('JiraToken');
+    if (!jiratoken) {
+      this.router.navigate(['/jira-login']);
+    }
   }
 
   /* TODO: Remove once diff feature implemented in NgxStateful */
