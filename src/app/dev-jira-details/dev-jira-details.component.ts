@@ -18,6 +18,9 @@ export class DevJiraDetailsComponent implements OnInit {
   developer: string;
   navigationSubscription: any;
   bHideDetails: boolean = true;
+  bShowError = false;
+  developerName: string;
+
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
@@ -51,27 +54,50 @@ export class DevJiraDetailsComponent implements OnInit {
 
     this.gitService.ready().then(result => {
       this.gitService.onJiraEvent.subscribe((val: string) => {
-        if (val.lastIndexOf('+') > 0) {
-          const arr = _.split(val, '+');
-          this.getDeveloperDetails(arr[0]);
-        }
+        this.getDeveloperDetails(val);
       });
     });
   }
 
   getDeveloperDetails(developer: string) {
+    this.developerName = developer;
+    this.bShowError = false;
+    const accountId = this.gitService.getAccountId4UserName(developer);
+    if (accountId === undefined) {
+      this.bShowError = true;
+      return;
+    }
+
     this.gitService.ready().then(result => {
-      this.gitService.getJiraTickets(this.gitService.jiraCurrentOrg, developer, 50).subscribe(val => {
-        this.devDetails = val;
-        // this.devDetails.map(v => {
-        //   let s = v.pullrequesturl;
-        //   s = s.replace('https://api.github.com/repos', 'https://github.com');
-        //   s = s.replace('pulls', 'pull');
-        //   s = s.replace('comments', ' ');
-        //   v.pullrequesturl = s;
-        //   v.body = v.body.replace(/\+/g,' ');
-        //   v.title = v.title.replace(/\+/g,' ');
-        // });
+      this.gitService.GetJiraIssues(this.gitService.jiraCurrentOrg, accountId, 50).subscribe(val => {
+        /*
+          JSON.parse (val)
+          {expand: "schema,names", startAt: 0, maxResults: 50, total: 2, issues: Array(2)}
+
+
+          JSON.parse (val).issues[0]
+          {expand: "operations,versionedRepresentations,editmeta,changelog,renderedFields", id: "36738", self: "https://api.atlassian.com/ex/jira/0e493c98-6102-463a-bc17-4980be22651b/rest/api/3/issue/36738", key: "LSAUTH-191", fields: {…}}
+          expand: "operations,versionedRepresentations,editmeta,changelog,renderedFields"
+          fields: {summary: "Add ability to delete client login page configuration", assignee: {…}, updated: "2019-12-04T14:26:29.745-0500", created: "2019-10-03T12:07:17.880-0400", status: {…}}
+          id: "36738"
+          key: "LSAUTH-191"
+          self: "https://api.atlassian.com/ex/jira/0e493c98-6102-463a-bc17-4980be22651b/rest/api/3/issue/36738"
+
+
+          JSON.parse (val).issues[0].fields.summary
+          JSON.parse (val).issues[0].self  //url
+        */
+        this.devDetails = JSON.parse (val).issues;
+        this.devDetails.map(v => {
+        
+          v.pullrequesturl = v.self;
+          v.body = v.key;
+          v.title = v.fields.summary;
+          v.created_at = v.fields.created;
+          v.body = v.fields.status.description;
+      
+          v.State = v.fields.status.name;
+        });
       });
     });
   }

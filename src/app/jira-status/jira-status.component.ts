@@ -60,21 +60,51 @@ export class JiraStatusComponent implements OnInit {
       res => {
         this.hookFail = false;
         this.messages.push('Please wait, getting Org List ...');
+        this.gitService.JiraUsersList = [];
         this.gitService.getJiraOrgs(true).subscribe(
           result => {
+            if (result.code === 401) {
+              clearTimeout(t);
+              this.errMessages.push('Unauthorized. Token Expired');
+              this.sleep(5000).then(() => {
+                this.router.navigate(['/jira-login']);
+                return;
+              });
+            }
             if (result.length > 0) {
               this.orgStatus = true;
               this.orgList = result;
-              if (this.gitService.currentOrg == undefined) {
-                this.gitService.currentOrg = this.orgList[0].Org;
+              this.gitService.jiraOrgList = result;
+              if (this.gitService.jiraCurrentOrg == undefined) {
+                this.gitService.jiraCurrentOrg = this.orgList[0].id;
               }
               this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
               //for every org check the hook
               this.orgList.forEach(element => {
                 this.messages.push(`Get Dev list for :${element.name}`);
                 this.gitService.getJiraUsers(element.id, true).subscribe(result => {
-                  this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
+                  if (result.code === 401) {
+                    clearTimeout(t);
+                    this.errMessages.push('Unauthorized. Token Expired');
+                    this.sleep(5000).then(() => {
+                      this.router.navigate(['/jira-login']);
+                      return;
+                    });
+                  }
+
+                  result.forEach(e2 => {
+                    this.gitService.JiraUsersMap.set(e2.displayName, e2.accountId);
                   });
+
+                  // this.gitService.JiraUsersList.push(result);
+                  /*
+                   Array(29) [Object, Object, Object, Object, Object, Object, Object, Object, …]
+                   JSON.parse(result)[0]
+                   Object {self: "https://api.atlassian.com/ex/jira/786d2410-0054-41…", accountId: "5d53f3cbc6b9320d9ea5bdc2", accountType: "app", avatarUrls: Object, displayName: "Jira Outlook", …}
+   
+                  */
+                  this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
+                });
               }); //org list loop
             } else {
               this.warningMessages.push('Did not get any orgnazation for this login. Please login in Jira and make sure you belong to an organization.');
@@ -82,17 +112,28 @@ export class JiraStatusComponent implements OnInit {
               let elem = document.getElementById('myBar');
               elem.style.width = '100%';
               clearTimeout(t);
+              this.sleep(5000).then(() => {
+                this.router.navigate(['/jira-login']);
+              });
             }
           },
           error => {
             this.errMessages.push('Sorry, seems like something is wrong. Please refresh the page. Please feel free to send us message at support@anziosystems.com ');
             this.errMessages.push(error.message);
             clearTimeout(t);
+            this.sleep(800).then(() => {
+              this.router.navigate(['/jira-login']);
+            });
           },
         );
       },
     );
   }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   ngOnInit() {}
 
   dashboard() {

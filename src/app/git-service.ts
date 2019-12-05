@@ -15,7 +15,6 @@ req.headers['jiraAuthorization'];  //This is JiraTenant Id
 
 */
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -29,9 +28,40 @@ export class GitService {
   jiraTenant: string;
   public organization: string;
   public jiraCurrentOrg: string;
-  
- 
-  public gitApiUrl: string = this.gatorApiUrl + '/service/';  
+  /*
+    jiraOrgList: Array(3)
+    0:
+    avatarUrl: "https://site-admin-avatar-cdn.prod.public.atl-paas.net/avatars/240/koala.png"
+    id: "0e493c98-6102-463a-bc17-4980be22651b"
+    name: "labshare"
+    scopes: (4) ["manage:jira-configuration", "write:jira-work", "read:jira-work", "read:jira-user"]
+    url: "https://labshare.atlassian.net"
+  */
+  public jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
+
+  /*
+  JiraUsersList: Array(3)
+  0: (20)
+  1: (234)
+  2: (456)
+  JiraUsersList: Array(3)
+    0: Array(29)
+    0:
+    accountId: "5d53f3cbc6b9320d9ea5bdc2"  //
+    accountType: "app"
+    active: true
+    avatarUrls: {48x48: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=48&s=48", 24x24: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=24&s=24", 16x16: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=16&s=16", 32x32: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=32&s=32"}
+    displayName: "Jira Outlook"
+    self: "https://api.atlassian.com/ex/jira/786d2410-0054-411f-90ed-392c8cc1aad1/rest/api/3/user?accountId=5d53f3cbc6b9320d9ea5bdc2"
+
+
+  */
+  public JiraUsersList: any;
+
+  public JiraUsersMap = new Map();
+
+  public gatorApiUrl = 'http://localhost:3000'; // 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
   private _onMyEvent = new Subject<string>();
@@ -80,6 +110,55 @@ export class GitService {
     this.checkOrg();
   }
 
+  async setJiraOrg() {
+    if (this.jiraOrgList === undefined) this.jiraOrgList = [];
+    if (this.jiraOrgList.length === 0) {
+      //lets fill JiraOrgList
+      this.getJiraOrgs(false).subscribe(result => {
+        this.jiraOrgList = result;
+        if (this.jiraCurrentOrg === undefined) {
+          this.jiraCurrentOrg = this.jiraOrgList[0].id;
+        }
+      });
+    } else {
+      if (this.jiraCurrentOrg === undefined) {
+        this.jiraCurrentOrg = this.jiraOrgList[0].id;
+      }
+    }
+  }
+
+  getAccountId4UserName(name: string): string {
+    if (this.JiraUsersMap.size === 0) {
+      //refil the JiraUsersMap
+      if (this.jiraOrgList === undefined) this.jiraOrgList = [];
+      if (this.jiraOrgList.length === 0) {
+        //lets fill JiraOrgList
+        this.getJiraOrgs(false).subscribe(result => {
+          if (result.code === 401) {
+            return result;
+          }
+          if (result.length > 0) {
+            this.jiraOrgList = result;
+            if (this.jiraCurrentOrg === undefined) {
+              this.jiraCurrentOrg = this.jiraOrgList[0].id;
+            }
+          }
+        });
+      }
+      this.jiraOrgList.forEach(element => {
+        this.getJiraUsers(element.id, false).subscribe(result => {
+          if (result.code === 401) {
+            return result;
+          }
+          result.forEach(e2 => {
+            this.JiraUsersMap.set(e2.displayName, e2.accountId);
+          });
+        });
+      });
+    }
+    return this.JiraUsersMap.get(name);
+  }
+
   getHookStatus(org: string): any {
     this.attachToken();
     const q = `GetHookStatus?org=${org}`;
@@ -103,7 +182,7 @@ export class GitService {
   This is not called very often, only called from status - So it is ok to go to git
   */
 
-  getRepoList(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
+  getRepoList(org: string, getFromGit: boolean = false, bustTheCache: boolean = false): any {
     this.attachToken();
     const q = `GetRepos?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
@@ -112,7 +191,7 @@ export class GitService {
   /*
   This is not called very often, only called from status - only status goes to git
   */
-  getPullRequest(org: string,getFromGit: boolean = false, bustTheCache: boolean = false): any {
+  getPullRequest(org: string, getFromGit: boolean = false, bustTheCache: boolean = false): any {
     this.attachToken();
     const q = `GetPRfromGit?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
@@ -129,10 +208,10 @@ export class GitService {
     if (!skipOrgCheck) {
       this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
     }
-    if (!this.token) {
-      this.token = this.storage.get('token');
-      this.tenant = this.token; //Token and tenant is same
-    }
+
+    this.token = this.storage.get('token');
+    this.tenant = this.token; //Token and tenant is same
+
     try {
       if (this.token) {
         this.httpOptions = {
@@ -151,32 +230,32 @@ export class GitService {
     }
   }
 
- /*
+  /*
   If current org is undefined, then get the org list and we get 404 then go back to login. 
   */
- async checkOrg() {
-  return new Promise((resolve, reject) => {
-    if (this.currentOrg === undefined || this.currentOrg === null ) {
-      this.getOrgList().subscribe(result => {
-        if (result.code === 404) {
-          this.router.navigate(['/login']);
-        }
-        if (result.length > 0) {
-          if (!this.currentOrg) {
-              this.currentOrg = result[0].Org;
+  async checkOrg() {
+    return new Promise((resolve, reject) => {
+      if (this.currentOrg === undefined || this.currentOrg === null) {
+        this.getOrgList().subscribe(result => {
+          if (result.code === 404) {
+            this.router.navigate(['/login']);
           }
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    } else {
-      resolve();
-    }
-  });
-}
+          if (result.length > 0) {
+            if (!this.currentOrg) {
+              this.currentOrg = result[0].Org;
+            }
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      } else {
+        resolve();
+      }
+    });
+  }
 
-//All componenets call this to make sure that token is in place to call other calls.
+  //All componenets call this to make sure that token is in place to call other calls.
   async ready(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.checkOrg().then(result => {
@@ -230,37 +309,33 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-
   //JIRA
-
 
   /*
       Attaches Authorization ticket which actually has the tenant information (tenantId).
   */
- 
- attachJiraToken() {
-  if (!this.jiraToken) {
+
+  attachJiraToken() {
     this.jiraToken = this.storage.get('JiraToken');
     this.jiraTenant = this.jiraToken; //Token and tenant is same
-  }
-  try {
-    if (this.jiraToken) {
-      this.httpJirapOptions = {
-        headers: new HttpHeaders({
-          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-          'Content-Type': 'text/html; charset=utf-8',
-          Authorization: this.jiraToken,
-        }),
-      };
+    try {
+      if (this.jiraToken) {
+        this.httpJirapOptions = {
+          headers: new HttpHeaders({
+            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+            'Content-Type': 'text/html; charset=utf-8',
+            Authorization: this.jiraToken,
+          }),
+        };
+      }
+    } catch (ex) {
+      console.log(ex);
     }
-  } catch (ex) {
-    console.log(ex);
   }
-}
 
   //Tenent goes in header
-  getJiraTickets(org: string, dev:string,  pageSize: number = 40): Observable<any> {
-    const q = `GetJiraTickets?org=${org}&dev=${dev}&pageSize=${pageSize}`;
+  GetJiraIssues(org: string, userid: string, pageSize: number = 40): Observable<any> {
+    const q = `GetJiraIssues?org=${org}&userid=${userid}&pageSize=${pageSize}`;
     this.attachJiraToken();
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
   }
@@ -271,10 +346,9 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
   }
 
-  getJiraUsers(org: string,  bustTheCache: boolean = false): Observable<any> {
+  getJiraUsers(org: string, bustTheCache: boolean = false): Observable<any> {
     const q = `GetJiraUsers?org=${org}&bustTheCache=${bustTheCache}`;
     this.attachJiraToken();
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
   }
-
 }

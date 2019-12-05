@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter,Inject, Output} from '@angular/core';
+import {Component, OnInit, EventEmitter, Inject, Output} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService} from '../git-service';
 import {Observable, of} from 'rxjs';
@@ -83,11 +83,12 @@ export class TopDevelopersComponent implements OnInit {
     if (!this.storage.get('JiraToken')) {
       this.router.navigate(['/jira-login']);
       return;
-    } else {
-      //Delete this else clause
-      this.router.navigate(['/jiraStatus']);
-
     }
+    // else {
+    //   //Delete this else clause
+    //   this.router.navigate(['/jiraStatus']);
+
+    // }
     this.gitService.triggerJira(developer);
     this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
   }
