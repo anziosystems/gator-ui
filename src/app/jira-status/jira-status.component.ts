@@ -72,9 +72,9 @@ export class JiraStatusComponent implements OnInit {
               //for every org check the hook
               this.orgList.forEach(element => {
                 this.messages.push(`Get Dev list for :${element.name}`);
-                //  this.gitService.getJiraOrgs(true).subscribe(result => {
-
-                //  });
+                this.gitService.getJiraUsers(element.id, true).subscribe(result => {
+                  this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
+                  });
               }); //org list loop
             } else {
               this.warningMessages.push('Did not get any orgnazation for this login. Please login in Jira and make sure you belong to an organization.');

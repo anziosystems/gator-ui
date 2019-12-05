@@ -271,4 +271,10 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
   }
 
+  getJiraUsers(org: string,  bustTheCache: boolean = false): Observable<any> {
+    const q = `GetJiraUsers?org=${org}&bustTheCache=${bustTheCache}`;
+    this.attachJiraToken();
+    return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
+  }
+
 }
