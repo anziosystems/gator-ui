@@ -10,33 +10,38 @@
   padding: 0;
   background: transparent;
   border: none;
-  color: rgb(212, 18, 18);"
+  color: rgb(18, 108, 212);"
     (click)="closePane()"
   >
     X
   </button>
 
-  <div *ngIf="bShowError">
-    No User found with name: {{ developerName }} in Jira. Ask User to use proper full name in Git and the same name should be in Jira. Jira Display Name and Git Name should be
-    same. The user should be taken to parking lot and yelled at!!!
+  <div *ngIf="bShowError" style="font-size: medium; color:#f713bc;">
+    No User found with name: {{ developerName }} in Jira. <br />
+    Ask User to use proper full name in Git and the same name should be in Jira. <br />
+    Jira Display Name and Git Name should be same. <br /><br />
+
+    <i>The user should be taken to parking lot and yelled at!!!</i>
   </div>
-  <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
-    <div div class="flex-item" style=" color:white">{{ devDetails[0]?.login }}</div>
-  </a>
-  <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
-    <div style="font-size: large; color:gainsboro;">{{ dev.Login }}</div>
-  
+
+  <div *ngIf="!bShowError">
+    <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
+      <div div class="flex-item" style=" color:rgb(22, 169, 214)">{{ devDetails[0]?.login }}</div>
+    </a>
+    <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
+      <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div>
+
       <div style="font-size: large; color:#f713bc;">{{ dev.State }}: {{ dev.Repo }}</div>
-    
 
-    <div style="display: flex;flex-direction: row;">
-      <div style="font-size: x-large; color: white ">
-        <a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a>
+      <div style="display: flex;flex-direction: row;">
+        <div style="font-size: x-large; color: white ">
+          <a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a>
+        </div>
       </div>
-    </div>
-    <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
+      <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
 
-    <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at }}</div>
-    <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid; " />
+      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at }}</div>
+      <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid; " />
+    </div>
   </div>
 </div>

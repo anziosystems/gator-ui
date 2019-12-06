@@ -127,36 +127,44 @@ export class GitService {
     }
   }
 
+  async fillJiraUserMap() {
+    await this.jiraOrgList.forEach(element => {
+      this.getJiraUsers(element.id, false).subscribe(result => {
+        if (result.code === 401) {
+          return '401';
+        }
+        result.forEach(e2 => {
+          this.JiraUsersMap.set(e2.displayName, e2.accountId);
+        });
+        return this.JiraUsersMap.get(name);
+      });
+    });
+  }
+
   getAccountId4UserName(name: string): string {
     if (this.JiraUsersMap.size === 0) {
       //refil the JiraUsersMap
       if (this.jiraOrgList === undefined) this.jiraOrgList = [];
       if (this.jiraOrgList.length === 0) {
         //lets fill JiraOrgList
-        this.getJiraOrgs(false).subscribe(result => {
+         this.getJiraOrgs(false).subscribe(async result => {
           if (result.code === 401) {
-            return result;
+            return '401';
           }
           if (result.length > 0) {
             this.jiraOrgList = result;
             if (this.jiraCurrentOrg === undefined) {
               this.jiraCurrentOrg = this.jiraOrgList[0].id;
             }
+            await this.fillJiraUserMap();
           }
         });
+      } else {
+         this.fillJiraUserMap();
       }
-      this.jiraOrgList.forEach(element => {
-        this.getJiraUsers(element.id, false).subscribe(result => {
-          if (result.code === 401) {
-            return result;
-          }
-          result.forEach(e2 => {
-            this.JiraUsersMap.set(e2.displayName, e2.accountId);
-          });
-        });
-      });
+    } else {
+      return this.JiraUsersMap.get(name);
     }
-    return this.JiraUsersMap.get(name);
   }
 
   getHookStatus(org: string): any {

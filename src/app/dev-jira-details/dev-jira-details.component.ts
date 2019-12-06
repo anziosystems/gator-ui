@@ -63,8 +63,13 @@ export class DevJiraDetailsComponent implements OnInit {
     this.developerName = developer;
     this.bShowError = false;
     const accountId = this.gitService.getAccountId4UserName(developer);
-    if (accountId === undefined) {
+
+    if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
       this.bShowError = true;
+      return;
+    }
+    if (accountId === '401') {
+      this.router.navigate(['/jira-login']);
       return;
     }
 
@@ -87,15 +92,15 @@ export class DevJiraDetailsComponent implements OnInit {
           JSON.parse (val).issues[0].fields.summary
           JSON.parse (val).issues[0].self  //url
         */
-        this.devDetails = JSON.parse (val).issues;
+        this.devDetails = JSON.parse(val).issues;
         this.devDetails.map(v => {
-        
+          v.Repo = v.id;
           v.pullrequesturl = v.self;
           v.body = v.key;
           v.title = v.fields.summary;
           v.created_at = v.fields.created;
           v.body = v.fields.status.description;
-      
+          v.login = v.fields.assignee.displayName;
           v.State = v.fields.status.name;
         });
       });
