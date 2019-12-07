@@ -113,58 +113,57 @@ export class GitService {
   async setJiraOrg() {
     if (this.jiraOrgList === undefined) this.jiraOrgList = [];
     if (this.jiraOrgList.length === 0) {
-      //lets fill JiraOrgList
-      this.getJiraOrgs(false).subscribe(result => {
-        this.jiraOrgList = result;
-        if (this.jiraCurrentOrg === undefined) {
-          this.jiraCurrentOrg = this.jiraOrgList[0].id;
-        }
-      });
-    } else {
-      if (this.jiraCurrentOrg === undefined) {
-        this.jiraCurrentOrg = this.jiraOrgList[0].id;
-      }
+      await this.fillJiraOrgList();
     }
   }
 
-  async fillJiraUserMap() {
-    await this.jiraOrgList.forEach(element => {
-      this.getJiraUsers(element.id, false).subscribe(result => {
-        if (result.code === 401) {
-          return '401';
-        }
-        result.forEach(e2 => {
-          this.JiraUsersMap.set(e2.displayName, e2.accountId);
+  async fillJiraUserMap(): Promise<boolean> {
+    await this.fillJiraOrgList();
+    return new Promise((done, fail) => {
+      this.jiraOrgList.forEach(element => {
+        this.getJiraUsers(element.id, false).subscribe(result => {
+          if (result.code === 401) {
+            fail('401');
+          }
+          result.forEach(e2 => {
+            this.JiraUsersMap.set(e2.displayName, e2.accountId);
+          });
+          done(true);
         });
-        return this.JiraUsersMap.get(name);
       });
     });
   }
 
-  getAccountId4UserName(name: string): string {
-    if (this.JiraUsersMap.size === 0) {
-      //refil the JiraUsersMap
+  fillJiraOrgList(): Promise<boolean> {
+    return new Promise((done, fail) => {
       if (this.jiraOrgList === undefined) this.jiraOrgList = [];
       if (this.jiraOrgList.length === 0) {
         //lets fill JiraOrgList
-         this.getJiraOrgs(false).subscribe(async result => {
+        this.getJiraOrgs(false).subscribe(async result => {
           if (result.code === 401) {
-            return '401';
+            fail('401');
           }
           if (result.length > 0) {
             this.jiraOrgList = result;
             if (this.jiraCurrentOrg === undefined) {
               this.jiraCurrentOrg = this.jiraOrgList[0].id;
             }
-            await this.fillJiraUserMap();
           }
+          done(true);
         });
       } else {
-         this.fillJiraUserMap();
+        done(true);
       }
+    });
+  }
+
+  async getAccountId4UserName(name: string): Promise<any> {
+    if (this.JiraUsersMap.size === 0) {
+      await this.fillJiraUserMap();
     } else {
       return this.JiraUsersMap.get(name);
     }
+    return this.JiraUsersMap.get(name);
   }
 
   getHookStatus(org: string): any {

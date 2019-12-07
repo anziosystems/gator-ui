@@ -59,23 +59,19 @@ export class DevJiraDetailsComponent implements OnInit {
     });
   }
 
-  getDeveloperDetails(developer: string) {
+  async getDeveloperDetails(developer: string) {
     this.developerName = developer;
     this.bShowError = false;
-    const accountId = this.gitService.getAccountId4UserName(developer);
+    this.gitService.getAccountId4UserName(developer).then(accountId => {
+      if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
+        this.bShowError = true;
+        return;
+      }
+     
 
-    if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
-      this.bShowError = true;
-      return;
-    }
-    if (accountId === '401') {
-      this.router.navigate(['/jira-login']);
-      return;
-    }
-
-    this.gitService.ready().then(result => {
-      this.gitService.GetJiraIssues(this.gitService.jiraCurrentOrg, accountId, 50).subscribe(val => {
-        /*
+      this.gitService.ready().then(result => {
+        this.gitService.GetJiraIssues(this.gitService.jiraCurrentOrg, accountId, 50).subscribe(val => {
+          /*
           JSON.parse (val)
           {expand: "schema,names", startAt: 0, maxResults: 50, total: 2, issues: Array(2)}
 
@@ -92,18 +88,26 @@ export class DevJiraDetailsComponent implements OnInit {
           JSON.parse (val).issues[0].fields.summary
           JSON.parse (val).issues[0].self  //url
         */
-        this.devDetails = JSON.parse(val).issues;
-        this.devDetails.map(v => {
-          v.Repo = v.id;
-          v.pullrequesturl = v.self;
-          v.body = v.key;
-          v.title = v.fields.summary;
-          v.created_at = v.fields.created;
-          v.body = v.fields.status.description;
-          v.login = v.fields.assignee.displayName;
-          v.State = v.fields.status.name;
+          if (val) {
+            this.devDetails = JSON.parse(val).issues;
+            this.devDetails.map(v => {
+              v.Repo = v.id;
+              v.pullrequesturl = v.self;
+              v.body = v.key;
+              v.title = v.fields.summary;
+              v.created_at = v.fields.created;
+              v.body = v.fields.status.description;
+              v.login = v.fields.assignee.displayName;
+              v.State = v.fields.status.name;
+            });
+          }
         });
       });
+    }, failVal => {
+      if (failVal === '401') {
+        this.router.navigate(['/jira-login']);
+        return;
+      }
     });
   }
 
