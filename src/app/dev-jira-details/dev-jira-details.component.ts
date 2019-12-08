@@ -14,12 +14,15 @@ import {getLocaleDateTimeFormat} from '@angular/common';
   styleUrls: ['./dev-jira-details.component.less'],
 })
 export class DevJiraDetailsComponent implements OnInit {
-  devDetails: any[];
+  devDetails: any;
+  devDetails2: any[];
   developer: string;
   navigationSubscription: any;
   bHideDetails: boolean = true;
   bShowError = false;
   developerName: string;
+  orgName: string;
+  userName: string;
 
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -49,7 +52,8 @@ export class DevJiraDetailsComponent implements OnInit {
     let x = Date.now.toString();
     //  this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
 
-    this.devDetails = [];
+    this.devDetails = new Map();
+    this.devDetails2 = [];
     this.developer = '';
 
     this.gitService.ready().then(result => {
@@ -60,18 +64,23 @@ export class DevJiraDetailsComponent implements OnInit {
   }
 
   async getDeveloperDetails(developer: string) {
+    this.devDetails = new Map();
+    this.devDetails2 = [];
     this.developerName = developer;
     this.bShowError = false;
-    this.gitService.getAccountId4UserName(developer).then(accountId => {
-      if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
-        this.bShowError = true;
-        return;
-      }
-     
 
-      this.gitService.ready().then(result => {
-        this.gitService.GetJiraIssues(this.gitService.jiraCurrentOrg, accountId, 50).subscribe(val => {
-          /*
+    this.gitService.getAccountId4UserName(developer).then(
+      accountId => {
+        if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
+          this.bShowError = true;
+          return;
+        }
+
+        this.gitService.jiraOrgList.forEach(
+          org => {
+            this.gitService.ready().then(result => {
+              this.gitService.GetJiraIssues(org.id, accountId, 50, false).subscribe(val => {
+                /*
           JSON.parse (val)
           {expand: "schema,names", startAt: 0, maxResults: 50, total: 2, issues: Array(2)}
 
@@ -88,27 +97,50 @@ export class DevJiraDetailsComponent implements OnInit {
           JSON.parse (val).issues[0].fields.summary
           JSON.parse (val).issues[0].self  //url
         */
-          if (val) {
-            this.devDetails = JSON.parse(val).issues;
-            this.devDetails.map(v => {
-              v.Repo = v.id;
-              v.pullrequesturl = v.self;
-              v.body = v.key;
-              v.title = v.fields.summary;
-              v.created_at = v.fields.created;
-              v.body = v.fields.status.description;
-              v.login = v.fields.assignee.displayName;
-              v.State = v.fields.status.name;
+                if (val) {
+                  if (val.length === 0) return;
+                  try {
+                    if (Array.isArray(val)) {
+                      this.devDetails2 = val; //cache is sending array
+                    } else {
+                      this.devDetails2 = JSON.parse(val).issues; //first call is sending json
+                    }
+                  } catch (ex) {
+                    console.log(ex.message);
+                  }
+
+                  this.devDetails2.map(v => {
+                    v.Repo = v.id;
+                    v.pullrequesturl = `https://${org.name}.atlassian.net/browse/${v.key}`;
+                    v.key = v.key;
+                    v.title = v.fields.summary;
+                    v.created_at = v.fields.created;
+                    v.body = v.fields.status.description;
+                    v.login = v.fields.assignee.displayName;
+                    this.userName = v.fields.assignee.displayName;
+                    v.State = v.fields.status.name;
+                    v.orgName = org.name;
+                    if (!this.devDetails.has(v.id)) this.devDetails.set(v.id, v);
+                  });
+                }
+              });
             });
-          }
-        });
-      });
-    }, failVal => {
-      if (failVal === '401') {
-        this.router.navigate(['/jira-login']);
-        return;
-      }
-    });
+          },
+          failVal => {
+            if (failVal === '401') {
+              this.router.navigate(['/jira-login']);
+              return;
+            }
+          },
+        );
+      },
+      failVal => {
+        if (failVal === '401') {
+          this.router.navigate(['/jira-login']);
+          return;
+        }
+      },
+    );
   }
 
   ngOnInit() {

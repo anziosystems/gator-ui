@@ -1,8 +1,8 @@
 <!-- <div>  </div> -->
 <div id="flex-container">
   <button
-    style="width: 50px;
-  height: 50px;
+    style="width: 30px;
+  height: 30px;
   z-index: 1;
   font-size: 20pt;
   align-self: flex-end;
@@ -26,12 +26,13 @@
 
   <div *ngIf="!bShowError">
     <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
-      <div div class="flex-item" style=" color:rgb(22, 169, 214)">{{ devDetails[0]?.login }}</div>
+      <div div class="flex-item" style=" color:rgb(22, 153, 214)">{{ userName }}</div>
     </a>
-    <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
-      <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div>
+    <div *ngFor="let dev of devDetails.values(); let i = index" style="margin-bottom:13px">
+      <!-- <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div> -->
 
-      <div style="font-size: large; color:#f713bc;">{{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:#f713bc;">
+        {{ dev.orgName }} - {{ dev.key }} - {{ dev.State }}: {{ dev.Repo }}</div>
 
       <div style="display: flex;flex-direction: row;">
         <div style="font-size: x-large; color: white ">

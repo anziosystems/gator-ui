@@ -124,16 +124,25 @@ export class GitService {
         this.getJiraUsers(element.id, false).subscribe(result => {
           if (result.code === 401) {
             fail('401');
+            return;
           }
           result.forEach(e2 => {
             this.JiraUsersMap.set(e2.displayName, e2.accountId);
           });
           done(true);
+          return;
         });
       });
     });
   }
 
+  async getOrgName4Id (val:string) {
+    this.jiraOrgList.forEach (org => {
+      if (org.id === val) {
+        return org.name;
+      }
+    })
+  }
   fillJiraOrgList(): Promise<boolean> {
     return new Promise((done, fail) => {
       if (this.jiraOrgList === undefined) this.jiraOrgList = [];
@@ -142,6 +151,7 @@ export class GitService {
         this.getJiraOrgs(false).subscribe(async result => {
           if (result.code === 401) {
             fail('401');
+            return;
           }
           if (result.length > 0) {
             this.jiraOrgList = result;
@@ -341,7 +351,7 @@ export class GitService {
   }
 
   //Tenent goes in header
-  GetJiraIssues(org: string, userid: string, pageSize: number = 40): Observable<any> {
+  GetJiraIssues(org: string, userid: string, pageSize: number = 40, bustTheCache: boolean = false): Observable<any> {
     const q = `GetJiraIssues?org=${org}&userid=${userid}&pageSize=${pageSize}`;
     this.attachJiraToken();
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);

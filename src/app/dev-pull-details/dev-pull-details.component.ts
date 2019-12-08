@@ -5,8 +5,8 @@ import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import * as _ from 'lodash';
-import { UsageService } from '@labshare/ngx-core-services';
-import { getLocaleDateTimeFormat } from '@angular/common';
+import {UsageService} from '@labshare/ngx-core-services';
+import {getLocaleDateTimeFormat} from '@angular/common';
 
 @Component({
   selector: 'app-dev-pull-details',
@@ -18,13 +18,14 @@ export class DevPullDetailsComponent implements OnInit {
   developer: string;
   navigationSubscription: any;
   bHideDetails: boolean = true;
+  bShowName = false;
 
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
-      
+
       if (e instanceof NavigationEnd) {
-          this.initializeData();
+        this.initializeData();
       }
     });
   }
@@ -38,25 +39,27 @@ export class DevPullDetailsComponent implements OnInit {
     }
   }
 
-  closePane (){
-    this.gitService.broadcastComponentMessage ('CLOSE_PULL_DETAILS');
+  closePane() {
+    this.gitService.broadcastComponentMessage('CLOSE_PULL_DETAILS');
     this.bHideDetails = true;
   }
 
   initializeData() {
     let x = Date.now.toString();
-  //  this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
- 
+    //  this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
+
     this.devDetails = [];
     this.developer = '';
-    
+    this.bShowName = false;
     this.gitService.ready().then(result => {
       this.gitService.onMyEvent.subscribe((val: string) => {
         if (val.lastIndexOf('+') > 0) {
           const arr = _.split(val, '+');
           this.getActionDetails(arr[0], Number(arr[1]));
+          this.bShowName = true;
         } else {
           if (val.startsWith('repo-')) {
+            this.bShowName = true;
             const arr = _.split(val, 'repo-');
             this.gitService.getRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50).subscribe(val => {
               this.devDetails = val;
@@ -66,18 +69,21 @@ export class DevPullDetailsComponent implements OnInit {
                 s = s.replace('pulls', 'pull');
                 s = s.replace('comments', ' ');
                 v.pullrequesturl = s;
-                v.body = v.body.replace(/\+/g,' ');
-                v.title = v.title.replace(/\+/g,' ');
+                v.body = v.body.replace(/\+/g, ' ');
+                v.title = v.title.replace(/\+/g, ' ');
               });
             });
-          } else this.getDeveloperDetails(val);
+          } else {
+            this.bShowName = false;
+            this.getDeveloperDetails(val);
+          }
         }
       });
     });
   }
 
   getDeveloperDetails(developer: string) {
-      this.gitService.ready().then(result => {
+    this.gitService.ready().then(result => {
       this.gitService.getDeveloperDetail(this.gitService.currentOrg, 15, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
@@ -86,8 +92,8 @@ export class DevPullDetailsComponent implements OnInit {
           s = s.replace('pulls', 'pull');
           s = s.replace('comments', ' ');
           v.pullrequesturl = s;
-          v.body = v.body.replace(/\+/g,' ');
-          v.title = v.title.replace(/\+/g,' ');
+          v.body = v.body.replace(/\+/g, ' ');
+          v.title = v.title.replace(/\+/g, ' ');
         });
       });
     });
@@ -104,8 +110,8 @@ export class DevPullDetailsComponent implements OnInit {
           s = s.replace('pulls', 'pull');
           s = s.replace('comments', ' ');
           v.pullrequesturl = s;
-          v.body = v.body.replace(/\+/g,' ');
-          v.title = v.title.replace(/\+/g,' ');
+          v.body = v.body.replace(/\+/g, ' ');
+          v.title = v.title.replace(/\+/g, ' ');
         });
       });
     });
@@ -113,5 +119,5 @@ export class DevPullDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.initializeData();
-   }
+  }
 }
