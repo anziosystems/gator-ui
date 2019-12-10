@@ -41,7 +41,7 @@
       </div>
       <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
 
-      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at }}</div>
+      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at | date  }}</div>
       <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid; " />
     </div>
   </div>
