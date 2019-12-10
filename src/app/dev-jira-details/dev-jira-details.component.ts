@@ -115,6 +115,7 @@ export class DevJiraDetailsComponent implements OnInit {
                     v.key = v.key;
                     v.title = v.fields.summary;
                     v.created_at = v.fields.created;
+                    v.updated = v.fields.updated;
                     v.body = v.fields.status.description;
                     v.login = v.fields.assignee.displayName;
                     this.userName = v.fields.assignee.displayName;

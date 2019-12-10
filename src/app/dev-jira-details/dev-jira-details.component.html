@@ -31,8 +31,7 @@
     <div *ngFor="let dev of devDetails.values(); let i = index" style="margin-bottom:13px">
       <!-- <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div> -->
 
-      <div style="font-size: large; color:#9c678f;">
-        {{ dev.orgName }} - {{ dev.key }} - {{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:#9c678f;">{{ dev.orgName }} - {{ dev.key }} - {{ dev.State }}: {{ dev.Repo }}</div>
 
       <div style="display: flex;flex-direction: row;">
         <div style="font-size: x-large; color: white ">
@@ -41,7 +40,8 @@
       </div>
       <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
 
-      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at | date  }}</div>
+      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at | date }}     Updated: {{ dev.updated | date }}</div>
+      <!-- <div style="font-size: large; color: rgb(143, 173, 182)">Updated: {{ dev.updated | date }}</div> -->
       <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid; " />
     </div>
   </div>
