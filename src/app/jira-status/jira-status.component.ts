@@ -59,6 +59,7 @@ export class JiraStatusComponent implements OnInit {
       //superflaus call, just waking up the sleeping API
       res => {
         this.hookFail = false;
+        this.buttonDisabled = true;
         this.messages.push('Please wait, getting Org List ...');
         this.gitService.JiraUsersList = [];
         this.gitService.getJiraOrgs(true).subscribe(
@@ -104,6 +105,7 @@ export class JiraStatusComponent implements OnInit {
    
                   */
                   this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
+                  this.buttonDisabled = false;
                 });
               }); //org list loop
             } else {
