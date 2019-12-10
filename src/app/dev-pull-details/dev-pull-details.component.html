@@ -18,18 +18,18 @@
   </button>
   <div *ngIf="!bShowName">
     <a href="https://github.com/{{ devDetails[0]?.Login }}" target="_blank" style="text-decoration: none;">
-      <div div class="flex-item" style=" color:rgb(255, 81, 0)">{{ devDetails[0]?.Login }}</div>
+      <div div class="flex-item" style=" color:rgb(170, 125, 105)">{{ devDetails[0]?.Login }}</div>
     </a>
   </div>
   <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
     <div *ngIf="bShowName">
-      <div style="font-size: large; color:orangered;">{{ dev.Login }}</div>
+      <div style="font-size: large; color:rgb(188, 122, 91);">{{ dev.Login }}</div>
     </div>
     <div *ngIf="dev.State === 'open'">
-      <div style="font-size: large; color:#f713bc;">{{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:#9c678f;">{{ dev.State }}: {{ dev.Repo }}</div>
     </div>
     <div *ngIf="dev.State === 'closed'">
-      <div style="font-size: large; color:rgb(73, 212, 126)">{{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:#98ad77">{{ dev.State }}: {{ dev.Repo }}</div>
     </div>
     <div style="display: flex;flex-direction: row;">
       <div style="font-size: x-large; color: white ">

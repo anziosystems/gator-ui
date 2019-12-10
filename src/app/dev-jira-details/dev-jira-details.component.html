@@ -16,7 +16,7 @@
     X
   </button>
 
-  <div *ngIf="bShowError" style="font-size: medium; color:#f713bc;">
+  <div *ngIf="bShowError" style="font-size: medium; color:#9c678f;">
     No User found with name: {{ developerName }} in Jira. <br />
     Ask User to use proper full name in Git and the same name should be in Jira. <br />
     Jira Display Name and Git Name should be same. <br /><br />
@@ -26,12 +26,12 @@
 
   <div *ngIf="!bShowError">
     <a href="https://github.com/{{ devDetails[0]?.login }}" target="_blank" style="text-decoration: none;">
-      <div div class="flex-item" style=" color:rgb(22, 153, 214)">{{ userName }}</div>
+      <div div class="flex-item" style=" color:rgb(86, 125, 143)">{{ userName }}</div>
     </a>
     <div *ngFor="let dev of devDetails.values(); let i = index" style="margin-bottom:13px">
       <!-- <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div> -->
 
-      <div style="font-size: large; color:#f713bc;">
+      <div style="font-size: large; color:#9c678f;">
         {{ dev.orgName }} - {{ dev.key }} - {{ dev.State }}: {{ dev.Repo }}</div>
 
       <div style="display: flex;flex-direction: row;">
