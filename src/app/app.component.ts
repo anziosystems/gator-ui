@@ -61,9 +61,6 @@ export class AppComponent extends StatefulComponent implements OnInit {
     location.reload();
   }
 
-  onStatefulInit() {
-  }
-
   ngOnDestroy() {
   }
 

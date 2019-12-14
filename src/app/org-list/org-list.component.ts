@@ -1,50 +1,26 @@
-import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
+import {Component, OnInit, EventEmitter, Output} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
 import { Route } from '@angular/compiler/src/core';
-
-/* For Stateful Component */
-import {ChangeDetectorRef, forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core'; 
-import {StatefulComponent, StatefulParent, StatefulService} from '@labshare/ngx-stateful';
-
-export const STATE = () => ({
-})
-export const PROPS = {} 
 
 @Component({
   selector: 'app-org-list',
   templateUrl: './org-list.component.html',
   styleUrls: ['./org-list.component.less'],
-  providers: [
-    {
-      provide: StatefulParent,
-      useExisting: forwardRef(() => OrgListComponent)
-    }
-  ]  
 })
-export class OrgListComponent extends StatefulComponent implements OnInit {
+export class OrgListComponent implements OnInit {
+  orgList: any[];
   back_colors: string[];
   colors: string[];
+  loggedIn: boolean;
+  currentOrg: string;
 
-  @Input() loggedIn: boolean;
-  @Output() changeOrgList = new EventEmitter();
-
-  constructor(
-    private gitService: GitService, 
-    private route: ActivatedRoute, 
-    private router: Router,
-    /* For Stateful */
-    inj: ChangeDetectorRef,
-    @Optional() @SkipSelf() public statefulParent: StatefulParent,
-    public statefulService: StatefulService,
-    public appRef: ApplicationRef    
-  ) {
-    super(inj, STATE, statefulParent, statefulService, appRef);    
+  constructor(private gitService: GitService, private route: ActivatedRoute , private router: Router) {
     this.back_colors = [];
-    this.back_colors.push('#82aebb');
-    this.back_colors.push('#96b575');
-    this.back_colors.push('#908152');
-    this.back_colors.push('#967b72');
+    this.back_colors.push('#01A9DB');
+    this.back_colors.push('#74DF00');
+    this.back_colors.push('#DBA901');
+    this.back_colors.push('#FF4000');
     this.back_colors.push('#0404B4');
     this.back_colors.push('#01A9DB');
     this.back_colors.push('#74DF00');
@@ -65,50 +41,20 @@ export class OrgListComponent extends StatefulComponent implements OnInit {
   }
 
   data(org: any) {
-    this.gitService.currentOrg = org;
+    this.gitService.currentOrg = org.Org;
     this.router.onSameUrlNavigation = 'reload';
     this.router.initialNavigation();
-    if (!this.loggedIn || org === null) return;
-
     this.router.navigate(['/dashboard'], {
-      queryParams: {Org: org, refresh: new Date().getTime()},
+      queryParams: {Org: org.Org, refresh: new Date().getTime()},
     });
+   
   }
 
-  onStatefulInit() {
-    if (!this.loggedIn) return;
-
+  ngOnInit() {
+    this.orgList = [];
     this.gitService.currentOrg  = this.route.snapshot.queryParamMap.get("Org")
     this.gitService.getOrgList().subscribe(result => {
-
-      /* Map to LeftNav sectionItems property */
-      let sectionItems = result.map(r => ({
-        name: r.Org.toUpperCase().slice(0, 4),
-        id: r.Org,
-        icon: null
-      }))
-      this.orgList = sectionItems;
-      this.changeOrgList.emit(sectionItems);
+      this.orgList = result;
     });
-  }
-
-  /* TODO: Remove once diff feature implemented in NgxStateful */
-  prevState = STATE();
-  currState = STATE();
-
-  orgList = []
-  
-  _currentOrg = null;
-  get currentOrg() {
-    return this._currentOrg;
-  }
-  @Input() set currentOrg(value) {
-    this._currentOrg = value;
-    this.data(value);
-  }
-
-  onStatefulChanges() {
-    this.currState = this.state.read();
-    this.prevState = this.currState;
   }
 }

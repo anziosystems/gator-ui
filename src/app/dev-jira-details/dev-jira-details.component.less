@@ -1,49 +1,48 @@
 #flex-container {
-    display: flex;
-    flex-direction: column;
-    margin: 1px auto;
-    margin-left: 8px;
-    height: 100%;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-base-color: rgb(20, 20, 20);
-  }
-  
-  .flex-item {
-    margin: 1px;
-    height: auto;
-    width: 100%;
-    display: block;
-    border-top: none;
-    border-color: black;
-    border-bottom-width: thin;
-    // background-color: rgb(18, 18, 20);
-    animation-name: rollIn;
-    animation-duration: 2.5s;
-  }
-  
-  /* width */
-  ::-webkit-scrollbar {
-    width: 15px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: rgb(36, 35, 35);
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgb(51, 51, 52);
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(51, 50, 50);
-  }
-  
-  ::-webkit-scrollbar-corner {
-    background: rgba(0, 0, 0, 0);
-  }
-  
+  display: flex;
+  flex-direction: column;
+  margin: 1px auto;
+  margin-left: 8px;
+  height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-base-color: rgb(20, 20, 20);
+}
+
+.flex-item {
+  margin: 1px;
+  height: auto;
+  width: 100%;
+  display: block;
+  border-top: none;
+  border-color: black;
+  border-bottom-width: thin;
+  // background-color: rgb(18, 18, 20);
+  animation-name: rollIn;
+  animation-duration: 2.5s;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(36, 35, 35);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(51, 51, 52);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(51, 50, 50);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
+}

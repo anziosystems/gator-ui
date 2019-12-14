@@ -18,7 +18,7 @@ import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import { AuthService,AuthWebService, AuthInterceptor, OidcNavigationService, NgxCoreServicesModule, Config ,ConfigService,SessionStorageService} from '@labshare/ngx-core-services';
-import {LeftNavModule, FitWindowModule, TopNavModule} from '@labshare/stateful-components';
+
 import { HookErrorComponent } from './hook-error/hook-error.component';
 import { PrchartComponent } from './prchart/prchart.component';
 import { AngularDraggableModule } from 'angular2-draggable';
@@ -73,11 +73,7 @@ const routes: Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     AngularDraggableModule,
-    /* TODO: Use micromodules */
-    /* LeftNav from stateful-components */
-    LeftNavModule,
-    FitWindowModule,
-    TopNavModule
+ 
   ],
   providers: [GitService, CookieService],
   exports: [RouterModule],

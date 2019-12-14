@@ -36,8 +36,6 @@
     "@angular/platform-browser-dynamic": "^7.2.9",
     "@angular/router": "^7.2.9",
     "@labshare/ngx-core-services": "^1.0.3",
-    "@labshare/ngx-stateful": "^2.0.9",
-    "@labshare/stateful-components": "^2.0.1",
     "angular-webstorage-service": "^1.0.2",
     "angular2-draggable": "^2.3.2",
     "animate.css": "^3.7.2",
