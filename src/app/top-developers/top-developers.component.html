@@ -1,5 +1,9 @@
 <div id="flex-container">
-  <div id="container" [@listAnimation]="developers.length" class="flex-item-header">Developers</div>
+  <div id="container" class="flex-item-header">
+    Developers
+    <input type="text" #box (keyup)="filterDev(box.value)" class="TextBoxClass" />
+    <br />
+  </div>
   <hr style="width: 100%; color: rgb(29, 27, 27); border-style:solid; " />
   <div *ngFor="let dev of developers; let i = index">
     <div div class="flex-item" style="vertical-align:center; align-content: flex-end ;   cursor: pointer;">

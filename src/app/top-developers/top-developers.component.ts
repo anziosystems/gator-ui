@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Inject, Output} from '@angular/core';
+import {Component, OnInit, EventEmitter, Inject, Output, Pipe, PipeTransform, Injectable} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService} from '../git-service';
 import {Observable, of} from 'rxjs';
@@ -11,6 +11,7 @@ import {animate, state, style, transition, trigger, stagger, query, keyframes} f
 
 @Component({
   selector: 'app-top-developers',
+
   templateUrl: './top-developers.component.html',
   styleUrls: ['./top-developers.component.less'],
   animations: [
@@ -40,6 +41,8 @@ export class TopDevelopersComponent implements OnInit {
   avatar: any[];
   devDetails: any[];
   navigationSubscription: any;
+  filterQuery: string;
+  OrgDevelopers: any[];
 
   @Output()
   messageEvent = new EventEmitter<string>(); //TODO: delete not used
@@ -93,8 +96,17 @@ export class TopDevelopersComponent implements OnInit {
     this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
   }
 
+  filterDev(str: string) {
+    if (str.length === 0) {
+      this.developers = this.OrgDevelopers;
+      return;
+    }
+    str = str.toLowerCase();
+    this.developers = this.OrgDevelopers.filter(d => d.toLowerCase().substring(0, str.length) === str);
+  }
   initializeData() {
     this.developers = [];
+
     this.avatar = [];
     this.gitService.ready().then(result => {
       this.gitService.getTopDevelopers(this.gitService.currentOrg, 15).subscribe(val => {
@@ -104,6 +116,7 @@ export class TopDevelopersComponent implements OnInit {
           this.avatar.push(arr[1]);
           this.developers.push(arr[0]);
         });
+        this.OrgDevelopers = this.developers;
       });
     });
   }
