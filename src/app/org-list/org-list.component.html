@@ -1,11 +1,18 @@
 <div class="flex-container">
   <div class="menu">
     <!-- <img src="../assets/Gator-Logo.png" class="gator-logo" /> -->
+
     <div *ngFor="let org of orgList; let i = index">
       <button id="m1-btn" (click)="data(org)" class="menu2-button box-shadow" [style.color]="colors[i]" [style.background-color]="back_colors[i]" title="{{ org.Org }}">
         {{ org.Org | uppercase | slice: 0:3 }}
       </button>
       <p></p>
     </div>
+
+    <hr style="width: 100%; color: rgb(61, 60, 60); border-style:solid; " />
+
+    <button id="m1-btn" (click)="data(org)" class="menu2-button box-shadow" [style.color]="colors[0]" [style.background-color]="back_colors[0]" title="+">
+      +
+    </button>
   </div>
 </div>
