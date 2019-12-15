@@ -1,7 +1,8 @@
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
 import { Route } from '@angular/compiler/src/core';
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
 @Component({
   selector: 'app-org-list',
@@ -15,7 +16,7 @@ export class OrgListComponent implements OnInit {
   loggedIn: boolean;
   currentOrg: string;
 
-  constructor(private gitService: GitService, private route: ActivatedRoute , private router: Router) {
+  constructor(private gitService: GitService, private route: ActivatedRoute , private router: Router,  @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
     this.back_colors = [];
     this.back_colors.push('rgb(45, 49, 51)');//#01A9DB
     this.back_colors.push('rgb(45, 49, 51)');
@@ -48,6 +49,12 @@ export class OrgListComponent implements OnInit {
     this.colors.push('white');
     this.colors.push('white');
     this.colors.push('white');
+  }
+
+  logout() {
+    this.storage.remove('token');
+    this.storage.remove('JiraToken');
+    location.reload();
   }
 
   data(org: any) {
