@@ -55,14 +55,15 @@ export class DashboardComponent implements OnInit {
     let token = this.storage.get('token');
     if (!token) {
       this.router.navigate(['/login']);
+      return;
     }
 
-    //Jira
-    let jiratoken = this.storage.get('JiraToken');
-    if (!jiratoken) {
-      this.router.navigate(['/jira-login']);
-    }
-    
+    // //Jira
+    // let jiratoken = this.storage.get('JiraToken');
+    // if (!jiratoken) {
+    //   this.router.navigate(['/jira-login']);
+    // }
+
     this.gitService.onComponentMessage.subscribe((val: string) => {
       if (val === 'CLOSE_PULL_DETAILS') {
         this.isShowDetail = false;
@@ -87,7 +88,6 @@ export class DashboardComponent implements OnInit {
     // if (!token) {
     //   this.router.navigate(['/login']);
     // }
-
     // //Jira
     // let jiratoken = this.storage.get('JiraToken');
     // if (!jiratoken) {
