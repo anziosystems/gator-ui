@@ -1,10 +1,12 @@
-#flex-container-Title {
+@import '../css/lib';
+
+.flex-container-Title {
   display: flex;
   flex-direction: row;
   width: 100%;
 }
 
-#flex-container-Number {
+.flex-container-Number {
   display: flex;
   flex-direction: row;
   margin-left: auto;
@@ -24,7 +26,7 @@
 .flex-item {
   text-align: center;
   width: 100%;
-  height: 100px;
+  height: @top-banner-height;
   margin-left: auto;
   margin-right: auto;
   display: block;

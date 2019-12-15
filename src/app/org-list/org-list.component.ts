@@ -17,16 +17,26 @@ export class OrgListComponent implements OnInit {
 
   constructor(private gitService: GitService, private route: ActivatedRoute , private router: Router) {
     this.back_colors = [];
-    this.back_colors.push('#01A9DB');
-    this.back_colors.push('#74DF00');
-    this.back_colors.push('#DBA901');
-    this.back_colors.push('#FF4000');
-    this.back_colors.push('#0404B4');
-    this.back_colors.push('#01A9DB');
-    this.back_colors.push('#74DF00');
-    this.back_colors.push('#DBA901');
-    this.back_colors.push('#FF4000');
-    this.back_colors.push('#0404B4');
+    this.back_colors.push('rgb(45, 49, 51)');//#01A9DB
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    this.back_colors.push('rgb(45, 49, 51)');
+    // this.back_colors.push('#74DF00');
+    // this.back_colors.push('#DBA901');
+    // this.back_colors.push('#FF4000');
+    // this.back_colors.push('#0404B4');
+    // this.back_colors.push('#01A9DB');
+    // this.back_colors.push('#74DF00');
+    // this.back_colors.push('#DBA901');
+    // this.back_colors.push('#FF4000');
+    // this.back_colors.push('#0404B4');
     this.colors = [];
     this.colors.push('white');
     this.colors.push('white');
