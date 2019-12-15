@@ -6,7 +6,7 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService} from '../git-service';
 /* Imports for Stateful Component */
 import {ChangeDetectorRef, forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core';
-import {StatefulComponent, StatefulParent, StatefulService} from '@labshare/ngx-stateful';
+
 /* Import defaults for LeftNavComponent State */
 
 export const STATE = () => {
@@ -32,16 +32,8 @@ type PaneType = 'left' | 'right';
   //     state('show', style({ transform: 'translateX(0)' })),
   //     transition('* => *', animate(300))
   // ])]
-
-  /* For Stateful Component */
-  providers: [
-    {
-      provide: StatefulParent,
-      useExisting: forwardRef(() => DashboardComponent),
-    },
-  ],
 })
-export class DashboardComponent extends StatefulComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   orgs: any;
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
@@ -51,12 +43,9 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     /* For Stateful Components */
     inj: ChangeDetectorRef,
-    @Optional() @SkipSelf() public statefulParent: StatefulParent,
-    public statefulService: StatefulService,
+
     public appRef: ApplicationRef,
   ) {
-    /* Call StatefulComponent */
-    super(inj, STATE, statefulParent, statefulService, appRef);
     setInterval(() => {
       location.reload();
     }, 6000000); //every 100 min
@@ -98,9 +87,4 @@ export class DashboardComponent extends StatefulComponent implements OnInit {
   /* TODO: Remove once diff feature implemented in NgxStateful */
   prevState = STATE();
   currState = STATE();
-
-  onStatefulChanges() {
-    this.currState = this.state.read();
-    this.prevState = this.currState;
-  }
 }

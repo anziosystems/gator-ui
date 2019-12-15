@@ -6,18 +6,18 @@ import {ChangeDetectionStrategy, Input} from '@angular/core';
 import {Router, RouterModule, ActivatedRoute} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 
-import {forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core'; 
-import {StatefulComponent, StatefulParent, StatefulService} from '@labshare/ngx-stateful';
-import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
-import { Subscription } from 'rxjs';
+import {forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core';
+
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {Subscription} from 'rxjs';
 
 export const STATE = () => ({
   items: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
   sectionItems: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
   topNav: {
     iconColor: 'rgb(150, 150, 150)',
-    background: 'rgb(36, 35, 35)'
-  }  
+    background: 'rgb(36, 35, 35)',
+  },
 });
 type PaneType = 'left' | 'right';
 
@@ -25,12 +25,7 @@ type PaneType = 'left' | 'right';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less'],
-  providers: [
-    {
-            provide: StatefulParent,
-            useExisting: forwardRef(() => AppComponent)
-    }
-  ]  
+
   // changeDetection: ChangeDetectionStrategy.OnPush,
   // animations: [
   //   trigger('slide', [
@@ -39,41 +34,30 @@ type PaneType = 'left' | 'right';
   //     transition('* => *', animate(300))
   // ])]
 })
-export class AppComponent extends StatefulComponent implements OnInit {
-
+export class AppComponent implements OnInit {
   @Input() activePane: PaneType = 'left';
-  constructor(
-    inj: ChangeDetectorRef,
-    @Optional() @SkipSelf() public statefulParent: StatefulParent,
-    public statefulService: StatefulService,
-    public appRef: ApplicationRef,
-    private router: Router, private cookieService: CookieService,
-    private route: ActivatedRoute, 
-    @Inject(LOCAL_STORAGE) private storage: WebStorageService,
-  ) {
-      super(inj, STATE, statefulParent, statefulService, appRef);
-  } 
+  constructor(inj: ChangeDetectorRef, public appRef: ApplicationRef, private router: Router, private cookieService: CookieService, private route: ActivatedRoute) {}
 
   title = 'Gator';
 
-  logout() {
-    this.storage.remove('token');
-    location.reload();
-  }
+  // logout() {
+  //   this.storage.remove('token');
+  //   location.reload();
+  // }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
+  ngOnInit() {}
   get inDashboard() {
-    return this.router.url.startsWith('/dashboard')
+    return this.router.url.startsWith('/dashboard');
   }
 
-  get isLoggedIn() {
-    return this.storage.get('token')
-  }
+  // get isLoggedIn() {
+  //   return this.storage.get('token');
+  // }
 
   changeSection(section) {
-    this.menu = {...this.menu, selectedSection: section.id}
+    this.menu = {...this.menu, selectedSection: section.id};
   }
 
   menu = {
@@ -84,12 +68,12 @@ export class AppComponent extends StatefulComponent implements OnInit {
         width: 80,
         textColor: 'rgb(255, 255, 255)',
         tooltip: true,
-        
+
         background: '#141414',
         mainTenantTextColor: '#fff',
         selectedItemBackground: 'rgb(36, 35, 35)',
-        addTenantBackground: 'rgb(51, 51, 52)'
-      }
+        addTenantBackground: 'rgb(51, 51, 52)',
+      },
     },
     ui: {
       font: 'Roboto',
@@ -108,7 +92,6 @@ export class AppComponent extends StatefulComponent implements OnInit {
     preserveSection: true,
     addMessage: 'Add Custom Team',
     selectedSection: null,
-    profileIcon: false
-  }
-
+    profileIcon: false,
+  };
 }
