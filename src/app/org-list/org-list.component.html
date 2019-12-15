@@ -3,7 +3,9 @@
     <!-- <img src="../assets/Gator-Logo.png" class="gator-logo" /> -->
     <label style="margin-left:4px">CTO</label>
     <br />
-    <label style="margin-left:4px">Dash</label>
+    <label style="margin-left:4px">Dash</label> <br />
+    <label style="margin-left:4px; color:rgb(230, 195, 228)">Beta</label>
+
     <p></p>
     <div *ngFor="let org of orgList; let i = index">
       <button id="m1-btn" (click)="data(org)" class="menu2-button box-shadow" [style.color]="colors[i]" [style.background-color]="back_colors[i]" title="{{ org.Org }}">
@@ -12,17 +14,17 @@
       <p></p>
     </div>
 
-    <hr style="width: 100%; color: rgb(61, 60, 60); border-style:solid; " />
+    <hr style="width: 80%; color: rgb(61, 60, 60); border-style:solid; " />
 
     <button id="m1-btn" class="menu2-button box-shadow" title="Manage Alert - Comming soon!">
       <img src="../assets/alert.jpg" class="image-button" />
     </button>
 
-    <button id="m1-btn" onclick="window.location.href = 'mailto:support.anziosystems.com';" class="menu2-button box-shadow" title="Invite others">
+    <button id="m1-btn" onclick="window.location.href = 'mailto:rafat@anziosystems.com';" class="menu2-button box-shadow" title="Invite others">
       <img src="../assets/feedback.png" class="image-button" />
     </button>
 
-    <button id="m1-btn" onclick="window.location.href = 'mailto:support.anziosystems.com';" class="menu2-button box-shadow" title="Send Suggestions">
+    <button id="m1-btn" onclick="window.location.href = 'mailto:rafat@anziosystems.com';" class="menu2-button box-shadow" title="Send Suggestions">
       <img src="../assets/feedback2.png" class="image-button" />
     </button>
 
