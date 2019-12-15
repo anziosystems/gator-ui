@@ -52,6 +52,17 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    let token = this.storage.get('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
+
+    //Jira
+    let jiratoken = this.storage.get('JiraToken');
+    if (!jiratoken) {
+      this.router.navigate(['/jira-login']);
+    }
+    
     this.gitService.onComponentMessage.subscribe((val: string) => {
       if (val === 'CLOSE_PULL_DETAILS') {
         this.isShowDetail = false;
@@ -72,16 +83,16 @@ export class DashboardComponent implements OnInit {
   }
 
   onStatefulInit() {
-    let token = this.storage.get('token');
-    if (!token) {
-      this.router.navigate(['/login']);
-    }
+    // let token = this.storage.get('token');
+    // if (!token) {
+    //   this.router.navigate(['/login']);
+    // }
 
-    //Jira
-    let jiratoken = this.storage.get('JiraToken');
-    if (!jiratoken) {
-      this.router.navigate(['/jira-login']);
-    }
+    // //Jira
+    // let jiratoken = this.storage.get('JiraToken');
+    // if (!jiratoken) {
+    //   this.router.navigate(['/jira-login']);
+    // }
   }
 
   /* TODO: Remove once diff feature implemented in NgxStateful */

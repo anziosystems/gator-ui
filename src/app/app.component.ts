@@ -36,14 +36,15 @@ type PaneType = 'left' | 'right';
 })
 export class AppComponent implements OnInit {
   @Input() activePane: PaneType = 'left';
-  constructor(inj: ChangeDetectorRef, public appRef: ApplicationRef, private router: Router, private cookieService: CookieService, private route: ActivatedRoute) {}
+  constructor(inj: ChangeDetectorRef, public appRef: ApplicationRef, private router: Router, private cookieService: CookieService, private route: ActivatedRoute,
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService) {}
 
   title = 'Gator';
 
-  // logout() {
-  //   this.storage.remove('token');
-  //   location.reload();
-  // }
+  logout() {
+    this.storage.remove('token');
+    location.reload();
+  }
 
   ngOnDestroy() {}
 
