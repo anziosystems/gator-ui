@@ -70,7 +70,7 @@ export class StatusComponent implements OnInit {
               this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
               //for every org check the hook
               this.orgList.forEach(element => {
-                this.messages.push('Checking GitGator hook in ' + element.Org);
+                this.messages.push('Checking CTODash hook in ' + element.Org);
                 this.gitService.getHookStatus(element.Org).subscribe(result => {
                   let hookStatus = result.val;
                   if (!hookStatus) {
@@ -79,20 +79,20 @@ export class StatusComponent implements OnInit {
                     this.gitService.setupWebHook(element.Org).subscribe(result => {
                       let hookReturn = result.val;
                       if (hookReturn === 201) {
-                        this.successMessages.push('GitGator hook is installed for org ' + element.Org);
+                        this.successMessages.push('CTODash hook is installed for org ' + element.Org);
                       } else {
                         if (hookReturn === 422) {
-                          this.messages.push('GitGator hook is already installed for org ' + element.Org);
+                          this.messages.push('CTODash hook is already installed for org ' + element.Org);
                         } else {
                           if (hookReturn === 404) {
-                            this.errMessages.push("Couldn't install GitGator hook. Please install manually for org: " + element.Org);
+                            this.errMessages.push("Couldn't install CTODash hook. Please install manually for org: " + element.Org);
                             this.hookFail = true;
                           }
                         }
                       }
                     });
                   } else {
-                    this.messages.push('GitGator hook is already installed in ' + element.Org);
+                    this.messages.push('CTODash hook is already installed in ' + element.Org);
                   }
                 });
                 //Get Repos

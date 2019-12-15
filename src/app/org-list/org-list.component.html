@@ -1,7 +1,10 @@
 <div class="flex-container">
   <div class="menu">
     <!-- <img src="../assets/Gator-Logo.png" class="gator-logo" /> -->
-
+    <label style="margin-left:4px">CTO</label>
+    <br />
+    <label style="margin-left:4px">Dash</label>
+    <p></p>
     <div *ngFor="let org of orgList; let i = index">
       <button id="m1-btn" (click)="data(org)" class="menu2-button box-shadow" [style.color]="colors[i]" [style.background-color]="back_colors[i]" title="{{ org.Org }}">
         {{ org.Org | uppercase | slice: 0:3 }}
