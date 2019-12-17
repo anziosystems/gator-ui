@@ -19,6 +19,7 @@ export class DevPullDetailsComponent implements OnInit {
   navigationSubscription: any;
   bHideDetails: boolean = true;
   bShowName = false;
+  DEFAULT_DAYS = 30;
 
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -61,7 +62,7 @@ export class DevPullDetailsComponent implements OnInit {
           if (val.startsWith('repo-')) {
             this.bShowName = true;
             const arr = _.split(val, 'repo-');
-            this.gitService.getRepositoryPR(this.gitService.currentOrg, 15, arr[1], 50).subscribe(val => {
+            this.gitService.getRepositoryPR(this.gitService.currentOrg, this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
               this.devDetails = val;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
@@ -84,7 +85,7 @@ export class DevPullDetailsComponent implements OnInit {
 
   getDeveloperDetails(developer: string) {
     this.gitService.ready().then(result => {
-      this.gitService.getDeveloperDetail(this.gitService.currentOrg, 15, developer, 'null', 50).subscribe(val => {
+      this.gitService.getDeveloperDetail(this.gitService.currentOrg, this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;
