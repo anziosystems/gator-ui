@@ -18,7 +18,7 @@
   </button>
   <div *ngIf="!bShowName">
     <a href="https://github.com/{{ devDetails[0]?.Login }}" target="_blank" style="text-decoration: none;">
-      <div div class="flex-item" style=" color:rgb(170, 125, 105)">{{ devDetails[0]?.Login }}</div>
+      <div div class="flex-item" style=" color:rgb(170, 125, 105)">{{ devDetails[0]?.Name }}</div>
     </a>
   </div>
   <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">

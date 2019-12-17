@@ -23,6 +23,7 @@ export class DevJiraDetailsComponent implements OnInit {
   developerName: string;
   orgName: string;
   userName: string;
+  userLink: string;
 
   constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -110,6 +111,8 @@ export class DevJiraDetailsComponent implements OnInit {
                   }
 
                   this.devDetails2.map(v => {
+                    //https://labshare.atlassian.net/jira/people/5ca21c371b65666cbad27eb0
+                    this.userLink = `https://${org.name}.atlassian.net/jira/people/${accountId}`;
                     v.Repo = v.id;
                     v.pullrequesturl = `https://${org.name}.atlassian.net/browse/${v.key}`;
                     v.key = v.key;

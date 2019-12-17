@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Inject, Output, Pipe, PipeTransform, Injectable} from '@angular/core';
+import {Component, OnInit, EventEmitter, Inject, Output, Injectable} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService} from '../git-service';
 import {Observable, of} from 'rxjs';
@@ -8,6 +8,12 @@ import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import * as _ from 'lodash';
 import {UsageService} from '@labshare/ngx-core-services';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
+
+export class DevDetails {
+  public name: string;
+  public image: string;
+  public login: string;
+}
 
 @Component({
   selector: 'app-top-developers',
@@ -38,7 +44,6 @@ import {animate, state, style, transition, trigger, stagger, query, keyframes} f
 })
 export class TopDevelopersComponent implements OnInit {
   developers: any[];
-  avatar: any[];
   devDetails: any[];
   navigationSubscription: any;
   filterQuery: string;
@@ -49,7 +54,6 @@ export class TopDevelopersComponent implements OnInit {
 
   constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, private usageService: UsageService) {
     this.developers = [];
-    this.avatar = [];
 
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
@@ -102,19 +106,21 @@ export class TopDevelopersComponent implements OnInit {
       return;
     }
     str = str.toLowerCase();
-    this.developers = this.OrgDevelopers.filter(d => d.toLowerCase().substring(0, str.length) === str);
+    this.developers = this.OrgDevelopers.filter(d => d.name.toLowerCase().substring(0, str.length) === str);
   }
   initializeData() {
     this.developers = [];
 
-    this.avatar = [];
     this.gitService.ready().then(result => {
       this.gitService.getTopDevelopers(this.gitService.currentOrg, 15).subscribe(val => {
-        const devs = val.map(item => item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
+        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
         devs.map(item => {
           const arr = _.split(item, '--');
-          this.avatar.push(arr[1]);
-          this.developers.push(arr[0]);
+          let d = new DevDetails();
+          d.image = arr[2];
+          d.name = arr[0];
+          d.login = arr[1];
+          this.developers.push(d);
         });
         this.OrgDevelopers = this.developers;
       });
