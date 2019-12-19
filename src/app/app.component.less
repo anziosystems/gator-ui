@@ -1,3 +1,22 @@
+.main-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-content: left;
+  height: 100vh;
+  width: 100vw;
+}
+
+.router-wrapper {
+  width: 100%;
+}
+
+.first-row {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: stretch;
+}
 /* HACKS, REMOVE LATER */
 :host ::ng-deep .tenant-logo {
   //height:51px !important;
@@ -57,10 +76,4 @@
 
 :host ::ng-deep .tenant-item:nth-child(8) .inner-tenant-icon {
   background: #dba901 !important;
-}
-
-/* Adjustment for top-nav */
-.content-area {
-  width: 100%;
-  height: 100vh ;
 }

@@ -1,10 +1,12 @@
 <div class="flex-container  box-shadow">
   <div class="flex-item-header">Repositories</div>
   <hr style="width: 100%; color: rgb(29, 27, 27); border-style:solid; " />
-
   <div *ngFor="let repo of repositories">
-    <!-- <a href="https://github.com/labshare/{{repo}}" target="_blank" style="text-decoration: none; " -->
-    <div (click)="data(repo)" class="flex-item" style="cursor: pointer; color:ghostwhite">{{ repo }}</div>
-    <!--/a> -->
+    <div div class="flex-item">
+      <div style="display: flex; direction: row;cursor: pointer;">
+        <!-- <a href="https://github.com/labshare/{{repo}}" target="_blank" style="text-decoration: none; " -->
+        <div (click)="data(repo)">{{ repo }}</div>
+      </div>
+    </div>
   </div>
 </div>

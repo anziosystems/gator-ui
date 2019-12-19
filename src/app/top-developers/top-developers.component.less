@@ -1,12 +1,34 @@
 @import '../css/lib';
 
-#flex-container {
+.flex-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  margin-top: 5px;
-  overflow: auto;
+
+  align-content: flex-end;
+  padding-top: 5px;
+  height: calc(100vh - 102px);
+  overflow: scroll;
+  overflow-x: hidden;
+  width: 350px;
+}
+
+.flex-item {
+  padding-left: 8px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  display: block;
+  font-size: large;
+  color: ghostwhite;
+  align-content: flex-end;
+  cursor: pointer;
+}
+
+.flex-item-header {
+  padding-left: 8px;
+  display: block;
+  font-size: large;
+  color: ghostwhite;
+  padding-top: 10px;
 }
 
 .TextBoxClass {
@@ -36,21 +58,4 @@
 
 ::-webkit-scrollbar-corner {
   background: rgba(0, 0, 0, 0);
-}
-
-.flex-item {
-  margin-left: 8px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  display: block;
-  font-size: large;
-  color: ghostwhite;
-}
-
-.flex-item-header {
-  margin-left: 8px;
-  display: block;
-  font-size: large;
-  color: ghostwhite;
-  margin-top: 10px;
 }

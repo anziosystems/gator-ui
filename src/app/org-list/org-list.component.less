@@ -2,16 +2,17 @@
 
 .flex-container {
   display: flex;
-  width: 100%;
+  flex: 1;
   background-color: @top-component-background-color;
   height: 100%;
 }
 
 .menu {
   width: 55px;
-  margin-top: @top-banner-height - 60px;
-  height: 100%;
-  margin-left: 4px;
+  padding-top: @top-banner-height - 60px;
+  padding-left: 4px;
+  flex: 1;
+  background-color: @top-component-background-color;
 }
 
 .menu2-button {
@@ -22,7 +23,7 @@
   align-content: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 2px;
+  padding: 4px 2px;
   border-radius: 5%;
   width: 45px;
   height: 45px;
@@ -35,7 +36,7 @@
   align-content: center;
   text-decoration: none;
   display: inline-block;
-  margin: 1px;
+  padding: 1px;
   width: 40px;
   height: 40px;
   outline: none;

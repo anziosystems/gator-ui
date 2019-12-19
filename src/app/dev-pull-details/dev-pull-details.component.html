@@ -21,9 +21,9 @@
       <div div class="flex-item" style=" color:rgb(170, 125, 105)">{{ devDetails[0]?.Name }}</div>
     </a>
   </div>
-  <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
+  <div *ngFor="let dev of devDetails; let i = index" style="padding-bottom:13px">
     <div *ngIf="bShowName">
-      <div style="font-size: large; color:rgb(188, 122, 91);">{{ dev.Login }}</div>
+      <div style="font-size: large; color:rgb(188, 122, 91);">{{ dev.Name }}</div>
     </div>
     <div *ngIf="dev.State === 'open'">
       <div style="font-size: large; color:#9c678f;">{{ dev.State }}: {{ dev.Repo }}</div>

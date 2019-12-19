@@ -1,39 +1,48 @@
 @import '../css/lib';
 
-#flex-column-container {
+.count-style {
+  width: @top-component-width;
+  height: @top-banner-height;
+}
+
+.flex-column-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 99%;
+  flex: 1;
   // margin-top: 5px;
   justify-content: left;
   background-color: @main-background-color;
 }
 
-#flex-row-container {
+.flex-row-container {
   display: flex;
   flex-direction: row;
   // margin-top: 1px auto;
-  margin-bottom: 1px auto;
+  padding-bottom: 1px auto;
   // padding-top: 1px;
-  width: 100%;
-  height: 100%;
 }
+.flex-item-firstRow {
+  padding-left: 1px;
+  flex: 1;
+  display: flexbox;
+  font-size: 30px;
+  background-color: @main-background-color;
+}
+
 .flex-item {
-  margin-left: 1px;
+  padding-left: 1px;
   width: 346px;
   min-width: 346px;
-  height: 100vh;
+
   display: flexbox;
   font-size: 30px;
   background-color: @main-background-color;
 }
 
 .flex-detail-item {
-  margin-left: 1px;
+  padding-left: 1px;
   display: flexbox;
-  width: 100%;
-  height: 100%;
+  flex: 1;
   font-size: 30px;
   background-color: @main-background-color;
 }
