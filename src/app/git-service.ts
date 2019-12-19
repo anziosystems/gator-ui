@@ -60,7 +60,7 @@ export class GitService {
 
   public JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'http://localhost:3000'; // 'https://gator-api.azurewebsites.net';  // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
