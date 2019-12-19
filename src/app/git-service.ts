@@ -60,7 +60,7 @@ export class GitService {
 
   public JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'http://localhost:3000'; // 'https://gator-api.azurewebsites.net';  // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; // 'https://gator-api.azurewebsites.net';  // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -136,12 +136,12 @@ export class GitService {
     });
   }
 
-  async getOrgName4Id (val:string) {
-    this.jiraOrgList.forEach (org => {
+  async getOrgName4Id(val: string) {
+    this.jiraOrgList.forEach(org => {
       if (org.id === val) {
         return org.name;
       }
-    })
+    });
   }
   fillJiraOrgList(): Promise<boolean> {
     return new Promise((done, fail) => {
