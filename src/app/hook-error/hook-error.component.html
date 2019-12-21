@@ -1,22 +1,21 @@
- 
- <div style="background: black; color: white">
-    <h1>Webhook installtion failed, because you may not have the permission. Please install it manually. </h1>
-    <P></P>
-    <h2>Without webhooks CTODash will not update your data. Please ask the admin of your orgnization to install webhook.</h2>
-    <h3>Follow these simple steps to  Manually Install web hook? </h3>
-  
-    1.  Goto your organization page on the github <br />
-    2.  Navigate to the "Settings" tab. <br />
-    3.  Select the "Webhooks" option on the left menu. <br />
-    4.  Click "Add Webhook" <br />
-    5.  put 'https://gatorgithook.azurewebsites.net/api/httptrigger' in payload URL <br />
-    6.  Select "application/json" as the encoding type. <br />
-    7.  select radio button 'Let me select individual events.' <br />
-    8.  check 'Pull requests' <br />
-    9.  click on Add webhook <br />
+<div style="color: white; margin-left: 10px;">
+  <h1>Webhook installtion failed, because you may not have the permission. Please install it manually.</h1>
+  <P></P>
+  <p style="color:rgb(129, 105, 129)">Someone else may have already installed the hook. We need only one hook per organization.</p>
+  <h2>Without webhooks CTODash will not update your data. Please ask the admin of your orgnization to install webhook.</h2>
+  <h3>Follow these simple steps to Manually Install web hook?</h3>
 
-    <p></p>
+  1. Goto your organization page on the github <br />
+  2. Navigate to the "Settings" tab. <br />
+  3. Select the "Webhooks" option on the left menu. <br />
+  4. Click "Add Webhook" <br />
+  5. put 'https://gatorgithook.azurewebsites.net/api/httptrigger' in payload URL <br />
+  6. Select "application/json" as the encoding type. <br />
+  7. select radio button 'Let me select individual events.' <br />
+  8. check 'Pull requests' <br />
+  9. click on Add webhook <br />
 
-    <p style="color:magenta">Someone else may have already installed the hook. We need only one hook per organization. Let me <a href="dashboard"> try </a></p> 
-  
-</div>  
+  <p></p>
+
+  <a href="dashboard" style="color:pink; text-decoration: wavy;"> Let me try it</a>
+</div>
