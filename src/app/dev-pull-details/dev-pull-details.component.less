@@ -1,3 +1,5 @@
+@import '../css/lib';
+
 #flex-container {
   display: flex;
   flex-direction: column;
@@ -11,38 +13,15 @@
 
 .flex-item {
   padding: 1px;
+  padding-bottom: 5px;
   height: auto;
   width: 100%;
   display: block;
   border-top: none;
   border-color: black;
   border-bottom-width: thin;
-  font-size:large;
+  font-size: large;
   // background-color: rgb(18, 18, 20);
   animation-name: rollIn;
   animation-duration: 2.5s;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 15px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: rgb(36, 35, 35);
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgb(51, 51, 52);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(51, 50, 50);
-}
-
-::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0);
 }

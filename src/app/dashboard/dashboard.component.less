@@ -2,7 +2,12 @@
 
 .count-style {
   width: @top-component-width;
-  height: @top-banner-height;
+  border-style: solid;
+  border-color: black;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
 }
 
 .flex-column-container {
@@ -22,7 +27,6 @@
   // padding-top: 1px;
 }
 .flex-item-firstRow {
-  padding-left: 1px;
   flex: 1;
   display: flexbox;
   font-size: 30px;
@@ -30,7 +34,7 @@
 }
 
 .flex-item {
-  padding-left: 1px;
+  padding-left: 2px;
   width: 346px;
   min-width: 346px;
   display: flexbox;
@@ -48,7 +52,7 @@
 
 .button-style {
   margin-right: 10px;
-  background-color:#26252500;
+  background-color: transparent;
   border: none;
   color: #b7a7a7;
   font-size: large;

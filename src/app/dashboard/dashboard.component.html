@@ -1,6 +1,6 @@
 <div class="flex-column-container">
   <div class="flex-row-container">
-    <div class="box-shadow count-style">
+    <div class="count-style">
       <app-pull-request-count></app-pull-request-count>
     </div>
     <div class="flex-item-firstRow">
@@ -16,13 +16,10 @@
     </div>
     <div style="display: flex; flex-direction:column;  width: 100%;justify-content: flex-start; align-items: top;">
       <div
-        style="background-color: #262525cc;  flex:1 ;box-shadow: 0px 0px 3px #0c0c0c;
-      padding-left: 10px;
-      margin-left: 5px;"
+        style="flex:1;
+      padding-left: 10px; background-color: #232329;"
       >
-        <div
-          style="float: left; height: 45px;display:flex; flex-direction: row; "
-        >
+        <div style="float: left; height: 45px;display:flex; flex-direction: row; ">
           <button class="button-style" style="color:rgb(158, 92, 54)" (click)="gitData()">Git</button>
           <button class="button-style separator">|</button>
           <button class="button-style" style="color:rgb(61, 109, 128)" (click)="jiraData()">Jira</button>
