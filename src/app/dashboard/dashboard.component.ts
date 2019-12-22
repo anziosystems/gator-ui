@@ -83,6 +83,35 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  gitData() {
+    this.gitService.currentContext = "GIT";
+    const date = new Date();
+
+    // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+    //this trigger kicks dev-pull-details components as it is subscribed to
+    //this trigger, which in turn goes and fill the devloper details for git
+    this.gitService.trigger(this.gitService.currentDev.login);
+    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+  }
+
+  jiraData() {
+    const date = new Date();
+    this.gitService.currentContext = "JIRA";
+    // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+    //
+    if (!this.storage.get('JiraToken')) {
+      this.router.navigate(['/jira-login']);
+      return;
+    }
+    // else {
+    //   //Delete this else clause
+    //   this.router.navigate(['/jiraStatus']);
+
+    // }
+    this.gitService.triggerJira(this.gitService.currentDev.name);
+    this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
+  }
+
   onStatefulInit() {
     // let token = this.storage.get('token');
     // if (!token) {

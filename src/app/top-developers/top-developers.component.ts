@@ -1,6 +1,6 @@
 import {Component, OnInit, EventEmitter, Inject, Output, Injectable} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
-import {GitService} from '../git-service';
+import {GitService, DevDetails} from '../git-service';
 import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
@@ -8,12 +8,6 @@ import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import * as _ from 'lodash';
 import {UsageService} from '@labshare/ngx-core-services';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
-
-export class DevDetails {
-  public name: string;
-  public image: string;
-  public login: string;
-}
 
 @Component({
   selector: 'app-top-developers',
@@ -72,17 +66,29 @@ export class TopDevelopersComponent implements OnInit {
     }
   }
 
-  data(developer: string) {
+  GetData(dev: DevDetails) {
+    if (this.gitService.currentContext === 'undefined') this.gitService.currentContext = 'GIT';
+
+    if (this.gitService.currentContext === 'JIRA') {
+      this.jiraData(dev);
+    } else {
+      this.gitData(dev);
+    }
+  }
+
+  gitData(developer: DevDetails) {
     const date = new Date();
 
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
-    this.gitService.trigger(developer);
+    this.gitService.currentDev = developer;
+    this.gitService.trigger(developer.login);
     this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
   }
 
-  jiraData(developer: string) {
+  jiraData(developer: DevDetails) {
+    this.gitService.currentDev = developer;
     const date = new Date();
 
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
@@ -96,7 +102,7 @@ export class TopDevelopersComponent implements OnInit {
     //   this.router.navigate(['/jiraStatus']);
 
     // }
-    this.gitService.triggerJira(developer);
+    this.gitService.triggerJira(developer.name);
     this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
   }
 
@@ -123,9 +129,15 @@ export class TopDevelopersComponent implements OnInit {
           this.developers.push(d);
         });
         this.OrgDevelopers = this.developers;
+        this.GetData(this.OrgDevelopers[0]);
+        
       });
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.GetData(this.OrgDevelopers[0]);
+  }
+
+  
 }

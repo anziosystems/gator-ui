@@ -15,6 +15,12 @@ req.headers['jiraAuthorization'];  //This is JiraTenant Id
 
 */
 
+export class DevDetails {
+  public name: string;
+  public image: string;
+  public login: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -28,6 +34,8 @@ export class GitService {
   jiraTenant: string;
   public organization: string;
   public jiraCurrentOrg: string;
+  public currentDev: DevDetails;
+  public currentContext: string; //JIRA/GIT
   /*
     jiraOrgList: Array(3)
     0:

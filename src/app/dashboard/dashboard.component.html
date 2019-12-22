@@ -14,11 +14,32 @@
     <div class="flex-item">
       <app-top-repository></app-top-repository>
     </div>
-    <div class="flex-detail-item" [hidden]="!isShowDetail">
-      <app-dev-pull-details></app-dev-pull-details>
-    </div>
-    <div class="flex-detail-item" [hidden]="!isJiraShowDetail">
-      <app-dev-jira-details></app-dev-jira-details>
+    <div style="display: flex; flex-direction:column;  width: 100%;justify-content: flex-start; align-items: top;">
+      <div
+        style="background-color: #262525cc;  flex:1 ;box-shadow: 0px 0px 3px #0c0c0c;
+      padding-left: 10px;
+      margin-left: 5px;"
+      >
+        <div
+          style="float: left; height: 45px;display:flex; flex-direction: row; "
+        >
+          <button class="button-style" style="color:rgb(158, 92, 54)" (click)="gitData()">Git</button>
+          <button class="button-style separator">|</button>
+          <button class="button-style" style="color:rgb(61, 109, 128)" (click)="jiraData()">Jira</button>
+          <!-- <button class="button-style separator">|</button>
+          <button class="button-style">TFS</button>
+          <button class="button-style separator">|</button>
+          <button class="button-style">BitBucket</button> -->
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <div class="flex-detail-item" [hidden]="!isShowDetail">
+          <app-dev-pull-details></app-dev-pull-details>
+        </div>
+        <div class="flex-detail-item" [hidden]="!isJiraShowDetail">
+          <app-dev-jira-details></app-dev-jira-details>
+        </div>
+      </div>
     </div>
   </div>
 </div>

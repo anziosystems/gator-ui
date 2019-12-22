@@ -1,6 +1,6 @@
 <!-- <div>  </div> -->
 <div id="flex-container">
-  <button
+  <!-- <button
     style="width: 30px;
   height: 30px;
   z-index: 1;
@@ -15,7 +15,9 @@
     (click)="closePane()"
   >
     X
-  </button>
+  </button> -->
+
+
   <div *ngIf="!bShowName">
     <a href="https://github.com/{{ devDetails[0]?.Login }}" target="_blank" style="text-decoration: none;">
       <div div class="flex-item" style=" color:rgb(170, 125, 105)">{{ devDetails[0]?.Name }}</div>
@@ -32,7 +34,7 @@
       <div style="font-size: large; color:#98ad77">{{ dev.State }}: {{ dev.Repo }}</div>
     </div>
     <div style="display: flex;flex-direction: row;">
-      <div style="font-size: x-large; color: white ">
+      <div style="font-size: large; color: white ">
         <a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a>
       </div>
     </div>

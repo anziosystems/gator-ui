@@ -1,6 +1,6 @@
 <!-- <div>  </div> -->
 <div id="flex-container">
-  <button
+  <!-- <button
     style="width: 30px;
   height: 30px;
   z-index: 1;
@@ -14,7 +14,7 @@
     (click)="closePane()"
   >
     X
-  </button>
+  </button> -->
 
   <div *ngIf="bShowError" style="font-size: medium; color:#9c678f;">
     No User found with name: {{ developerName }} in Jira. <br />
@@ -34,7 +34,7 @@
       <div style="font-size: large; color:#9c678f;">{{ dev.orgName }} - {{ dev.key }} - {{ dev.State }}: {{ dev.Repo }}</div>
 
       <div style="display: flex;flex-direction: row;">
-        <div style="font-size: x-large; color: white ">
+        <div style="font-size: large; color: white ">
           <a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a>
         </div>
       </div>
