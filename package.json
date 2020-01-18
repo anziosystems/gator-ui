@@ -35,7 +35,6 @@
     "@angular/platform-browser": "^7.2.9",
     "@angular/platform-browser-dynamic": "^7.2.9",
     "@angular/router": "^7.2.9",
-    "@labshare/ngx-core-services": "^1.0.3",
     "angular-webstorage-service": "^1.0.2",
     "angular2-draggable": "^2.3.2",
     "animate.css": "^3.7.2",
@@ -49,15 +48,12 @@
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
-  "packageDependencies": {
-    "@labshare/shell-ui": "*"
-  },
+  "packageDependencies": {},
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.9",
-    "@angular/cli": "^7.3.9",
+    "@angular/cli": "^8.3.23",
     "@angular/compiler-cli": "^7.2.9",
     "@angular/language-service": "^7.2.9",
-    "@labshare/shell-ui": "^1.0.0",
     "@ngtools/webpack": "^6.2.9",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
