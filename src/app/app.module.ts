@@ -19,16 +19,16 @@ import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 // import { FormsModule } from '@angular/forms';
 
-import {
-  AuthService,
-  AuthWebService,
-  AuthInterceptor,
-  OidcNavigationService,
-  NgxCoreServicesModule,
-  Config,
-  ConfigService,
-  SessionStorageService,
-} from '@labshare/ngx-core-services';
+// import {
+//   AuthService,
+//   AuthWebService,
+//   AuthInterceptor,
+//   OidcNavigationService,
+//   NgxCoreServicesModule,
+//   Config,
+//   ConfigService,
+//   SessionStorageService,
+// } from '@labshare/ngx-core-services';
 
 import {HookErrorComponent} from './hook-error/hook-error.component';
 import {PrchartComponent} from './prchart/prchart.component';
