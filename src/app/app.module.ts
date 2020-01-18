@@ -17,30 +17,49 @@ import {GitService} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
-import { AuthService,AuthWebService, AuthInterceptor, OidcNavigationService, NgxCoreServicesModule, Config ,ConfigService,SessionStorageService} from '@labshare/ngx-core-services';
+// import { FormsModule } from '@angular/forms';
 
-import { HookErrorComponent } from './hook-error/hook-error.component';
-import { PrchartComponent } from './prchart/prchart.component';
-import { AngularDraggableModule } from 'angular2-draggable';
-import { TweetsComponent } from './tweets/tweets.component';
-import { BreakingnewsComponent } from './breakingnews/breakingnews.component';
-import { DevJiraDetailsComponent } from './dev-jira-details/dev-jira-details.component';
-import { JiraLoginInComponent } from './jira-login-in/jira-login-in.component';
-import { JiraCallBackComponent } from './jira-call-back/jira-call-back.component';
-import { JiraStatusComponent } from './jira-status/jira-status.component';
+import {
+  AuthService,
+  AuthWebService,
+  AuthInterceptor,
+  OidcNavigationService,
+  NgxCoreServicesModule,
+  Config,
+  ConfigService,
+  SessionStorageService,
+} from '@labshare/ngx-core-services';
+
+import {HookErrorComponent} from './hook-error/hook-error.component';
+import {PrchartComponent} from './prchart/prchart.component';
+import {AngularDraggableModule} from 'angular2-draggable';
+import {TweetsComponent} from './tweets/tweets.component';
+import {BreakingnewsComponent} from './breakingnews/breakingnews.component';
+import {DevJiraDetailsComponent} from './dev-jira-details/dev-jira-details.component';
+import {JiraLoginInComponent} from './jira-login-in/jira-login-in.component';
+import {JiraCallBackComponent} from './jira-call-back/jira-call-back.component';
+import {JiraStatusComponent} from './jira-status/jira-status.component';
+import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.component';
+import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
+import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'bitbucketlogin', component: BitbucketLoginComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'jiraCallback', component: JiraCallBackComponent},
+  {path: 'bitbucketCallback', component: BitbucketCallBackComponent},
+
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
+  {path: 'bitbucketStatus', component: BitbucketStatusComponent},
+
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'prchart', component: PrchartComponent},
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 ];
 
 @NgModule({
@@ -62,9 +81,11 @@ const routes: Routes = [
     DevJiraDetailsComponent,
     JiraLoginInComponent,
     JiraCallBackComponent,
-    JiraStatusComponent
-  
-    ],
+    JiraStatusComponent,
+    BitbucketLoginComponent,
+    BitbucketCallBackComponent,
+    BitbucketStatusComponent,
+  ],
   imports: [
     BrowserModule,
     NgxCoreServicesModule.forRoot(environment as Config),
@@ -73,7 +94,6 @@ const routes: Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     AngularDraggableModule,
- 
   ],
   providers: [GitService, CookieService],
   exports: [RouterModule],
