@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {GitService} from '../git-service';
-import {routerNgProbeToken} from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,4 @@ export class LoginComponent implements OnInit {
     const authURL = this.gitService.gatorApiUrl + '/auth/github?callbackUrl=' + location.origin + '/callback';
     window.location.href = authURL;
   }
-
-
-
 }

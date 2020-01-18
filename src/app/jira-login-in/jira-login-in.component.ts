@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {GitService} from '../git-service';
-import {routerNgProbeToken} from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-jira-login-in',

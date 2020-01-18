@@ -88,7 +88,6 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    NgxCoreServicesModule.forRoot(environment as Config),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     StorageServiceModule,
     HttpClientModule,
