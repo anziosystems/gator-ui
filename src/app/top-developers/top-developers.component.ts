@@ -6,7 +6,7 @@ import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import * as _ from 'lodash';
-import {UsageService} from '@labshare/ngx-core-services';
+// import {UsageService} from '@labshare/ngx-core-services';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
 // import { ContextMenuComponent } from 'ngx-contextmenu'; 
 
@@ -50,7 +50,9 @@ export class TopDevelopersComponent implements OnInit {
   @Output()
   messageEvent = new EventEmitter<string>(); //TODO: delete not used
 
-  constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, private usageService: UsageService) {
+  constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router,
+  // private usageService: UsageService
+  ) {
     this.developers = [];
 
     this.navigationSubscription = this.router.events.subscribe((e: any) => {

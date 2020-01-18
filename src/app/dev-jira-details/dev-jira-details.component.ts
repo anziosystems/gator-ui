@@ -5,7 +5,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import * as _ from 'lodash';
-import {UsageService} from '@labshare/ngx-core-services';
+// import {UsageService} from '@labshare/ngx-core-services';
 import {getLocaleDateTimeFormat} from '@angular/common';
 
 @Component({
@@ -25,7 +25,9 @@ export class DevJiraDetailsComponent implements OnInit {
   userName: string;
   userLink: string;
 
-  constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
+  constructor(private gitService: GitService, private router: Router, 
+    // private usageService: UsageService
+    ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 

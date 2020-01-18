@@ -5,7 +5,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import * as _ from 'lodash';
-import {UsageService} from '@labshare/ngx-core-services';
+// import {UsageService} from '@labshare/ngx-core-services';
 import {getLocaleDateTimeFormat} from '@angular/common';
 
 @Component({
@@ -21,7 +21,9 @@ export class DevPullDetailsComponent implements OnInit {
   bShowName = false;
   DEFAULT_DAYS = 30;
 
-  constructor(private gitService: GitService, private router: Router, private usageService: UsageService) {
+  constructor(private gitService: GitService, private router: Router, 
+    // private usageService: UsageService
+    ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 
