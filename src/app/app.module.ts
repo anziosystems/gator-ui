@@ -17,18 +17,7 @@ import {GitService} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
-// import { FormsModule } from '@angular/forms';
-
-// import {
-//   AuthService,
-//   AuthWebService,
-//   AuthInterceptor,
-//   OidcNavigationService,
-//   NgxCoreServicesModule,
-//   Config,
-//   ConfigService,
-//   SessionStorageService,
-// } from '@labshare/ngx-core-services';
+import { ContextMenuModule } from 'ngx-contextmenu';
 
 import {HookErrorComponent} from './hook-error/hook-error.component';
 import {PrchartComponent} from './prchart/prchart.component';
@@ -88,6 +77,7 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    ContextMenuModule.forRoot() ,
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     StorageServiceModule,
     HttpClientModule,

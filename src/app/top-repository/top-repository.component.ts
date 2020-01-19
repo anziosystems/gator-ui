@@ -13,11 +13,13 @@ import {Router, NavigationEnd} from '@angular/router';
 })
 export class TopRepositoryComponent implements OnInit {
   repositories: any[];
-
+  OrgRepositories: any[];
   navigationSubscription: any;
 
-  constructor(private gitService: GitService, private router: Router) // private usageService: UsageService
-  {
+  constructor(
+    private gitService: GitService,
+    private router: Router, // private usageService: UsageService
+  ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -43,12 +45,21 @@ export class TopRepositoryComponent implements OnInit {
     }
   }
 
+  filterRepo(str: string) {
+    if (str.length === 0) {
+      this.repositories = this.OrgRepositories;
+      return;
+    }
+    str = str.toLowerCase();
+    this.repositories = this.OrgRepositories.filter(d => d.toLowerCase().substring(0, str.length) === str);
+  }
   initializeData() {
     this.repositories = [];
     this.gitService.ready().then(result => {
       this.gitService.getTopRepositories(this.gitService.currentOrg, 15).subscribe(val => {
         // Filter out the duplicates
         this.repositories = val.map(item => item.Repo).filter((value, index, self) => self.indexOf(value) === index);
+        this.OrgRepositories = this.repositories;
       });
     });
   }

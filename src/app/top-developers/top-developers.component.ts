@@ -6,9 +6,8 @@ import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import * as _ from 'lodash';
-// import {UsageService} from '@labshare/ngx-core-services';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
-// import { ContextMenuComponent } from 'ngx-contextmenu'; 
+import {ContextMenuComponent} from 'ngx-contextmenu';
 
 @Component({
   selector: 'app-top-developers',
@@ -42,17 +41,12 @@ export class TopDevelopersComponent implements OnInit {
   navigationSubscription: any;
   filterQuery: string;
   OrgDevelopers: any[];
-  items =  [
-            {label: 'Send Kudoes'}, {label: 'Monthly Status Reports'}, {label: 'Survery'}
-    ] ;
+  items = [{label: 'Send Kudoes'}, {label: 'Monthly Status Reports'}, {label: 'Survery'}];
 
-  
   @Output()
   messageEvent = new EventEmitter<string>(); //TODO: delete not used
 
-  constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router,
-  // private usageService: UsageService
-  ) {
+  constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router) {
     this.developers = [];
 
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
@@ -63,7 +57,7 @@ export class TopDevelopersComponent implements OnInit {
     });
   }
 
-// @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent, {static: false}) public basicMenu: ContextMenuComponent;
 
   ngOnDestroy() {
     // avoid memory leaks here by cleaning up after ourselves. If we
@@ -138,15 +132,15 @@ export class TopDevelopersComponent implements OnInit {
         });
         this.OrgDevelopers = this.developers;
         this.GetData(this.OrgDevelopers[0]);
-        
       });
     });
   }
 
+  rightClick(e: any, context: string, dev: DevDetails) {
+    alert(dev.login + ' ' + context);
+  }
 
   ngOnInit() {
     this.GetData(this.OrgDevelopers[0]);
   }
-
-  
 }

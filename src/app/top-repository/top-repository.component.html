@@ -1,6 +1,10 @@
 <div class="flex-container  box-shadow">
-  <div class="flex-item-header">Repositories</div>
-  <hr style="width: 100%; color: rgb(29, 27, 27); border-style:solid; " />
+  <div class="flex-item-header">
+    Repositories
+    <input type="text" #box (keyup)="filterRepo(box.value)" style="color: black" />
+    <br />
+  </div>
+  <hr style="width: 100%; color: rgb(29, 27, 27); border-style:inset; " />
   <div *ngFor="let repo of repositories">
     <div div class="flex-item">
       <div style="display: flex; direction: row;cursor: pointer;">
