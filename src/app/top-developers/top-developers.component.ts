@@ -76,6 +76,7 @@ export class TopDevelopersComponent implements OnInit {
     } else {
       this.gitData(dev);
     }
+    
   }
 
   gitData(developer: DevDetails) {
@@ -87,6 +88,11 @@ export class TopDevelopersComponent implements OnInit {
     this.gitService.currentDev = developer;
     this.gitService.trigger(developer.login);
     this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+    this.gitService.triggerCustomEvent ( {
+      source: 'TOP-DEVELOPER',
+      destination: 'STATUS-REPROT',
+      message: developer.login 
+    })
   }
 
   jiraData(developer: DevDetails) {

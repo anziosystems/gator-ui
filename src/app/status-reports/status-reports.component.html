@@ -1,0 +1,61 @@
+<div class="flex-column-container">
+  <div class="flex-row-container">
+    <div class="flex-item-firstCol">
+      <p></p>
+      History
+      <p></p>
+      <div>
+        <div *ngFor="let sr of srList; let i = index">
+          <button id="m1-btn" (click)="data(sr)" class="menu2-button" title="{{ sr }}">
+            {{ sr }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="flex-item-secondCol">
+      <p></p>
+      <!-- Status Report
+      <p></p> -->
+      <div style="font-size: 15px;">
+        <button class="buttons-style" style="background-color: rgb(73, 87, 150);" (click)="addGitPR()">Add Git PR</button>
+        <button class="buttons-style" style="background-color: rgb(155, 148, 88); " (click)="addJiraTickets()">Add Jira Tickets</button>
+        <button class="buttons-style" style="background-color: rgb(73, 112, 71); " (click)="comingSoon()">Add TFS Tickets</button>
+        <button class="buttons-style" style="background-color: rgb(139, 103, 70);" (click)="comingSoon()">Add BitBucket Items</button>
+      </div>
+
+      <p></p>
+      <div style="font-size: large; font-weight: bold; margin-bottom: 10px;">
+        <p></p>
+        Status Report
+      </div>
+      <div>
+        <div [ngStyle]="{'z-index': bShowReviewers}" style="width: 300px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
+          <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
+          <app-top-developers></app-top-developers>
+        </div>
+        <div [ngStyle]="{'z-index': bShowGitPR}" style="width: 500px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
+          <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
+          <app-dev-pull-details></app-dev-pull-details>
+        </div>
+        <div [ngStyle]="{'z-index': bShowJira}" style="width: 700px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
+          <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
+          <app-dev-jira-details></app-dev-jira-details>
+        </div>
+        <textarea style="height:70vh; width: 95%; color:black" value="{{ textStatus }}"></textarea>
+      </div>
+      <p></p>
+      <div>
+        <div style="font-size: 15px; margin-bottom: 10px;">
+          Reviewers
+        </div>
+        <input type="text" name="txtReviewer" style="height:90%; width: 95%; color:black" value="{{ textReviewer }}" />
+      </div>
+      <p></p>
+      <button class="buttons-style" style="background-color: rgb(78, 88, 131); " (click)="addReviewer()">Add Reviewers</button>
+      <button class="buttons-style" style="background-color: rgb(60, 95, 60); ">Save</button>
+      <button class="buttons-style" style="background-color:rgb(31, 70, 55);">Download PDF</button>
+      <button class="buttons-style" style="background-color:rgb(87, 45, 81);">Send back</button>
+      <button class="buttons-style" style="background-color:rgb(189, 38, 38);">Submit</button>
+    </div>
+  </div>
+</div>

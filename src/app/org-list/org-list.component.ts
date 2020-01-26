@@ -1,7 +1,7 @@
 import {Component, OnInit, EventEmitter, Output, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
-import { Route } from '@angular/compiler/src/core';
+import {Route} from '@angular/compiler/src/core';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
 @Component({
@@ -16,9 +16,9 @@ export class OrgListComponent implements OnInit {
   loggedIn: boolean;
   currentOrg: string;
 
-  constructor(private gitService: GitService, private route: ActivatedRoute , private router: Router,  @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
+  constructor(private gitService: GitService, private route: ActivatedRoute, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
     this.back_colors = [];
-    this.back_colors.push('rgb(45, 49, 51)');//#01A9DB
+    this.back_colors.push('rgb(45, 49, 51)'); //#01A9DB
     this.back_colors.push('rgb(45, 49, 51)');
     this.back_colors.push('rgb(45, 49, 51)');
     this.back_colors.push('rgb(45, 49, 51)');
@@ -57,6 +57,10 @@ export class OrgListComponent implements OnInit {
     location.reload();
   }
 
+  gotoStatusReports() {
+    this.router.navigate(['/StatusReport']);
+  }
+
   data(org: any) {
     this.gitService.currentOrg = org.Org;
     this.router.onSameUrlNavigation = 'reload';
@@ -64,12 +68,11 @@ export class OrgListComponent implements OnInit {
     this.router.navigate(['/dashboard'], {
       queryParams: {Org: org.Org, refresh: new Date().getTime()},
     });
-   
   }
 
   ngOnInit() {
     this.orgList = [];
-    this.gitService.currentOrg  = this.route.snapshot.queryParamMap.get("Org")
+    this.gitService.currentOrg = this.route.snapshot.queryParamMap.get('Org');
     this.gitService.getOrgList().subscribe(result => {
       this.orgList = result;
     });

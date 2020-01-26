@@ -13,9 +13,23 @@
 
     <hr style="width: 80%; color: rgb(61, 60, 60); border-style:solid; " />
 
-    <button id="m1-btn" class="menu2-button box-shadow" title="Manage Alert - Comming soon!">
-      <img src="../../assets/alert.jpg" class="image-button" />
+    <button id="m1-btn" (click)="gotoStatusReports()" class="menu2-button box-shadow" title="Status Reports">
+      SR
     </button>
+
+    <button id="m1-btn" onclick="SR" class="menu2-button box-shadow" title="Send Kudos">
+      K
+    </button>
+
+    <button id="m1-btn" onclick="SR" class="menu2-button box-shadow" title="360 feedback">
+      360
+    </button>
+
+    <hr style="width: 80%; color: rgb(61, 60, 60); border-style:solid; " />
+
+    <!-- <button id="m1-btn" class="menu2-button box-shadow" title="Manage Alert - Comming soon!">
+      <img src="../../assets/alert.jpg" class="image-button" />
+    </button> -->
 
     <button id="m1-btn" onclick="window.location.href = 'mailto:rafat@anziosystems.com';" class="menu2-button box-shadow" title="Invite others">
       <img src="../../assets/feedback.png" class="image-button" />

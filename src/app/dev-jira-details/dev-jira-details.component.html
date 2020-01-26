@@ -42,6 +42,9 @@
 
       <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at | date }} Updated: {{ dev.updated | date }}</div>
       <!-- <div style="font-size: large; color: rgb(143, 173, 182)">Updated: {{ dev.updated | date }}</div> -->
+      <div *ngIf="bShowAddButton">
+        <button (click)="addJiraDetails(dev)" style="background-color:transparent; border: none; padding-left: 0px;color: tomato;" title="Add details to status report">+</button>
+      </div>
       <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid; " />
     </div>
   </div>

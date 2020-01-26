@@ -19,22 +19,32 @@ export class DevDetails {
   public name: string;
   public image: string;
   public login: string;
+  public id: number;
+  public ProfileUrl: string;
+}
+
+export class CustomEvent {
+  public source: string;
+  public destination: string;
+  public message: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class GitService {
-  httpOptions: any;
-  httpJirapOptions: any;
-  query: string;
-  token: string;
-  jiraToken: string;
-  tenant: string;
-  jiraTenant: string;
+  public httpOptions: any;
+  public httpJirapOptions: any;
+  public query: string;
+  public token: string;
+  public jiraToken: string;
+  public tenant: string;
+  public jiraTenant: string;
   public organization: string;
+  public currentOrg: string;
   public jiraCurrentOrg: string;
   public currentDev: DevDetails;
+  public loggedInGitDev: DevDetails;
   public currentContext: string; //JIRA/GIT
   /*
     jiraOrgList: Array(3)
@@ -45,7 +55,7 @@ export class GitService {
     scopes: (4) ["manage:jira-configuration", "write:jira-work", "read:jira-work", "read:jira-user"]
     url: "https://labshare.atlassian.net"
   */
-  public jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
+  jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
 
   /*
   JiraUsersList: Array(3)
@@ -66,12 +76,14 @@ export class GitService {
   */
   public JiraUsersList: any;
 
-  public JiraUsersMap = new Map();
+  //Keeps the map od Jira display Name and accountId
+  JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; //'http://localhost:3000'; // 'https://gator-api.azurewebsites.net';  // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
+  private _onCustomEvent = new Subject<CustomEvent>();
   private _onMyEvent = new Subject<string>();
   private _onJiraEvent = new Subject<string>();
   private _onComponentMessage = new Subject<string>();
@@ -81,6 +93,10 @@ export class GitService {
     return this._onMyEvent.asObservable();
   }
 
+  public get onCustomEvent(): Observable<CustomEvent> {
+    return this._onCustomEvent.asObservable();
+  }
+
   public get onJiraEvent(): Observable<string> {
     return this._onJiraEvent.asObservable();
   }
@@ -88,8 +104,6 @@ export class GitService {
   public get onComponentMessage(): Observable<string> {
     return this._onComponentMessage.asObservable();
   }
-
-  public currentOrg: string;
 
   /* 
    Component calls this trigger
@@ -101,6 +115,10 @@ export class GitService {
   */
   public trigger(value: string) {
     this._onMyEvent.next(value);
+  }
+
+  public triggerCustomEvent(value: CustomEvent) {
+    this._onCustomEvent.next(value);
   }
 
   public triggerJira(value: string) {
@@ -175,7 +193,7 @@ export class GitService {
     });
   }
 
-  async getAccountId4UserName(name: string): Promise<any> {
+  async getJiraAccountId4UserName(name: string): Promise<any> {
     if (this.JiraUsersMap.size === 0) {
       await this.fillJiraUserMap();
     } else {
@@ -334,6 +352,11 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  getGitLoggedInUSerDetails(bustTheCache: boolean = false): Observable<any> {
+    const q = `getGitLoggedInUSerDetails?bustTheCache=${bustTheCache}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
   //JIRA
 
   /*

@@ -33,12 +33,15 @@
       <div style="font-size: large; color:#98ad77">{{ dev.State }}: {{ dev.Repo }}</div>
     </div>
     <div style="display: flex;flex-direction: row;">
-      <div style="font-size: large; color: white ">
+      <div style="font-size: large; color: white">
         <a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a>
       </div>
     </div>
     <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
     <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at }}</div>
+    <div *ngIf="bShowAddButton">
+      <button (click)="addGitPR(dev)" style="background-color:transparent; border: none; padding-left: 0px;color: tomato;" title="Add details to status report">+</button>
+    </div>
     <hr style="width: 90%; color: rgb(29, 27, 27); border-style:solid;" />
   </div>
 </div>

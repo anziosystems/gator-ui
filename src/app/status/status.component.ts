@@ -57,6 +57,15 @@ export class StatusComponent implements OnInit {
     this.gitService.getOrgList(true, true).subscribe(
       //superflaus call, just waking up the sleeping API
       res => {
+        //Get the Tenant details - This will be logged in User
+        this.gitService.getGitLoggedInUSerDetails(true).subscribe(result => {
+          this.gitService.loggedInGitDev.name = result.DisplayName; //Full Name
+          this.gitService.loggedInGitDev.login = result.UserName;
+          this.gitService.loggedInGitDev.image = result.Photo;
+          this.gitService.loggedInGitDev.id = result.Id;
+          this.gitService.loggedInGitDev.ProfileUrl = result.ProfileUrl;
+        });
+
         this.hookFail = false;
         this.messages.push('Please wait, getting Org List ...');
         this.gitService.getOrgList(true, true).subscribe(

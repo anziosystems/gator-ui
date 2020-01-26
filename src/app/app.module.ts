@@ -31,6 +31,7 @@ import {JiraStatusComponent} from './jira-status/jira-status.component';
 import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.component';
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
+import { StatusReportsComponent } from './status-reports/status-reports.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -38,7 +39,7 @@ const routes: Routes = [
   {path: 'callback', component: CallbackComponent},
   {path: 'jiraCallback', component: JiraCallBackComponent},
   {path: 'bitbucketCallback', component: BitbucketCallBackComponent},
-
+  {path: 'StatusReport', component: StatusReportsComponent},
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
@@ -74,6 +75,7 @@ const routes: Routes = [
     BitbucketLoginComponent,
     BitbucketCallBackComponent,
     BitbucketStatusComponent,
+    StatusReportsComponent,
   ],
   imports: [
     BrowserModule,

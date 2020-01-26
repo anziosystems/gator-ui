@@ -1,6 +1,6 @@
 import {Component, OnInit, EventEmitter, Input} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
-import {GitService} from '../git-service';
+import {GitService, CustomEvent} from '../git-service';
 import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
@@ -24,6 +24,7 @@ export class DevJiraDetailsComponent implements OnInit {
   orgName: string;
   userName: string;
   userLink: string;
+  bShowAddButton: boolean = false;
 
   constructor(private gitService: GitService, private router: Router, 
     // private usageService: UsageService
@@ -66,13 +67,22 @@ export class DevJiraDetailsComponent implements OnInit {
     });
   }
 
+  //addJiraDetails
+  addJiraDetails(dev: any) {
+    this.gitService.triggerCustomEvent({
+      source: 'JIRA',
+      destination: 'STATUS-REPORT',
+      message: `${dev.title}  Created at: ${dev.created_at}  Link: ${dev.pullrequesturl}`,
+    });
+  }
+
   async getDeveloperDetails(developer: string) {
     this.devDetails = new Map();
     this.devDetails2 = [];
     this.developerName = developer;
     this.bShowError = false;
 
-    this.gitService.getAccountId4UserName(developer).then(
+    this.gitService.getJiraAccountId4UserName(developer).then(
       accountId => {
         if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
           this.bShowError = true;

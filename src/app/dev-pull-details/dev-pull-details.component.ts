@@ -1,6 +1,6 @@
 import {Component, OnInit, EventEmitter, Input} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
-import {GitService} from '../git-service';
+import {GitService, CustomEvent} from '../git-service';
 import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
@@ -20,10 +20,10 @@ export class DevPullDetailsComponent implements OnInit {
   bHideDetails: boolean = true;
   bShowName = false;
   DEFAULT_DAYS = 30;
+  bShowAddButton: boolean = false;
 
-  constructor(private gitService: GitService, private router: Router, 
-    // private usageService: UsageService
-    ) {
+  constructor(private gitService: GitService, private router: Router) // private usageService: UsageService
+  {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 
@@ -48,6 +48,12 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   initializeData() {
+    this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
+      if (val.source === 'STATUS-REPORT' && val.destination === 'TOP-DEVELOPER') {
+        this.bShowAddButton = true;
+      }
+    });
+
     let x = Date.now.toString();
     //  this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
 
@@ -102,6 +108,13 @@ export class DevPullDetailsComponent implements OnInit {
     });
   }
 
+  addGitPR(dev: any) {
+    this.gitService.triggerCustomEvent({
+      source: 'GIT',
+      destination: 'STATUS-REPORT',
+      message: `${dev.title}  Created at: ${dev.created_at}  Link: ${dev.pullrequesturl}`,
+    });
+  }
   //action => opened, closed
   getActionDetails(action: string, day: number) {
     this.gitService.ready().then(result => {
