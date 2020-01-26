@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject, NgModule} from '@angular/core';
 //import {StatefulComponent} from '@labshare/ngx-stateful';
 import {ChangeDetectorRef} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';

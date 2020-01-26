@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Output, Inject} from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, Inject, NgModule } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService, CustomEvent} from '../git-service';
 import {Route} from '@angular/compiler/src/core';
@@ -16,7 +16,12 @@ export class StatusReportsComponent implements OnInit {
   bShowReviewers: number = -1;
   bShowGitPR: number = -1;
   bShowJira: number = -1;
-  constructor(private gitService: GitService, private router: Router) {}
+  currentOrg: string;
+  constructor(private gitService: GitService, private router: Router) {
+    this.currentOrg = this.gitService.currentOrg;
+    this.textReviewer = '';
+    this.textStatus = '';
+  }
 
   ngOnInit() {
     this.srList = [];
@@ -37,7 +42,9 @@ export class StatusReportsComponent implements OnInit {
 
     this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
       if (val.source === 'TOP-DEVELOPER') {
-        if ((val.destination = 'STATUS-REPORT')) this.textReviewer = this.textReviewer + val.message + ',';
+        if (val.destination === 'STATUS-REPORT') {
+          this.textReviewer = this.textReviewer + val.message + ',';
+        }
       }
 
       if (val.source === 'GIT') {
@@ -70,7 +77,8 @@ export class StatusReportsComponent implements OnInit {
       destination: 'TOP-DEVELOPER',
       message: 'true',
     });
-    this.gitService.trigger(this.gitService.loggedInGitDev.login);
+    let dev = this.gitService.getLoggedInGitDev();
+    this.gitService.trigger(dev.login);
     this.bShowGitPR = 99;
   }
 

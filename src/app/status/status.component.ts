@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GitService} from '../git-service';
+import {GitService, DevDetails} from '../git-service';
 import {Router} from '@angular/router';
 @Component({
   selector: 'app-status',
@@ -59,11 +59,19 @@ export class StatusComponent implements OnInit {
       res => {
         //Get the Tenant details - This will be logged in User
         this.gitService.getGitLoggedInUSerDetails(true).subscribe(result => {
-          this.gitService.loggedInGitDev.name = result.DisplayName; //Full Name
-          this.gitService.loggedInGitDev.login = result.UserName;
-          this.gitService.loggedInGitDev.image = result.Photo;
-          this.gitService.loggedInGitDev.id = result.Id;
-          this.gitService.loggedInGitDev.ProfileUrl = result.ProfileUrl;
+          this.gitService.loggedInGitDev = new DevDetails();
+          this.gitService.setLoggedInGitDev ({
+            "name" : result.DisplayName,
+            "login" : result.UserName,
+            "image" : result.Photo,
+            "id" : result.Id,
+            "profileUrl": result.profileUrl
+          });
+          // this.gitService.loggedInGitDev.name = result.DisplayName; //Full Name
+          // this.gitService.loggedInGitDev.login = result.UserName;
+          // this.gitService.loggedInGitDev.image = result.Photo;
+          // this.gitService.loggedInGitDev.id = result.Id;
+          // this.gitService.loggedInGitDev.profileUrl = result.profileUrl;
         });
 
         this.hookFail = false;

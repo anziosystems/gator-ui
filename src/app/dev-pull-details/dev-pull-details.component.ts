@@ -19,11 +19,13 @@ export class DevPullDetailsComponent implements OnInit {
   navigationSubscription: any;
   bHideDetails: boolean = true;
   bShowName = false;
-  DEFAULT_DAYS = 30;
+  DEFAULT_DAYS = 100;
   bShowAddButton: boolean = false;
 
-  constructor(private gitService: GitService, private router: Router) // private usageService: UsageService
-  {
+  constructor(
+    private gitService: GitService,
+    private router: Router, // private usageService: UsageService
+  ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 

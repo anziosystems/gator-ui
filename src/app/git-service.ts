@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {promise} from 'protractor';
 import {resolve} from 'path';
 import {reject} from 'q';
+import {typeWithParameters} from '@angular/compiler/src/render3/util';
 
 /*
 Jira calls must have following in the header
@@ -20,7 +21,7 @@ export class DevDetails {
   public image: string;
   public login: string;
   public id: number;
-  public ProfileUrl: string;
+  public profileUrl: string;
 }
 
 export class CustomEvent {
@@ -46,6 +47,28 @@ export class GitService {
   public currentDev: DevDetails;
   public loggedInGitDev: DevDetails;
   public currentContext: string; //JIRA/GIT
+
+  constructor(private http: HttpClient, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, @Optional() @SkipSelf() parentmodule: GitService) {
+    if (parentmodule) {
+      throw new Error('GitService is already loaded. Import it in ONLY AppModule');
+    }
+    this.loggedInGitDev = new DevDetails();
+    this.currentDev = new DevDetails();
+    this.checkOrg();
+  }
+
+  public setLoggedInGitDev(v: DevDetails) {
+    this.loggedInGitDev.name = v.name;
+    this.loggedInGitDev.image = v.image;
+    this.loggedInGitDev.login = v.login;
+    this.loggedInGitDev.id = v.id;
+    this.loggedInGitDev.profileUrl = v.profileUrl;
+  }
+
+  public getLoggedInGitDev(): DevDetails {
+    return this.loggedInGitDev;
+  }
+
   /*
     jiraOrgList: Array(3)
     0:
@@ -127,13 +150,6 @@ export class GitService {
 
   public broadcastComponentMessage(value: string) {
     this._onComponentMessage.next(value);
-  }
-
-  constructor(private http: HttpClient, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, @Optional() @SkipSelf() parentmodule: GitService) {
-    if (parentmodule) {
-      throw new Error('GitService is already loaded. Import it in ONLY AppModule');
-    }
-    this.checkOrg();
   }
 
   async setJiraOrg() {

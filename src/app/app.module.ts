@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {PullRequestCountComponent} from './pull-request-count/pull-request-count.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -13,11 +14,11 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 import {environment} from '../environments/environment';
-import {GitService} from './git-service';
+import {GitService, DevDetails} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
-import { ContextMenuModule } from 'ngx-contextmenu';
+import {ContextMenuModule} from 'ngx-contextmenu';
 
 import {HookErrorComponent} from './hook-error/hook-error.component';
 import {PrchartComponent} from './prchart/prchart.component';
@@ -31,7 +32,7 @@ import {JiraStatusComponent} from './jira-status/jira-status.component';
 import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.component';
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
-import { StatusReportsComponent } from './status-reports/status-reports.component';
+import {StatusReportsComponent} from './status-reports/status-reports.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -79,12 +80,13 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
-    ContextMenuModule.forRoot() ,
+    ContextMenuModule.forRoot(),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     StorageServiceModule,
     HttpClientModule,
     BrowserAnimationsModule,
     AngularDraggableModule,
+    FormsModule,
   ],
   providers: [GitService, CookieService],
   exports: [RouterModule],
