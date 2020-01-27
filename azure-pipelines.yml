@@ -16,7 +16,7 @@ steps:
     versionSpec: '10.x'
   
 - script: |
-    npm clean && npm install -g @angular/cli 
+    rm -rf node_modules && npm install -g @angular/cli 
     
 - task: Npm@1
   inputs:
