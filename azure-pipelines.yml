@@ -16,11 +16,11 @@ steps:
     versionSpec: '10.x'
   
 - script: |
-    npm install -g @angular/cli 
+    npm clean && npm install -g @angular/cli 
     
 - task: Npm@1
   inputs:
-    command: 'clean & install'
+    command: 'install'
     customEndpoint: 'gatornpm'
 
 #- script:   lsc build site
