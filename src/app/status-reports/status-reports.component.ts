@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Output, Inject, NgModule } from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, Inject, NgModule, ChangeDetectorRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService, CustomEvent} from '../git-service';
 import {Route} from '@angular/compiler/src/core';
@@ -17,13 +17,15 @@ export class StatusReportsComponent implements OnInit {
   bShowGitPR: number = -1;
   bShowJira: number = -1;
   currentOrg: string;
-  constructor(private gitService: GitService, private router: Router) {
+  eventSub: any;
+  constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
     this.currentOrg = this.gitService.currentOrg;
     this.textReviewer = '';
     this.textStatus = '';
   }
 
   ngOnInit() {
+    this.currentOrg = this.gitService.currentOrg;
     this.srList = [];
     this.srList.push('12/30/2019');
     this.srList.push('11/30/2019');
@@ -40,7 +42,7 @@ export class StatusReportsComponent implements OnInit {
     //   this.textReviewer = this.textReviewer + val + ',';
     // });
 
-    this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
+    this.eventSub = this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
       if (val.source === 'TOP-DEVELOPER') {
         if (val.destination === 'STATUS-REPORT') {
           this.textReviewer = this.textReviewer + val.message + ',';
@@ -84,6 +86,11 @@ export class StatusReportsComponent implements OnInit {
 
   comingSoon() {
     alert('Coming soon ...');
+  }
+
+  onDestroy() {
+    this.eventSub.unsubscribe();
+    this.cdRef.detach();
   }
 
   hide() {

@@ -6,7 +6,8 @@
   </div>
 
   <hr style="width: 100%; color: rgb(105, 95, 95); border-style:inset; " />
-  <div *ngFor="let dev of developers" [contextMenu]="basicMenu" [contextMenuSubject]="items">
+  <!-- <div *ngFor="let dev of developers" [contextMenu]="basicMenu" [contextMenuSubject]="items"></div> -->
+  <div *ngFor="let dev of developers">
     <div div class="flex-item">
       <div style="display: flex; direction: row;cursor: pointer;">
         <img src="{{ dev.image }}" style="height:40px; width:40px;  margin-right: 7px;  border-radius: 50%; cursor: pointer;" />
@@ -22,7 +23,7 @@
           style="height:20px; width:20px;  border-radius: 50%; margin-right: 5px;margin-left: 5px; margin-top: 10px;   cursor: pointer;"
         /> -->
 
-        <context-menu class="popup" name="ContextMenu">
+        <!-- <context-menu class="popup" name="ContextMenu">
           <ng-template class="popup" contextMenuItem (execute)="rightClick($event, 'kudoes', dev)">
             Send Kudoes
           </ng-template>
@@ -34,13 +35,8 @@
           <ng-template contextMenuItem (execute)="rightClick($event, 'Survey', dev)">
             Survey
           </ng-template>
-          <!-- <ng-template contextMenuItem divider="true"></ng-template>
-          
-          <ng-template  contextMenuItem let-item (execute)="rightClick($event)">
-            Bye, {{ item?.label }}
-          </ng-template>
-          <ng-template contextMenuItem passive="true"> Input something: <input type="text" /> </ng-template> -->
-        </context-menu>
+         
+        </context-menu> -->
       </div>
     </div>
   </div>

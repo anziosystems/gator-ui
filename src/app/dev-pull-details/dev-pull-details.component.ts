@@ -64,6 +64,10 @@ export class DevPullDetailsComponent implements OnInit {
     this.bShowName = false;
     this.gitService.ready().then(result => {
       this.gitService.onMyEvent.subscribe((val: string) => {
+        if (val === undefined) {
+          console.log('subscription event returned undefined. Exiting');
+          return;
+        }
         if (val.lastIndexOf('+') > 0) {
           const arr = _.split(val, '+');
           this.getActionDetails(arr[0], Number(arr[1]));

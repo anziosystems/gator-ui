@@ -66,6 +66,12 @@ export class GitService {
   }
 
   public getLoggedInGitDev(): DevDetails {
+    if (!this.loggedInGitDev.hasOwnProperty('name')) {
+      //it is an empty object
+      let data = this.storage.get('GCU');
+      let buff = atob(data);
+      this.loggedInGitDev = JSON.parse(buff);
+    }
     return this.loggedInGitDev;
   }
 

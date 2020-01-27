@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {GitService, DevDetails} from '../git-service';
 import {Router} from '@angular/router';
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
@@ -22,7 +24,8 @@ export class StatusComponent implements OnInit {
   hookFail: boolean = true;
   ctr = 0;
 
-  constructor(private gitService: GitService, private router: Router) {
+  constructor(private gitService: GitService, private router: Router,
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService,) {
     this.loginAndSetup();
   }
 
@@ -60,18 +63,16 @@ export class StatusComponent implements OnInit {
         //Get the Tenant details - This will be logged in User
         this.gitService.getGitLoggedInUSerDetails(true).subscribe(result => {
           this.gitService.loggedInGitDev = new DevDetails();
-          this.gitService.setLoggedInGitDev ({
-            "name" : result.DisplayName,
-            "login" : result.UserName,
-            "image" : result.Photo,
-            "id" : result.Id,
-            "profileUrl": result.profileUrl
-          });
-          // this.gitService.loggedInGitDev.name = result.DisplayName; //Full Name
-          // this.gitService.loggedInGitDev.login = result.UserName;
-          // this.gitService.loggedInGitDev.image = result.Photo;
-          // this.gitService.loggedInGitDev.id = result.Id;
-          // this.gitService.loggedInGitDev.profileUrl = result.profileUrl;
+          let dd = new DevDetails();
+          dd.name =  result.DisplayName;
+          dd.login = result.UserName;
+          dd.image = result.Photo;
+          dd.id = result.Id;
+          dd.profileUrl = result.profileUrl;
+          let buff =  btoa(JSON.stringify(dd));
+          this.storage.set('GCU', buff);
+          this.gitService.setLoggedInGitDev (dd);
+
         });
 
         this.hookFail = false;
