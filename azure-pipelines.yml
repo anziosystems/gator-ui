@@ -13,7 +13,7 @@ steps:
 - task: NodeTool@0
   displayName: 'Install Node.js'
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '10.15.2'
   
 - script: |
     npm install -g @angular/cli 
