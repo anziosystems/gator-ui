@@ -13,11 +13,20 @@ steps:
 - task: NodeTool@0
   displayName: 'Install Node.js'
   inputs:
-    versionSpec: '10.15.2'
+    versionSpec: '10.x'
   
 - script: |
     npm install -g @angular/cli 
-  
+    
+- task: Npm@1
+  inputs:
+    command: 'install'
+    customEndpoint: 'gatornpm'
+
+#- script:   lsc build site
+- script: npm run build:prod --dest='dist/gator'
+
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
