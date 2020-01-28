@@ -69,6 +69,10 @@ export class GitService {
     if (!this.loggedInGitDev.hasOwnProperty('name')) {
       //it is an empty object
       let data = this.storage.get('GCU');
+      if (!data) {
+        console.log('no entry for GCU. exiting. Let the user re-login');
+        return; //TODO: Force a re-login
+      }
       let buff = atob(data);
       this.loggedInGitDev = JSON.parse(buff);
     }
@@ -240,6 +244,7 @@ export class GitService {
     this.attachToken();
     // let org = this.currentOrg ;
     const q = `GetGraphData4XDays?org=${org}&day=${day}`;
+
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
@@ -285,7 +290,7 @@ export class GitService {
             'X-Hub-Signature': 'xxx',
             'X-GitHub-Event': 'xxx',
             Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Type': 'application/json', //x-www-form-urlencoded',
             Authorization: this.token,
           }),
         };
@@ -379,6 +384,49 @@ export class GitService {
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
+
+  saveMSR(
+    srId: number,
+    userId: string,
+    org: string,
+    statusDetails: string,
+    reviewer: string,
+    status: number,
+    links: string,
+    manager: string,
+    managerComment: string,
+    managerStatus: number,
+  ): Observable<any> {
+    const q = `SaveMSR`;
+    this.attachJiraToken();
+    let body: any = {
+      srId: srId,
+      org: org,
+      userId: userId,
+      statusDetails: statusDetails,
+      reviewer: reviewer,
+      status: status,
+      links: links,
+      manager: manager,
+      managerComment: managerComment,
+      managerStatus: managerStatus,
+    };
+    // body = encodeURIComponent(JSON.stringify (body));
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
+  }
+
+  getSR4User(userId: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+    const q = `getSR4User?userid=${userId}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  getSR4Id(srId: number, bustTheCache: boolean = false): Observable<any> {
+    const q = `GetSR4Id?id=${srId}&bustTheCache=${bustTheCache}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
   //JIRA
 
   /*
