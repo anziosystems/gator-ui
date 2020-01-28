@@ -1,14 +1,38 @@
 <div class="flex-column-container">
   <div class="flex-row-container">
-    <div class="flex-item-firstCol">
-      <p></p>
-      History
-      <p></p>
-      <div>
-        <div *ngFor="let sr of srList; let i = index">
-          <button id="m1-btn" (click)="data(sr)" class="menu2-button" title="{{ sr }}">
-            {{ sr }}
-          </button>
+    <div style="display: flex; flex-direction: column;">
+      <div class="flex-item-firstCol">
+        <button
+          class="buttons-style"
+          style="background-color: rgb(51, 48, 51); 
+      margin-right: 0px; width: 100%;"
+          (click)="newReport()"
+        >
+          Status Reports
+        </button>
+        <div>
+          <div *ngFor="let sr of srList; let i = index">
+            <button id="m1-btn" (click)="getReportData(sr.SRId)" class="history-button" title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.LastUpdated }}">
+              {{ sr.LastUpdated }}-{{ sr.Status }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex-item-firstCol">
+        <button
+          class="buttons-style"
+          style="background-color: rgb(51, 48, 51); 
+      margin-right: 0px; width: 100%;"
+          (click)="newReport()"
+        >
+          Review
+        </button>
+        <div>
+          <div *ngFor="let sr of srList; let i = index">
+            <button id="m1-btn" (click)="getReportData(sr.SRId)" class="history-button" title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.LastUpdated }}">
+              {{ sr.LastUpdated }}-{{ sr.Status }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -16,15 +40,16 @@
       <p></p>
       <!-- Status Report
       <p></p> -->
-      <div style="font-size: 15px;">
+      <div style="font-size: 15px;     margin-left: 07px;">
+        <button class="buttons-style" style="background-color: rgb(73, 112, 71); " (click)="newReport()">New Report</button>
+
         <button class="buttons-style" style="background-color: rgb(73, 87, 150);" (click)="addGitPR()">Add Git PR</button>
         <button class="buttons-style" style="background-color: rgb(155, 148, 88); " (click)="addJiraTickets()">Add Jira Tickets</button>
-        <button class="buttons-style" style="background-color: rgb(73, 112, 71); " (click)="comingSoon()">Add TFS Tickets</button>
-        <button class="buttons-style" style="background-color: rgb(139, 103, 70);" (click)="comingSoon()">Add BitBucket Items</button>
+        <!-- <button class="buttons-style" style="background-color: rgb(139, 103, 70);" (click)="comingSoon()">Add BitBucket Items</button> -->
       </div>
 
       <p></p>
-      <div style="font-size: large; font-weight: bold; margin-bottom: 10px;">
+      <div style="font-size: large; margin-bottom: 10px;     margin-left: 7px;">
         <p></p>
         Status Report for organization: {{ currentOrg }}
       </div>
@@ -41,21 +66,30 @@
           <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
           <app-dev-jira-details></app-dev-jira-details>
         </div>
-        <textarea style="height:70vh; width: 95%; color:black" value="{{ textStatus }}"></textarea>
+
+        <div id="content-container" class="ql-bubble" style="height: 40vh; margin: 5px; color: honeydew; font-size: large;">
+          <quill-editor [readOnly]="quillDisable" id="quill-editor" [(ngModel)]="textStatus"></quill-editor>
+        </div>
+        <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; margin-top: 80px;">
+          Manager's Comment
+        </div>
+        <div id="content-container" class="ql-bubble" style="height: 20vh; margin: 5px; color: honeydew; font-size: large;">
+          <quill-editor [readOnly]="quillManagerDisable" id="quill-editor" [(ngModel)]="textManagerComment"></quill-editor>
+        </div>
       </div>
       <p></p>
       <div>
-        <div style="font-size: 15px; margin-bottom: 10px;">
+        <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; margin-top: 80px;">
           Reviewers
         </div>
-        <input name="txtReviewer" style="height:90%; width: 95%; color:black" [(ngModel)]="textReviewer" />
+        <input name="txtReviewer" style="height:90%; width: 99.5%; margin-left: 7px; padding-left: 3px; color:black" [(ngModel)]="textReviewer" />
       </div>
       <p></p>
-      <button class="buttons-style" style="background-color: rgb(78, 88, 131); " (click)="addReviewer()">Add Reviewers</button>
-      <button class="buttons-style" style="background-color: rgb(60, 95, 60); ">Save</button>
-      <button class="buttons-style" style="background-color:rgb(31, 70, 55);">Download PDF</button>
-      <button class="buttons-style" style="background-color:rgb(87, 45, 81);">Send back</button>
-      <button class="buttons-style" style="background-color:rgb(189, 38, 38);">Submit</button>
+      <button class="buttons-style" style="background-color: rgb(78, 88, 131);  margin-left: 7px;" (click)="addReviewer()">Add Reviewers</button>
+      <button class="buttons-style" style="background-color: rgb(60, 95, 60);  margin-left: 7px;" (click)="save()">Save</button>
+      <button class="buttons-style" style="background-color:rgb(31, 70, 55); margin-left: 7px;" (click)="downloadPDF()">Download File</button>
+      <button class="buttons-style" style="background-color:rgb(87, 45, 81); margin-left: 7px;" click="sendback()">Send back</button>
+      <button class="buttons-style" style="background-color:rgb(189, 38, 38); margin-left: 7px;" (click)="submit()">Submit</button>
     </div>
   </div>
 </div>

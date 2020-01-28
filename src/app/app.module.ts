@@ -19,7 +19,7 @@ import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
-
+import { QuillModule } from 'ngx-quill'
 import {HookErrorComponent} from './hook-error/hook-error.component';
 import {PrchartComponent} from './prchart/prchart.component';
 import {AngularDraggableModule} from 'angular2-draggable';
@@ -81,6 +81,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     ContextMenuModule.forRoot(),
+    QuillModule.forRoot(),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
     StorageServiceModule,
     HttpClientModule,
