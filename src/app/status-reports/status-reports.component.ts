@@ -33,6 +33,7 @@ export class StatusReportsComponent implements OnInit {
   bNoSendBack: Boolean = true;
   prevStatus: number = 0;
   comingFromStatusReportWindow: boolean = false;
+  quillManagerDisable : boolean = false;
   //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
   IN_PROGRESS: number = 1;
   IN_REVIEW: number = 2;
@@ -78,12 +79,14 @@ export class StatusReportsComponent implements OnInit {
     //hide submit button and show close in its place
     this.bInReview = true;
     this.comingFromStatusReportWindow = false;
+    this.quillManagerDisable = false;
     this.getReportForId(id);
   }
 
   getReportData(id: number) {
     this.comingFromStatusReportWindow = true;
     this.bInReview = false;
+    this.quillManagerDisable = true;
     this.getReportForId(id);
   }
 
@@ -101,6 +104,7 @@ export class StatusReportsComponent implements OnInit {
     this.bInReview = false;
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
+    this.quillManagerDisable = true;
   }
 
   getReportForId(id: number) {
@@ -116,6 +120,7 @@ export class StatusReportsComponent implements OnInit {
       this.managerStatus = val[0].ManagerStatus;
       //status --  2=InReviw, 3=closed  5=Archived => cannot edit the original MSR
       this.quillDisable = this.status === this.IN_REVIEW || this.status === this.CLOSED || this.status === this.ARCHIVED;
+      this.quillManagerDisable =  this.status === this.CLOSED || this.status === this.ARCHIVED || this.status === this.REJECTED;
       if (this.status === this.ARCHIVED || this.status === this.CLOSED) {
         this.bClosedReport = true;
       } else {
