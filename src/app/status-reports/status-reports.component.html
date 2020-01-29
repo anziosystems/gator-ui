@@ -12,8 +12,14 @@
         </button>
         <div>
           <div *ngFor="let sr of srList; let i = index">
-            <button id="m1-btn" (click)="getReportData(sr.SRId)" class="history-button" title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.LastUpdated }}">
-              {{ sr.LastUpdated }}-{{ sr.Status }}
+            <button
+              id="m1-btn"
+              (click)="getReportData(sr.SRId)"
+              class="history-button"
+              title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.LastUpdated }}"
+              [style.color]="sr.Status == 'In Progress' ? 'lightblue' : sr.Status == 'In Review' ? '#F75D59' : 'white'"
+            >
+              {{ sr.LastUpdated }} {{ sr.Status }}
             </button>
           </div>
         </div>
@@ -30,7 +36,7 @@
         <div>
           <div *ngFor="let sr of srReviewList; let i = index">
             <button id="m1-btn" (click)="getReportData4Review(sr.SRId)" class="history-button" title="{{ sr.SRId }} -{{ sr.UserId }} - {{ sr.Status }} - {{ sr.LastUpdated }}">
-              {{ sr.LastUpdated }}-{{ sr.UserId }}
+              {{ sr.LastUpdated }} {{ sr.UserId }}
             </button>
           </div>
         </div>
@@ -67,13 +73,13 @@
           <app-dev-jira-details></app-dev-jira-details>
         </div>
 
-        <div id="content-container" class="ql-bubble" style="height: 40vh; margin: 5px; color: honeydew; font-size: large;">
+        <div id="content-container" class="ql-bubble" style="height: 47vh; margin: 5px; color: honeydew; font-size: large;">
           <quill-editor [readOnly]="quillDisable" id="quill-editor" [(ngModel)]="textStatus"></quill-editor>
         </div>
         <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; margin-top: 80px;">
           Manager's Comment
         </div>
-        <div id="content-container2" class="ql-bubble" style="height: 20vh; margin: 5px; color: honeydew; font-size: large;">
+        <div id="content-container2" class="ql-bubble" style="height: 20vh; margin: 5px; color: honeydew; font-size: x-large;">
           <quill-editor [readOnly]="quillManagerDisable" id="quill-editor2" [(ngModel)]="managerComment"></quill-editor>
         </div>
       </div>
@@ -87,7 +93,7 @@
       <p></p>
       <button class="buttons-style" *ngIf="!bClosedReport" style="background-color: rgb(78, 88, 131);  margin-left: 7px;" (click)="addReviewer()">Add Reviewers</button>
       <button class="buttons-style" *ngIf="!bClosedReport" style="background-color: rgb(60, 95, 60);  margin-left: 7px;" (click)="save()">Save</button>
-      <button class="buttons-style" style="background-color:rgb(31, 70, 55); margin-left: 7px;" (click)="downloadPDF()">Download File</button>
+      <button class="buttons-style" style="background-color:rgb(163, 161, 45); margin-left: 7px;" (click)="downloadPDF()">Download File</button>
       <button class="buttons-style" *ngIf="!bClosedReport && bInReview" style="background-color:rgb(87, 45, 81); margin-left: 7px;" (click)="sendBack()">Send back</button>
 
       <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="background-color:rgb(189, 38, 38); margin-left: 7px;" (click)="submit()">Submit</button>

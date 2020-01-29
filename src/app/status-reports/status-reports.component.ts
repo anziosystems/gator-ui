@@ -5,6 +5,7 @@ import {Route} from '@angular/compiler/src/core';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import Quill from 'quill';
 import * as FileSaver from 'file-saver';
+let _ = require('lodash');
 
 @Component({
   selector: 'app-status-reports',
@@ -33,7 +34,7 @@ export class StatusReportsComponent implements OnInit {
   bNoSendBack: Boolean = true;
   prevStatus: number = 0;
   comingFromStatusReportWindow: boolean = false;
-  quillManagerDisable : boolean = false;
+  quillManagerDisable: boolean = false;
   //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
   IN_PROGRESS: number = 1;
   IN_REVIEW: number = 2;
@@ -43,11 +44,17 @@ export class StatusReportsComponent implements OnInit {
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
     this.currentOrg = this.gitService.currentOrg;
+
     this.textReviewer = '';
     this.textStatus = '';
   }
 
   ngOnInit() {
+    if (!this.currentOrg) {
+      //org is empty, we must go back to dash board and let them choose the org
+      this.gitService.checkOrg();
+      this.currentOrg = this.gitService.currentOrg;
+    }
     this.status = this.IN_PROGRESS;
     this.srId = -1;
     this.currentOrg = this.gitService.currentOrg;
@@ -58,23 +65,26 @@ export class StatusReportsComponent implements OnInit {
     this.textReviewer = '';
     this.getReports4User();
     this.quillDisable = false;
+
+    //this bring clicks on topdeveloper component to reviewer text box
     this.eventSub = this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
       if (val.source === 'TOP-DEVELOPER') {
         if (val.destination === 'STATUS-REPORT') {
           this.textReviewer = this.textReviewer + val.message + ',';
         }
       }
-
+      //this is to geet the git tickets in report
       if (val.source === 'GIT') {
         if ((val.destination = 'STATUS-REPORT')) this.textStatus = val.message + ' <br /> ' + this.textStatus;
       }
-
+      //this is to geet the Jira tickets in report
       if (val.source === 'JIRA') {
         if ((val.destination = 'STATUS-REPORT')) this.textStatus = val.message + ' <br /> ' + this.textStatus;
       }
     });
   }
 
+  //When review listbox is clicked
   getReportData4Review(id: number) {
     //hide submit button and show close in its place
     this.bInReview = true;
@@ -83,6 +93,7 @@ export class StatusReportsComponent implements OnInit {
     this.getReportForId(id);
   }
 
+  //When report list box is clicked
   getReportData(id: number) {
     this.comingFromStatusReportWindow = true;
     this.bInReview = false;
@@ -108,37 +119,39 @@ export class StatusReportsComponent implements OnInit {
   }
 
   getReportForId(id: number) {
+    const self = this;
     this.gitService.getSR4Id(id, true).subscribe(val => {
-      this.srId = val[0].SRId;
-      this.status = val[0].Status;
-      this.prevStatus = this.status;
-      this.currentOrg = val[0].Org;
-      this.textStatus = val[0].StatusDetails;
-      this.textReviewer = val[0].Reviewer;
-      this.manager = val[0].Manager;
-      this.managerComment = val[0].ManagerComment;
-      this.managerStatus = val[0].ManagerStatus;
-      //status --  2=InReviw, 3=closed  5=Archived => cannot edit the original MSR
-      this.quillDisable = this.status === this.IN_REVIEW || this.status === this.CLOSED || this.status === this.ARCHIVED;
-      this.quillManagerDisable =  this.status === this.CLOSED || this.status === this.ARCHIVED || this.status === this.REJECTED;
-      if (this.status === this.ARCHIVED || this.status === this.CLOSED) {
-        this.bClosedReport = true;
-      } else {
-        this.bClosedReport = false;
+      if (_.isNil(val)) {
+        console.log('getSR4Id did not get any data.');
+        return;
       }
-
-      if (this.status === this.IN_REVIEW) {
-        this.bInReview = true;
-        if (this.comingFromStatusReportWindow) {
+      self.srId = val[0].SRId;
+      self.status = val[0].Status;
+      self.prevStatus = self.status;
+      self.currentOrg = val[0].Org;
+      self.textStatus = val[0].StatusDetails;
+      self.textReviewer = val[0].Reviewer;
+      self.manager = val[0].Manager;
+      self.managerComment = val[0].ManagerComment;
+      self.managerStatus = val[0].ManagerStatus;
+      self.quillDisable = self.status === self.IN_REVIEW || self.status === self.CLOSED || self.status === self.ARCHIVED;
+      if (self.status === self.ARCHIVED || self.status === self.CLOSED) {
+        self.bClosedReport = true;
+      } else {
+        self.bClosedReport = false;
+      }
+      if (self.status === self.IN_REVIEW) {
+        self.bInReview = true;
+        if (self.comingFromStatusReportWindow) {
           //it is in review and the user is seeing his own status report. He should not be able to save it or send back
-          this.bNoSave = true;
-          this.bNoSendBack = true;
+          self.bNoSave = true;
+          self.bNoSendBack = true;
         } else {
-          this.bNoSave = false;
-          this.bNoSendBack = false;
+          self.bNoSave = false;
+          self.bNoSendBack = false;
         }
       } else {
-        this.bInReview = false;
+        self.bInReview = false;
       }
     });
   }
@@ -146,7 +159,6 @@ export class StatusReportsComponent implements OnInit {
   getReports4User() {
     this.srList = [];
     this.srReviewList = [];
-
     this.quillDisable = false;
     this.gitService.getSR4User(this.gitService.getLoggedInGitDev().login, true).subscribe(val => {
       val.map(item => {
@@ -223,6 +235,11 @@ export class StatusReportsComponent implements OnInit {
   }
 
   save() {
+    if (this.textReviewer.trim() === '') {
+      if (confirm('Would you like to add a reviewer? Please add your manager as a reviewer.')) {
+        return;
+      }
+    }
     if (!this.currentOrg) {
       alert('Please select an organization before you submit the report.');
       return;
