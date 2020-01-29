@@ -116,6 +116,7 @@ export class StatusReportsComponent implements OnInit {
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
     this.quillManagerDisable = true;
+    alert ("Please type your MSR below. After the report is written please add reviewer and submit.");
   }
 
   getReportForId(id: number) {
