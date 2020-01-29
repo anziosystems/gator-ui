@@ -26,9 +26,8 @@ export class DevJiraDetailsComponent implements OnInit {
   userLink: string;
   bShowAddButton: boolean = false;
 
-  constructor(private gitService: GitService, private router: Router, 
-    // private usageService: UsageService
-    ) {
+  constructor(private gitService: GitService, private router: Router) // private usageService: UsageService
+  {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 
@@ -77,6 +76,7 @@ export class DevJiraDetailsComponent implements OnInit {
   }
 
   async getDeveloperDetails(developer: string) {
+    this.userName = developer;
     this.devDetails = new Map();
     this.devDetails2 = [];
     this.developerName = developer;
