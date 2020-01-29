@@ -427,6 +427,13 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+   
+  GetSR4User4Review(userId: string, status:number,  bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+    const q = `GetSR4User4Review?userid=${userId}&status=${status}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
   //JIRA
 
   /*
