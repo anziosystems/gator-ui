@@ -94,7 +94,7 @@ export class JiraStatusComponent implements OnInit {
                   }
 
                   result.forEach(e2 => {
-                    this.gitService.JiraUsersMap.set(e2.displayName, e2.accountId);
+                    this.gitService.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
                   });
 
                   // this.gitService.JiraUsersList.push(result);

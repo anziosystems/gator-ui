@@ -180,6 +180,7 @@ export class GitService {
           }
           result.forEach(e2 => {
             this.JiraUsersMap.set(e2.displayName, e2.accountId);
+            this.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
           });
           done(true);
           return;
@@ -427,8 +428,7 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-   
-  GetSR4User4Review(userId: string, status:number,  bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+  GetSR4User4Review(userId: string, status: number, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
     const q = `GetSR4User4Review?userid=${userId}&status=${status}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
