@@ -26,8 +26,10 @@ export class DevJiraDetailsComponent implements OnInit {
   userLink: string;
   bShowAddButton: boolean = false;
 
-  constructor(private gitService: GitService, private router: Router) // private usageService: UsageService
-  {
+  constructor(
+    private gitService: GitService,
+    private router: Router, // private usageService: UsageService
+  ) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 
@@ -110,6 +112,10 @@ export class DevJiraDetailsComponent implements OnInit {
           JSON.parse (val).issues[0].fields.summary
           JSON.parse (val).issues[0].self  //url
         */
+                if (val === '401' || val === '402' || val === null) {
+                  this.router.navigate(['/jira-login']);
+                  return;
+                }
                 if (val) {
                   if (val.length === 0) return;
                   try {
@@ -138,6 +144,8 @@ export class DevJiraDetailsComponent implements OnInit {
                     v.orgName = org.name;
                     if (!this.devDetails.has(v.id)) this.devDetails.set(v.id, v);
                   });
+                } else {
+                  //if val is null it may have a 401 - token may be expired
                 }
               });
             });

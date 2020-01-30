@@ -41,6 +41,7 @@ export class StatusReportsComponent implements OnInit {
   CLOSED: number = 3;
   REJECTED: number = 4;
   ARCHIVED: number = 5;
+  author: string;
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
     this.currentOrg = this.gitService.currentOrg;
@@ -111,7 +112,7 @@ export class StatusReportsComponent implements OnInit {
     this.managerComment = '';
     this.managerStatus = 0;
     this.quillDisable = false;
-
+    this.author = this.gitService.getLoggedInGitDev().login ;
     this.bInReview = false;
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
@@ -127,6 +128,7 @@ export class StatusReportsComponent implements OnInit {
         return;
       }
       self.srId = val[0].SRId;
+      this.author = val[0].UserId;
       self.status = val[0].Status;
       self.prevStatus = self.status;
       self.currentOrg = val[0].Org;
@@ -255,10 +257,14 @@ export class StatusReportsComponent implements OnInit {
       }
     }
 
+     
+    if (this.status === this.IN_PROGRESS) {
+      this.author =  this.gitService.getLoggedInGitDev().login
+    }
     this.gitService
       .saveMSR(
         this.srId,
-        this.gitService.getLoggedInGitDev().login,
+        this.author,
         this.currentOrg,
         this.textStatus,
         this.textReviewer,

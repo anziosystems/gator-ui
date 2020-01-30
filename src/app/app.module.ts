@@ -19,7 +19,7 @@ import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
-import { QuillModule } from 'ngx-quill'
+import {QuillModule} from 'ngx-quill';
 import {HookErrorComponent} from './hook-error/hook-error.component';
 import {PrchartComponent} from './prchart/prchart.component';
 import {AngularDraggableModule} from 'angular2-draggable';
@@ -33,6 +33,7 @@ import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.compone
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
 import {StatusReportsComponent} from './status-reports/status-reports.component';
+ 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -88,6 +89,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     AngularDraggableModule,
     FormsModule,
+    
   ],
   providers: [GitService, CookieService],
   exports: [RouterModule],
