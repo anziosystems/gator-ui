@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-bitbucket-status',
   templateUrl: './bitbucket-status.component.html',
-  styleUrls: ['./bitbucket-status.component.less']
+  styleUrls: ['./bitbucket-status.component.less'],
 })
 export class BitbucketStatusComponent implements OnInit {
   hookStatus: boolean = false;
@@ -140,7 +140,7 @@ export class BitbucketStatusComponent implements OnInit {
 
   dashboard() {
     this.router.navigate(['/dashboard']).then(() => {
-      window.location.reload();
+      //  window.location.reload();
     });
   }
 }

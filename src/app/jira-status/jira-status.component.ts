@@ -106,6 +106,7 @@ export class JiraStatusComponent implements OnInit {
                   */
                   this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
                   this.buttonDisabled = false;
+                  this.router.navigate(['/dashboard']);
                 });
               }); //org list loop
             } else {
@@ -140,7 +141,7 @@ export class JiraStatusComponent implements OnInit {
 
   dashboard() {
     this.router.navigate(['/dashboard']).then(() => {
-      window.location.reload();
+      //window.location.reload();
     });
   }
 }

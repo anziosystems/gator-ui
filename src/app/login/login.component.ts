@@ -10,10 +10,10 @@ import {SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
   styleUrls: ['./login.component.less'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private router: Router, location: Location, private gitService: GitService,
-    @Inject(SESSION_STORAGE) private storage: WebStorageService) {}
+  constructor(private router: Router, location: Location, private gitService: GitService, @Inject(SESSION_STORAGE) private storage: WebStorageService) {}
 
   ngOnInit() {
+    this.storage.set('LBC', false);
   }
 
   login() {

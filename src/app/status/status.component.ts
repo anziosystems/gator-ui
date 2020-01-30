@@ -180,6 +180,7 @@ export class StatusComponent implements OnInit {
                       let elem = document.getElementById('myBar');
                       elem.style.width = '100%';
                       clearTimeout(t);
+                      this.router.navigate(['/dashboard']);  //No Need for user to click
                     },
                     error => {
                       if (this.bGetFromGit) {
@@ -215,7 +216,7 @@ export class StatusComponent implements OnInit {
 
   dashboard() {
     this.router.navigate(['/dashboard']).then(() => {
-      window.location.reload();
+     // window.location.reload();
     });
   }
 }

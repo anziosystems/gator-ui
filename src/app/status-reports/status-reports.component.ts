@@ -41,6 +41,7 @@ export class StatusReportsComponent implements OnInit {
   CLOSED: number = 3;
   REJECTED: number = 4;
   ARCHIVED: number = 5;
+  DELETE: number = 6;
   author: string;
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
@@ -112,12 +113,12 @@ export class StatusReportsComponent implements OnInit {
     this.managerComment = '';
     this.managerStatus = 0;
     this.quillDisable = false;
-    this.author = this.gitService.getLoggedInGitDev().login ;
+    this.author = this.gitService.getLoggedInGitDev().login;
     this.bInReview = false;
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
     this.quillManagerDisable = true;
-    alert ("Please type your MSR below. After the report is written please add reviewer and submit.");
+    alert('Please type your MSR below. After the report is written please add reviewer and submit.');
   }
 
   getReportForId(id: number) {
@@ -243,6 +244,7 @@ export class StatusReportsComponent implements OnInit {
         return;
       }
     }
+
     if (!this.currentOrg) {
       alert('Please select an organization before you submit the report.');
       return;
@@ -257,9 +259,8 @@ export class StatusReportsComponent implements OnInit {
       }
     }
 
-     
     if (this.status === this.IN_PROGRESS) {
-      this.author =  this.gitService.getLoggedInGitDev().login
+      this.author = this.gitService.getLoggedInGitDev().login;
     }
     this.gitService
       .saveMSR(
@@ -284,6 +285,32 @@ export class StatusReportsComponent implements OnInit {
     if (confirm('Once you submit you can not edit the report afterwards.')) {
       this.status = this.IN_REVIEW;
       this.save();
+    }
+  }
+
+  delete() {
+    if (this.status === this.IN_PROGRESS) {
+      if (confirm('Are you sure? You want to delete this report?.')) {
+        this.gitService
+          .saveMSR(
+            this.srId,
+            this.author,
+            this.currentOrg,
+            '',
+            '',
+            this.DELETE,
+            '', //links
+            this.manager,
+            this.managerComment,
+            this.managerStatus,
+          )
+          .subscribe(v => {
+            console.log(v);
+            this.getReports4User();
+          });
+      }
+    } else {
+      alert('You can delete only reports which are in-progress status.');
     }
   }
 
