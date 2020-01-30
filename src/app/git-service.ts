@@ -47,6 +47,7 @@ export class GitService {
   public currentDev: DevDetails;
   public loggedInGitDev: DevDetails;
   public currentContext: string; //JIRA/GIT
+  
 
   constructor(private http: HttpClient, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, @Optional() @SkipSelf() parentmodule: GitService) {
     if (parentmodule) {
@@ -55,8 +56,9 @@ export class GitService {
     this.loggedInGitDev = new DevDetails();
     this.currentDev = new DevDetails();
     this.checkOrg();
+    console.log(' ****** gitService Constructor is running =>' + new Date());
   }
-
+  
   public setLoggedInGitDev(v: DevDetails) {
     this.loggedInGitDev.name = v.name;
     this.loggedInGitDev.image = v.image;
@@ -112,7 +114,7 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'http://localhost:3000'; // 'https://gator-api.azurewebsites.net';  // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -179,7 +181,6 @@ export class GitService {
             return;
           }
           result.forEach(e2 => {
-            this.JiraUsersMap.set(e2.displayName, e2.accountId);
             this.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
           });
           done(true);
