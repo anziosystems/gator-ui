@@ -332,7 +332,23 @@ export class StatusReportsComponent implements OnInit {
       return;
     }
     this.status = this.IN_PROGRESS; //Go back to start
-    this.save();
+    this.gitService
+      .saveMSR(
+        this.srId,
+        this.author,
+        this.currentOrg,
+        this.textStatus,
+        this.textReviewer,
+        this.status, //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
+        '', //links
+        this.manager,
+        this.managerComment,
+        this.managerStatus,
+      )
+      .subscribe(v => {
+        console.log(v);
+        this.getReports4User();
+      });
   }
 
   addGitPR() {
