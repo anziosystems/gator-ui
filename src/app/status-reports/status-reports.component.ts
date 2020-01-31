@@ -72,6 +72,10 @@ export class StatusReportsComponent implements OnInit {
     this.eventSub = this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
       if (val.source === 'TOP-DEVELOPER') {
         if (val.destination === 'STATUS-REPORT') {
+          if ( this.textReviewer.length > 100) {
+            alert ('enough');
+            return;
+          }
           this.textReviewer = this.textReviewer + val.message + ',';
         }
       }
@@ -103,7 +107,7 @@ export class StatusReportsComponent implements OnInit {
     this.getReportForId(id);
   }
 
-  newReport() {
+  reset () {
     this.srId = -1;
     this.status = this.IN_PROGRESS;
     this.currentOrg = this.currentOrg;
@@ -118,6 +122,10 @@ export class StatusReportsComponent implements OnInit {
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
     this.quillManagerDisable = true;
+  }
+
+  newReport() {
+    this.reset ();
     alert('Please type your MSR below. After the report is written please add reviewer and submit.');
   }
 
@@ -279,7 +287,7 @@ export class StatusReportsComponent implements OnInit {
         console.log(v);
         this.getReports4User();
         alert ("Your Report is saved.");
-        this.newReport();
+        this.reset ();
       });
   }
 
@@ -293,8 +301,9 @@ export class StatusReportsComponent implements OnInit {
     if (confirm('Once you submit you can not edit the report afterwards.')) {
       this.status = this.IN_REVIEW;
       this.save();
+      this.reset ();
     }
-    this.newReport() ;
+   
   }
 
   delete() {
@@ -316,6 +325,7 @@ export class StatusReportsComponent implements OnInit {
           .subscribe(v => {
             console.log(v);
             this.getReports4User();
+            this.reset ();
           });
       }
     } else {
@@ -361,6 +371,8 @@ export class StatusReportsComponent implements OnInit {
       .subscribe(v => {
         console.log(v);
         this.getReports4User();
+        alert ('Report is send back');
+        this.reset();
       });
   }
 
