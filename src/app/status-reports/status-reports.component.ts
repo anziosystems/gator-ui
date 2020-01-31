@@ -301,7 +301,7 @@ export class StatusReportsComponent implements OnInit {
     if (confirm('Once you submit you can not edit the report afterwards.')) {
       this.status = this.IN_REVIEW;
       this.save();
-      this.reset ();
+     
     }
    
   }
