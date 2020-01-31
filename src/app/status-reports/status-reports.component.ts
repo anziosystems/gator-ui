@@ -278,14 +278,23 @@ export class StatusReportsComponent implements OnInit {
       .subscribe(v => {
         console.log(v);
         this.getReports4User();
+        alert ("Your Report is saved.");
+        this.newReport();
       });
   }
 
   submit() {
+    if (this.author === this.gitService.getLoggedInGitDev().login ) {
+      if( this.status === this.IN_REVIEW ) {
+        alert ("This report is already submitted");
+        return;
+      }
+    }
     if (confirm('Once you submit you can not edit the report afterwards.')) {
       this.status = this.IN_REVIEW;
       this.save();
     }
+    this.newReport() ;
   }
 
   delete() {
@@ -326,9 +335,13 @@ export class StatusReportsComponent implements OnInit {
     }
   }
 
+  refresh(){
+    this.getReports4User();
+  }
+
   sendBack() {
     if (this.comingFromStatusReportWindow && this.status === this.IN_REVIEW) {
-      alert('You cannot send this report back. Only Reiver can send back the report.');
+      alert('You cannot send this report back. Only receiver can send back the report.');
       return;
     }
     this.status = this.IN_PROGRESS; //Go back to start
