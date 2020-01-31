@@ -49,6 +49,7 @@ export class StatusReportsComponent implements OnInit {
 
     this.textReviewer = '';
     this.textStatus = '';
+    this.quillManagerDisable = true;
   }
 
   ngOnInit() {
@@ -246,7 +247,7 @@ export class StatusReportsComponent implements OnInit {
     this.bShowJira = 99;
   }
 
-  save() {
+  save(status: number) {
     if (this.textReviewer.trim() === '') {
       if (confirm('Would you like to add a reviewer? Please add your manager as a reviewer.')) {
         return;
@@ -277,7 +278,7 @@ export class StatusReportsComponent implements OnInit {
         this.currentOrg,
         this.textStatus,
         this.textReviewer,
-        this.status, //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
+        status, //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived 
         '', //links
         this.manager,
         this.managerComment,
@@ -299,9 +300,7 @@ export class StatusReportsComponent implements OnInit {
       }
     }
     if (confirm('Once you submit you can not edit the report afterwards.')) {
-      this.status = this.IN_REVIEW;
-      this.save();
-     
+      this.save(this.IN_REVIEW);
     }
    
   }
@@ -340,8 +339,7 @@ export class StatusReportsComponent implements OnInit {
     }
 
     if (confirm('Once you submit you can not edit the report afterwards.')) {
-      this.status = this.CLOSED; //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
-      this.save();
+      this.save(this.CLOSED);
     }
   }
 
