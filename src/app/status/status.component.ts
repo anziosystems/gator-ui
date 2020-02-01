@@ -81,7 +81,7 @@ export class StatusComponent implements OnInit {
             dd.id = result.Id;
             dd.profileUrl = result.profileUrl;
             let buff = btoa(JSON.stringify(dd));
-            this.storage.set('GCU', buff);
+            this.sessionStorage.set('GIT_CURRENT_USER', buff);
             this.gitService.setLoggedInGitDev(dd);
           });
 
@@ -176,10 +176,10 @@ export class StatusComponent implements OnInit {
                       if (this.bGetFromGit) {
                         this.successMessages.push('Done! Getting pull request for ' + element.Org + ' from ' + result + ' repositories');
                       }
-                      this.buttonDisabled = false;
-                      let elem = document.getElementById('myBar');
-                      elem.style.width = '100%';
-                      clearTimeout(t);
+                      // this.buttonDisabled = false;
+                      // let elem = document.getElementById('myBar');
+                      // elem.style.width = '100%';
+                      // clearTimeout(t);
                       this.router.navigate(['/dashboard']);  //No Need for user to click
                     },
                     error => {
@@ -216,7 +216,7 @@ export class StatusComponent implements OnInit {
 
   dashboard() {
     this.router.navigate(['/dashboard']).then(() => {
-     // window.location.reload();
+      window.location.reload();
     });
   }
 }

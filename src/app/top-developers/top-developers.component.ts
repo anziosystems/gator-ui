@@ -88,6 +88,7 @@ export class TopDevelopersComponent implements OnInit {
     this.gitService.currentDev = developer;
     this.gitService.trigger(developer.login);
     this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+    //This to add developer in the status report component
     if (!this.bCallingFromInit) {
       this.gitService.triggerCustomEvent({
         source: 'TOP-DEVELOPER',

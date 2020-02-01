@@ -1,7 +1,7 @@
 import {Injectable, Input, Inject, Optional, SkipSelf} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of, Subject} from 'rxjs';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {Router} from '@angular/router';
 import {promise} from 'protractor';
 import {resolve} from 'path';
@@ -47,9 +47,15 @@ export class GitService {
   public currentDev: DevDetails;
   public loggedInGitDev: DevDetails;
   public currentContext: string; //JIRA/GIT
-  
+  public JIRA_ORG_LIST: string = 'JIRA-ORG-LIST';
 
-  constructor(private http: HttpClient, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router, @Optional() @SkipSelf() parentmodule: GitService) {
+  constructor(
+    private http: HttpClient,
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService,
+    @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
+    private router: Router,
+    @Optional() @SkipSelf() parentmodule: GitService,
+  ) {
     if (parentmodule) {
       throw new Error('GitService is already loaded. Import it in ONLY AppModule');
     }
@@ -58,7 +64,7 @@ export class GitService {
     this.checkOrg();
     console.log(' ****** gitService Constructor is running =>' + new Date());
   }
-  
+
   public setLoggedInGitDev(v: DevDetails) {
     this.loggedInGitDev.name = v.name;
     this.loggedInGitDev.image = v.image;
@@ -70,7 +76,7 @@ export class GitService {
   public getLoggedInGitDev(): DevDetails {
     if (!this.loggedInGitDev.hasOwnProperty('name')) {
       //it is an empty object
-      let data = this.storage.get('GCU');
+      let data = this.sessionStorage.get('GIT_CURRENT_USER');
       if (!data) {
         console.log('no entry for GCU. exiting. Let the user re-login');
         return; //TODO: Force a re-login
@@ -142,11 +148,9 @@ export class GitService {
 
   /* 
    Component calls this trigger
-
    pullRequestCount it with "Action -day" and Top-developer calls it with developer name
-
    DevPullDetailsComponent is subscribing it
-     this.gitService.onMyEvent.subscribe((val: string) => {
+   this.gitService.onMyEvent.subscribe((val: string) => {
   */
   public trigger(value: string) {
     this._onMyEvent.next(value);
@@ -198,8 +202,10 @@ export class GitService {
     });
   }
   fillJiraOrgList(): Promise<boolean> {
+    this.jiraOrgList = this.sessionStorage.get(this.JIRA_ORG_LIST);
+    if (this.jiraOrgList) return;
     return new Promise((done, fail) => {
-      if (this.jiraOrgList === undefined) this.jiraOrgList = [];
+      if (!this.jiraOrgList) this.jiraOrgList = [];
       if (this.jiraOrgList.length === 0) {
         //lets fill JiraOrgList
         this.getJiraOrgs(false).subscribe(async result => {
@@ -209,6 +215,7 @@ export class GitService {
           }
           if (result.length > 0) {
             this.jiraOrgList = result;
+            this.sessionStorage.set(this.JIRA_ORG_LIST, result);
             if (this.jiraCurrentOrg === undefined) {
               this.jiraCurrentOrg = this.jiraOrgList[0].id;
             }
