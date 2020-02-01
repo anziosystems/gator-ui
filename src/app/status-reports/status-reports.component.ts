@@ -42,6 +42,7 @@ export class StatusReportsComponent implements OnInit {
   REJECTED: number = 4;
   ARCHIVED: number = 5;
   DELETE: number = 6;
+  ALL: number = 99;
   author: string;
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
@@ -73,8 +74,8 @@ export class StatusReportsComponent implements OnInit {
     this.eventSub = this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
       if (val.source === 'TOP-DEVELOPER') {
         if (val.destination === 'STATUS-REPORT') {
-          if ( this.textReviewer.length > 100) {
-            alert ('enough');
+          if (this.textReviewer.length > 100) {
+            alert('enough');
             return;
           }
           this.textReviewer = this.textReviewer + val.message + ',';
@@ -108,7 +109,7 @@ export class StatusReportsComponent implements OnInit {
     this.getReportForId(id);
   }
 
-  reset () {
+  reset() {
     this.srId = -1;
     this.status = this.IN_PROGRESS;
     this.currentOrg = this.currentOrg;
@@ -126,14 +127,14 @@ export class StatusReportsComponent implements OnInit {
   }
 
   newReport() {
-    this.reset ();
+    this.reset();
     alert('Please type your MSR below. After the report is written please add reviewer and submit.');
   }
 
   getReportForId(id: number) {
     const self = this;
     this.gitService.getSR4Id(id, true).subscribe(val => {
-      if (_.isNil(val)) {
+      if (!val) {
         console.log('getSR4Id did not get any data.');
         return;
       }
@@ -200,11 +201,15 @@ export class StatusReportsComponent implements OnInit {
       });
     });
 
+    this.getReviewReports(this.IN_REVIEW);
+  }
+
+  getReviewReports(status: number) {
     //review reports
     this.gitService
       .GetSR4User4Review(
         this.gitService.getLoggedInGitDev().login,
-        this.IN_REVIEW, //inreview
+        status, //inreview
         true,
       )
       .subscribe(val => {
@@ -232,7 +237,10 @@ export class StatusReportsComponent implements OnInit {
         });
       });
   }
-
+  //Show all the reports for the reviewer -
+  showAllReview() {
+    this.getReviewReports(99);
+  }
   addReviewer() {
     this.bShowReviewers = 99;
   }
@@ -248,6 +256,9 @@ export class StatusReportsComponent implements OnInit {
   }
 
   save(status: number) {
+    if (!status) {
+      status = this.status;
+    }
     if (this.textReviewer.trim() === '') {
       if (confirm('Would you like to add a reviewer? Please add your manager as a reviewer.')) {
         return;
@@ -278,7 +289,7 @@ export class StatusReportsComponent implements OnInit {
         this.currentOrg,
         this.textStatus,
         this.textReviewer,
-        status, //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived 
+        status, //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
         '', //links
         this.manager,
         this.managerComment,
@@ -287,22 +298,21 @@ export class StatusReportsComponent implements OnInit {
       .subscribe(v => {
         console.log(v);
         this.getReports4User();
-        alert ("Your Report is saved.");
-        this.reset ();
+        alert('Your Report is saved.');
+        this.reset();
       });
   }
 
   submit() {
-    if (this.author === this.gitService.getLoggedInGitDev().login ) {
-      if( this.status === this.IN_REVIEW ) {
-        alert ("This report is already submitted");
+    if (this.author === this.gitService.getLoggedInGitDev().login) {
+      if (this.status === this.IN_REVIEW) {
+        alert('This report is already submitted');
         return;
       }
     }
     if (confirm('Once you submit you can not edit the report afterwards.')) {
       this.save(this.IN_REVIEW);
     }
-   
   }
 
   delete() {
@@ -324,7 +334,7 @@ export class StatusReportsComponent implements OnInit {
           .subscribe(v => {
             console.log(v);
             this.getReports4User();
-            this.reset ();
+            this.reset();
           });
       }
     } else {
@@ -343,7 +353,7 @@ export class StatusReportsComponent implements OnInit {
     }
   }
 
-  refresh(){
+  refresh() {
     this.getReports4User();
   }
 
@@ -369,7 +379,7 @@ export class StatusReportsComponent implements OnInit {
       .subscribe(v => {
         console.log(v);
         this.getReports4User();
-        alert ('Report is send back');
+        alert('Report is send back');
         this.reset();
       });
   }
