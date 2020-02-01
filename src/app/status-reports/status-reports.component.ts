@@ -205,6 +205,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   getReviewReports(status: number) {
+    this.srReviewList = [];
     //review reports
     this.gitService
       .GetSR4User4Review(
