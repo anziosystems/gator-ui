@@ -69,8 +69,9 @@ export class OrgListComponent implements OnInit {
 
   data(org: any) {
     //Keep the current Org in session, angular apps with refresh browser will reload the gitservice and application will forget everything
-    this.gitService.setCurrentOrg(org.Org);
-    this.sessionStorage.set('CURRENT-ORG', org.Org);
+    if (org) {
+      this.gitService.setCurrentOrg(org.Org);
+    }
     this.router.onSameUrlNavigation = 'reload';
     this.router.initialNavigation();
     this.router.navigate(['/dashboard'], {
@@ -81,7 +82,6 @@ export class OrgListComponent implements OnInit {
   ngOnInit() {
     this.orgList = [];
     this.gitService.setCurrentOrg(this.route.snapshot.queryParamMap.get('Org'));
-    this.sessionStorage.set('CURRENT-ORG', this.route.snapshot.queryParamMap.get('Org'));
     this.gitService.getOrgList().subscribe(result => {
       this.orgList = result;
     });

@@ -80,7 +80,6 @@ export class StatusComponent implements OnInit {
             dd.id = result.Id;
             dd.profileUrl = result.profileUrl;
             let buff = btoa(JSON.stringify(dd));
-            this.sessionStorage.set('GIT_CURRENT_USER', buff);
             this.gitService.setLoggedInGitDev(dd);
           });
 
@@ -95,7 +94,7 @@ export class StatusComponent implements OnInit {
                 this.orgStatus = true;
                 this.orgList = result;
                 this.gitService.setCurrentOrg(this.orgList[0].Org); //setting the default
-                this.sessionStorage.set ('CURRENT-ORG', this.orgList[0].Org );
+               
                 if (this.bGetFromGit) {
                   this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
                 }

@@ -62,22 +62,26 @@ export class GitService {
     }
     this.loggedInGitDev = new DevDetails();
     this.currentDev = new DevDetails();
-    this.checkOrg();
+
+    //Lets refresh values out of session storage
+    this.getLoggedInGitDev();
+    this.getCurrentOrg();
+    this.getCurrentDev();
+
     console.log(' ****** gitService Constructor is running =>' + new Date());
   }
 
-  getCurrentContext (): string {
+  getCurrentContext(): string {
     if (!this.currentContext) {
-      this.currentContext = this.sessionStorage.get ('CURRENT-CONTEXT');
+      this.currentContext = this.sessionStorage.get('CURRENT-CONTEXT');
     }
-    return this.currentContext ;
+    return this.currentContext;
   }
 
-  setCurrentContext (ctx: string) {
+  setCurrentContext(ctx: string) {
     this.currentContext = ctx;
-    this.sessionStorage.set ('CURRENT-CONTEXT', ctx);
+    this.sessionStorage.set('CURRENT-CONTEXT', ctx);
   }
-
 
   setCurrentDev(dev: DevDetails) {
     this.currentDev = dev;
@@ -100,12 +104,17 @@ export class GitService {
   }
 
   public setLoggedInGitDev(v: DevDetails) {
-    this.loggedInGitDev = new DevDetails();
-    this.loggedInGitDev.name = v.name;
-    this.loggedInGitDev.image = v.image;
-    this.loggedInGitDev.login = v.login;
-    this.loggedInGitDev.id = v.id;
-    this.loggedInGitDev.profileUrl = v.profileUrl;
+    if (v) {
+      if (v.name) {
+        this.loggedInGitDev = new DevDetails();
+        this.loggedInGitDev.name = v.name;
+        this.loggedInGitDev.image = v.image;
+        this.loggedInGitDev.login = v.login;
+        this.loggedInGitDev.id = v.id;
+        this.loggedInGitDev.profileUrl = v.profileUrl;
+        this.sessionStorage.set('GIT_CURRENT_USER', v);
+      }
+    }
   }
 
   public getLoggedInGitDev(): DevDetails {
@@ -116,8 +125,9 @@ export class GitService {
         console.log('no entry for GCU. exiting. Let the user re-login');
         return; //TODO: Force a re-login
       }
-      let buff = atob(data);
-      this.loggedInGitDev = JSON.parse(buff);
+      // let buff = atob(data);
+
+      this.loggedInGitDev = data;
     }
     return this.loggedInGitDev;
   }
@@ -263,7 +273,10 @@ export class GitService {
   }
 
   public setCurrentOrg(org: string) {
-    this.currentOrg = org;
+    if (org) {
+      this.currentOrg = org;
+      this.sessionStorage.set('CURRENT-ORG', org);
+    }
   }
 
   attachToken(skipOrgCheck: boolean = false) {
@@ -305,7 +318,7 @@ export class GitService {
           }
           if (result.length > 0) {
             if (!this.currentOrg) {
-              this.currentOrg = result[0].Org;
+              this.setCurrentOrg(result[0].Org);
             }
             resolve();
           } else {
