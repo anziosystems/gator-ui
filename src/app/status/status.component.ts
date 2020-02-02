@@ -73,7 +73,6 @@ export class StatusComponent implements OnInit {
         res => {
           //Get the Tenant details - This will be logged in User
           this.gitService.getGitLoggedInUSerDetails(this.bGetFromGit).subscribe(result => {
-            this.gitService.loggedInGitDev = new DevDetails();
             let dd = new DevDetails();
             dd.name = result.DisplayName;
             dd.login = result.UserName;
@@ -95,9 +94,8 @@ export class StatusComponent implements OnInit {
               if (result.length > 0) {
                 this.orgStatus = true;
                 this.orgList = result;
-                if (this.gitService.currentOrg == undefined) {
-                  this.gitService.currentOrg = this.orgList[0].Org;
-                }
+                this.gitService.setCurrentOrg(this.orgList[0].Org); //setting the default
+                this.sessionStorage.set ('CURRENT-ORG', this.orgList[0].Org );
                 if (this.bGetFromGit) {
                   this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
                 }

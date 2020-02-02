@@ -90,7 +90,9 @@ export class DevJiraDetailsComponent implements OnInit {
           this.bShowError = true;
           return;
         }
-
+        //For Jira, I get issues for all the org's he belong to, we dont filter on the org, where as in Git we do. 
+        //Reasoning is user total load we would like to see, hence all the org tickets
+        //org name is written in details of the Jira ticket
         this.gitService.jiraOrgList.forEach(
           org => {
             this.gitService.ready().then(result => {

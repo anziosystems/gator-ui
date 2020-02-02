@@ -7,6 +7,7 @@ import {promise} from 'protractor';
 import {resolve} from 'path';
 import {reject} from 'q';
 import {typeWithParameters} from '@angular/compiler/src/render3/util';
+import {timingSafeEqual} from 'crypto';
 
 /*
 Jira calls must have following in the header
@@ -34,19 +35,19 @@ export class CustomEvent {
   providedIn: 'root',
 })
 export class GitService {
+  private currentOrg: string;
+  private jiraCurrentOrg: string;
+  private token: string;
+  private jiraToken: string;
+  private tenant: string; //token and tenant is same today
+  private jiraTenant: string;
+  private loggedInGitDev: DevDetails;
+  private currentDev: DevDetails;
+  private currentContext: string; //JIRA/GIT
+
   public httpOptions: any;
   public httpJirapOptions: any;
   public query: string;
-  public token: string;
-  public jiraToken: string;
-  public tenant: string;
-  public jiraTenant: string;
-  public organization: string;
-  public currentOrg: string;
-  public jiraCurrentOrg: string;
-  public currentDev: DevDetails;
-  public loggedInGitDev: DevDetails;
-  public currentContext: string; //JIRA/GIT
   public JIRA_ORG_LIST: string = 'JIRA-ORG-LIST';
 
   constructor(
@@ -65,7 +66,41 @@ export class GitService {
     console.log(' ****** gitService Constructor is running =>' + new Date());
   }
 
+  getCurrentContext (): string {
+    if (!this.currentContext) {
+      this.currentContext = this.sessionStorage.get ('CURRENT-CONTEXT');
+    }
+    return this.currentContext ;
+  }
+
+  setCurrentContext (ctx: string) {
+    this.currentContext = ctx;
+    this.sessionStorage.set ('CURRENT-CONTEXT', ctx);
+  }
+
+
+  setCurrentDev(dev: DevDetails) {
+    this.currentDev = dev;
+    this.sessionStorage.set('CURRENT-DEV', dev);
+  }
+
+  getCurrentDev(): DevDetails {
+    if (!this.currentDev) {
+      this.currentDev = this.sessionStorage.get('CURRENT-DEV');
+    }
+    return this.currentDev;
+  }
+
+  public setToken(token: string) {
+    this.token = token;
+  }
+
+  public setJiraToken(token: string) {
+    this.jiraToken = token;
+  }
+
   public setLoggedInGitDev(v: DevDetails) {
+    this.loggedInGitDev = new DevDetails();
     this.loggedInGitDev.name = v.name;
     this.loggedInGitDev.image = v.image;
     this.loggedInGitDev.login = v.login;
@@ -168,75 +203,6 @@ export class GitService {
     this._onComponentMessage.next(value);
   }
 
-  async setJiraOrg() {
-    if (this.jiraOrgList === undefined) this.jiraOrgList = [];
-    if (this.jiraOrgList.length === 0) {
-      await this.fillJiraOrgList();
-    }
-  }
-
-  async fillJiraUserMap(): Promise<boolean> {
-    await this.fillJiraOrgList();
-    return new Promise((done, fail) => {
-      this.jiraOrgList.forEach(element => {
-        this.getJiraUsers(element.id, false).subscribe(result => {
-          if (result.code === 401) {
-            fail('401');
-            return;
-          }
-          result.forEach(e2 => {
-            this.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
-          });
-          done(true);
-          return;
-        });
-      });
-    });
-  }
-
-  async getOrgName4Id(val: string) {
-    this.jiraOrgList.forEach(org => {
-      if (org.id === val) {
-        return org.name;
-      }
-    });
-  }
-  fillJiraOrgList(): Promise<boolean> {
-    this.jiraOrgList = this.sessionStorage.get(this.JIRA_ORG_LIST);
-    if (this.jiraOrgList) return;
-    return new Promise((done, fail) => {
-      if (!this.jiraOrgList) this.jiraOrgList = [];
-      if (this.jiraOrgList.length === 0) {
-        //lets fill JiraOrgList
-        this.getJiraOrgs(false).subscribe(async result => {
-          if (result.code === 401) {
-            fail('401');
-            return;
-          }
-          if (result.length > 0) {
-            this.jiraOrgList = result;
-            this.sessionStorage.set(this.JIRA_ORG_LIST, result);
-            if (this.jiraCurrentOrg === undefined) {
-              this.jiraCurrentOrg = this.jiraOrgList[0].id;
-            }
-          }
-          done(true);
-        });
-      } else {
-        done(true);
-      }
-    });
-  }
-
-  async getJiraAccountId4UserName(name: string): Promise<any> {
-    if (this.JiraUsersMap.size === 0) {
-      await this.fillJiraUserMap();
-    } else {
-      return this.JiraUsersMap.get(name);
-    }
-    return this.JiraUsersMap.get(name);
-  }
-
   getHookStatus(org: string): any {
     this.attachToken();
     const q = `GetHookStatus?org=${org}`;
@@ -283,6 +249,23 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  public getCurrentOrg(): string {
+    if (!this.currentOrg) {
+      this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
+      if (!this.currentOrg) {
+        this.checkOrg().then(r => {
+          return this.currentOrg;
+        });
+        return;
+      }
+    }
+    return this.currentOrg;
+  }
+
+  public setCurrentOrg(org: string) {
+    this.currentOrg = org;
+  }
+
   attachToken(skipOrgCheck: boolean = false) {
     if (!skipOrgCheck) {
       this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
@@ -311,6 +294,7 @@ export class GitService {
 
   /*
   If current org is undefined, then get the org list and we get 404 then go back to login. 
+  and this sets the currentOrg to firstOrg
   */
   async checkOrg() {
     return new Promise((resolve, reject) => {
@@ -394,6 +378,7 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  /*************** MSR  *******************/
   saveMSR(
     srId: number,
     userId: string,
@@ -442,7 +427,79 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  //JIRA
+  /******************  Jira  ****************/
+
+  async setJiraOrg() {
+    if (!this.jiraOrgList) {
+      this.jiraOrgList = [];
+    }
+    if (this.jiraOrgList.length === 0) {
+      await this.fillJiraOrgList();
+    }
+  }
+
+  async fillJiraUserMap(): Promise<boolean> {
+    await this.fillJiraOrgList();
+    return new Promise((done, fail) => {
+      this.jiraOrgList.forEach(element => {
+        this.getJiraUsers(element.id, false).subscribe(result => {
+          if (result.code === 401) {
+            fail('401');
+            return;
+          }
+          result.forEach(e2 => {
+            this.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
+          });
+          done(true);
+          return;
+        });
+      });
+    });
+  }
+
+  async getOrgName4Id(val: string) {
+    this.jiraOrgList.forEach(org => {
+      if (org.id === val) {
+        return org.name;
+      }
+    });
+  }
+
+  fillJiraOrgList(): Promise<boolean> {
+    this.jiraOrgList = this.sessionStorage.get(this.JIRA_ORG_LIST);
+    if (this.jiraOrgList) return;
+    return new Promise((done, fail) => {
+      if (!this.jiraOrgList) this.jiraOrgList = [];
+      if (this.jiraOrgList.length === 0) {
+        //lets fill JiraOrgList
+        this.getJiraOrgs(false).subscribe(async result => {
+          if (result.code === 401) {
+            fail('401');
+            return;
+          }
+          if (result.length > 0) {
+            this.jiraOrgList = result;
+            this.sessionStorage.set(this.JIRA_ORG_LIST, result);
+            if (this.jiraCurrentOrg === undefined) {
+              this.jiraCurrentOrg = this.jiraOrgList[0].id;
+            }
+          }
+          done(true);
+        });
+      } else {
+        done(true);
+      }
+    });
+  }
+
+  async getJiraAccountId4UserName(name: string): Promise<any> {
+    if (this.JiraUsersMap.size === 0) {
+      await this.fillJiraUserMap();
+    } else {
+      return this.JiraUsersMap.get(name);
+    }
+    return this.JiraUsersMap.get(name);
+  }
 
   /*
       Attaches Authorization ticket which actually has the tenant information (tenantId).
@@ -483,5 +540,13 @@ export class GitService {
     const q = `GetJiraUsers?org=${org}&bustTheCache=${bustTheCache}`;
     this.attachJiraToken();
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
+  }
+
+  getJiraCurrentOrg() {
+    return this.jiraCurrentOrg;
+  }
+
+  setJiraCurrentOrg(org: string) {
+    this.jiraCurrentOrg = org;
   }
 }

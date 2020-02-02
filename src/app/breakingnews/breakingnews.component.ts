@@ -25,7 +25,7 @@ export class BreakingnewsComponent implements OnInit {
 
   getData() {
     this.gitService.ready().then(result => {
-      this.gitService.getDeveloperDetail(this.gitService.currentOrg, 7, null, null, 50).subscribe(val => {
+      this.gitService.getDeveloperDetail(this.gitService.getCurrentOrg(), 7, null, null, 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;

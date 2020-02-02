@@ -76,8 +76,8 @@ export class BitbucketStatusComponent implements OnInit {
               this.orgStatus = true;
               this.orgList = result;
               this.gitService.jiraOrgList = result;
-              if (this.gitService.jiraCurrentOrg == undefined) {
-                this.gitService.jiraCurrentOrg = this.orgList[0].id;
+              if (this.gitService.getJiraCurrentOrg() == undefined) {
+                this.gitService.setJiraCurrentOrg (this.orgList[0].id);
               }
               this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
               //for every org check the hook

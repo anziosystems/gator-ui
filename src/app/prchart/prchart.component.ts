@@ -18,9 +18,9 @@ export class PrchartComponent implements OnInit {
 
   ngOnInit() {
     let day = 30;
-    //currentOrg does not work with an standalone page. hardcode to see graph as an standalone page. 
-    //replace this.gitService.currentOrg with LabShare
-    this.gitService.getGraphData4XDays(this.gitService.currentOrg, day).subscribe(results => {
+    //currentOrg does not work with an standalone page. hardcode to see graph as an standalone page.
+    //replace this.gitService.getCurrentOrg() with LabShare
+    this.gitService.getGraphData4XDays(this.gitService.getCurrentOrg(), day).subscribe(results => {
       results.map(res => {
         if (res.State === 'closed') {
           this.closeCtr.push(res.Ctr);
@@ -40,13 +40,13 @@ export class PrchartComponent implements OnInit {
         type: 'line',
         data: {
           labels: this.allDates,
-          
+
           datasets: [
             {
               data: this.closeCtr,
               borderColor: '#98FB98',
               fill: false,
-              label:'close',
+              label: 'close',
             },
             {
               data: this.openCtr,
@@ -54,19 +54,16 @@ export class PrchartComponent implements OnInit {
               fill: false,
               label: 'open',
             },
-
           ],
         },
         options: {
           legned: {
             display: true,
-            
           },
           scales: {
             xAxes: [
               {
                 display: true,
-               
               },
             ],
             yAxes: [

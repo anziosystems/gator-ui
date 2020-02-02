@@ -13,7 +13,7 @@ export class JiraCallBackComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       const JiraToken = params['JiraToken'];
       if (JiraToken) {
-        this.gitService.jiraToken = JiraToken;
+        this.gitService.setJiraToken(JiraToken);
         this.storage.set('JiraToken', JiraToken);
         this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
         this.router.navigate(['/jiraStatus']);

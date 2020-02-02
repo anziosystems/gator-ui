@@ -76,8 +76,8 @@ export class JiraStatusComponent implements OnInit {
               this.orgStatus = true;
               this.orgList = result;
               this.gitService.jiraOrgList = result;
-              if (this.gitService.jiraCurrentOrg == undefined) {
-                this.gitService.jiraCurrentOrg = this.orgList[0].id;
+              if (this.gitService.getJiraCurrentOrg == undefined) {
+                this.gitService.setJiraCurrentOrg(this.orgList[0].id);
               }
               this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
               //for every org check the hook
@@ -87,7 +87,7 @@ export class JiraStatusComponent implements OnInit {
                   if (result.code === 401) {
                     clearTimeout(t);
                     this.errMessages.push('Unauthorized. Token Expired');
-                    this.sleep(5000).then(() => {
+                    this.sleep(50).then(() => {
                       this.router.navigate(['/jira-login']);
                       return;
                     });
@@ -115,7 +115,7 @@ export class JiraStatusComponent implements OnInit {
               let elem = document.getElementById('myBar');
               elem.style.width = '100%';
               clearTimeout(t);
-              this.sleep(5000).then(() => {
+              this.sleep(500).then(() => {
                 this.router.navigate(['/jira-login']);
               });
             }

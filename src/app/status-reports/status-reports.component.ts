@@ -46,7 +46,7 @@ export class StatusReportsComponent implements OnInit {
   author: string;
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
-    this.currentOrg = this.gitService.currentOrg;
+    this.currentOrg = this.gitService.getCurrentOrg();
 
     this.textReviewer = '';
     this.textStatus = '';
@@ -57,11 +57,11 @@ export class StatusReportsComponent implements OnInit {
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg();
-      this.currentOrg = this.gitService.currentOrg;
+      this.currentOrg = this.gitService.getCurrentOrg();
     }
     this.status = this.IN_PROGRESS;
     this.srId = -1;
-    this.currentOrg = this.gitService.currentOrg;
+    this.currentOrg = this.gitService.getCurrentOrg();
     this.srList = [];
     this.srReviewList = [];
 

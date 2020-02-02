@@ -20,7 +20,7 @@ export class CallbackComponent implements OnInit {
       this.activatedRoute.queryParams.subscribe(params => {
       const token = params['token'];
       if (token) {
-        this.gitService.token = token;
+        this.gitService.setToken(token);
         this.storage.set('token', token);
         this.sleep(800).then(res => {
           this.router.navigate(['/status']);

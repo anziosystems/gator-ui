@@ -14,7 +14,7 @@ export class BitbucketCallBackComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       const BitBucketToken = params['BitBucket'];
       if (BitBucketToken) {
-        this.gitService.jiraToken = BitBucketToken;
+        this.gitService.setJiraToken (BitBucketToken);
         this.storage.set('BitBucket', BitBucketToken);
         this.gitService.broadcastComponentMessage('SHOW_BITBUCKET_DETAILS');
         this.router.navigate(['/bitbucketStatus']);

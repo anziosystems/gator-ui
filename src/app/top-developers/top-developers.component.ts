@@ -70,9 +70,9 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   GetData(dev: DevDetails) {
-    if (this.gitService.currentContext === 'undefined') this.gitService.currentContext = 'GIT';
+    if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
 
-    if (this.gitService.currentContext === 'JIRA') {
+    if (this.gitService.getCurrentContext() === 'JIRA') {
       this.jiraData(dev);
     } else {
       this.gitData(dev);
@@ -85,7 +85,7 @@ export class TopDevelopersComponent implements OnInit {
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
-    this.gitService.currentDev = developer;
+    this.gitService.setCurrentDev(developer);
     this.gitService.trigger(developer.login);
     this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
     //This to add developer in the status report component
@@ -99,7 +99,7 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   jiraData(developer: DevDetails) {
-    this.gitService.currentDev = developer;
+    this.gitService.setCurrentDev(developer);
     const date = new Date();
 
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
@@ -129,7 +129,7 @@ export class TopDevelopersComponent implements OnInit {
     this.developers = [];
 
     this.gitService.ready().then(result => {
-      this.gitService.getTopDevelopers(this.gitService.currentOrg, 15).subscribe(val => {
+      this.gitService.getTopDevelopers(this.gitService.getCurrentOrg(), 15).subscribe(val => {
         const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
         devs.map(item => {
           const arr = _.split(item, '--');

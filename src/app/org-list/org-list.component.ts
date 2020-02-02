@@ -2,7 +2,7 @@ import {Component, OnInit, EventEmitter, Output, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
 import {Route} from '@angular/compiler/src/core';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
 @Component({
   selector: 'app-org-list',
@@ -16,7 +16,13 @@ export class OrgListComponent implements OnInit {
   loggedIn: boolean;
   currentOrg: string;
 
-  constructor(private gitService: GitService, private route: ActivatedRoute, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
+  constructor(
+    private gitService: GitService,
+    private route: ActivatedRoute,
+    private router: Router,
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService,
+    @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
+  ) {
     this.back_colors = [];
     this.back_colors.push('rgb(45, 49, 51)'); //#01A9DB
     this.back_colors.push('rgb(45, 49, 51)');
@@ -62,7 +68,9 @@ export class OrgListComponent implements OnInit {
   }
 
   data(org: any) {
-    this.gitService.currentOrg = org.Org;
+    //Keep the current Org in session, angular apps with refresh browser will reload the gitservice and application will forget everything
+    this.gitService.setCurrentOrg(org.Org);
+    this.sessionStorage.set('CURRENT-ORG', org.Org);
     this.router.onSameUrlNavigation = 'reload';
     this.router.initialNavigation();
     this.router.navigate(['/dashboard'], {
@@ -72,7 +80,8 @@ export class OrgListComponent implements OnInit {
 
   ngOnInit() {
     this.orgList = [];
-    this.gitService.currentOrg = this.route.snapshot.queryParamMap.get('Org');
+    this.gitService.setCurrentOrg(this.route.snapshot.queryParamMap.get('Org'));
+    this.sessionStorage.set('CURRENT-ORG', this.route.snapshot.queryParamMap.get('Org'));
     this.gitService.getOrgList().subscribe(result => {
       this.orgList = result;
     });
