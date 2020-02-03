@@ -80,7 +80,7 @@ export class JiraStatusComponent implements OnInit {
                 this.gitService.setJiraCurrentOrg(this.orgList[0].id);
               }
               this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
-              //for every org check the hook
+              //for every org get the dev's
               this.orgList.forEach(element => {
                 this.messages.push(`Get Dev list for :${element.name}`);
                 this.gitService.getJiraUsers(element.id, true).subscribe(result => {
@@ -92,7 +92,7 @@ export class JiraStatusComponent implements OnInit {
                       return;
                     });
                   }
-
+                  this.messages.push(`Found ${result.count} Dev for :${element.name}`);
                   result.forEach(e2 => {
                     this.gitService.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
                   });
@@ -104,11 +104,12 @@ export class JiraStatusComponent implements OnInit {
                    Object {self: "https://api.atlassian.com/ex/jira/786d2410-0054-41…", accountId: "5d53f3cbc6b9320d9ea5bdc2", accountType: "app", avatarUrls: Object, displayName: "Jira Outlook", …}
    
                   */
-                  this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
-                  this.buttonDisabled = false;
-                  this.router.navigate(['/dashboard']);
-                });
+                
+                }); //Get JiraUSers
               }); //org list loop
+              this.buttonDisabled = false;
+              //this.router.navigate(['/dashboard']); -- Dont move automatically. Let the user click the button.
+
             } else {
               this.warningMessages.push('Did not get any orgnazation for this login. Please login in Jira and make sure you belong to an organization.');
               this.warningMessages.push('Exiting!!!');
