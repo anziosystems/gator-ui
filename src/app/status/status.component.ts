@@ -32,6 +32,7 @@ export class StatusComponent implements OnInit {
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
   ) {
     this.bGetFromGit = sessionStorage.get('LBC');
+    
     this.loginAndSetup();
   }
 
@@ -173,11 +174,11 @@ export class StatusComponent implements OnInit {
                       if (this.bGetFromGit) {
                         this.successMessages.push('Done! Getting pull request for ' + element.Org + ' from ' + result + ' repositories');
                       }
-                      // this.buttonDisabled = false;
-                      // let elem = document.getElementById('myBar');
-                      // elem.style.width = '100%';
-                      // clearTimeout(t);
-                      this.router.navigate(['/dashboard']);  //No Need for user to click
+                      this.buttonDisabled = false;
+                      let elem = document.getElementById('myBar');
+                      elem.style.width = '100%';
+                      clearTimeout(t);
+                    //  this.router.navigate(['/dashboard']);  //No Need for user to click
                     },
                     error => {
                       if (this.bGetFromGit) {
