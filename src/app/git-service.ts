@@ -79,13 +79,19 @@ export class GitService {
   }
 
   setCurrentContext(ctx: string) {
-    this.currentContext = ctx;
-    this.sessionStorage.set('CURRENT-CONTEXT', ctx);
+    if (ctx) {
+      this.currentContext = ctx;
+      this.sessionStorage.set('CURRENT-CONTEXT', ctx);
+    }
   }
 
   setCurrentDev(dev: DevDetails) {
-    this.currentDev = dev;
-    this.sessionStorage.set('CURRENT-DEV', dev);
+    if (dev) {
+      if (dev.name) {
+        this.currentDev = dev;
+        this.sessionStorage.set('CURRENT-DEV', dev);
+      }
+    }
   }
 
   getCurrentDev(): DevDetails {
@@ -560,6 +566,8 @@ export class GitService {
   }
 
   setJiraCurrentOrg(org: string) {
-    this.jiraCurrentOrg = org;
+    if (org) {
+      this.jiraCurrentOrg = org;
+    }
   }
 }
