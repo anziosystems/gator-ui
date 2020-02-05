@@ -49,10 +49,10 @@ const routes: Routes = [
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
   {
     path: 'settings',
+    component: SettingsComponent,
     children: [
       {path: 'admin', component: AdminComponent},
       {path: 'payment', component: PaymentComponent},
-      {path: '', component: SettingsComponent},
     ],
   },
   {path: 'orglist', component: OrgListComponent},
