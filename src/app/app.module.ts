@@ -33,7 +33,9 @@ import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.compone
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
 import {StatusReportsComponent} from './status-reports/status-reports.component';
- 
+import {SettingsComponent} from './settings/settings.component';
+import {AdminComponent} from './admin/admin.component';
+import {PaymentComponent} from './payment/payment.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -45,7 +47,14 @@ const routes: Routes = [
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
-
+  {
+    path: 'settings',
+    children: [
+      {path: 'admin', component: AdminComponent},
+      {path: 'payment', component: PaymentComponent},
+      {path: '', component: SettingsComponent},
+    ],
+  },
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'prchart', component: PrchartComponent},
@@ -78,6 +87,9 @@ const routes: Routes = [
     BitbucketCallBackComponent,
     BitbucketStatusComponent,
     StatusReportsComponent,
+    SettingsComponent,
+    AdminComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +101,6 @@ const routes: Routes = [
     BrowserAnimationsModule,
     AngularDraggableModule,
     FormsModule,
-    
   ],
   providers: [GitService, CookieService],
   exports: [RouterModule],
