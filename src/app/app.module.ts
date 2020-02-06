@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {PullRequestCountComponent} from './pull-request-count/pull-request-count.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -12,7 +12,6 @@ import {CallbackComponent} from './callback/callback.component';
 import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
-import {CookieService} from 'ngx-cookie-service';
 import {environment} from '../environments/environment';
 import {GitService, DevDetails} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
@@ -33,7 +32,10 @@ import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.compone
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
 import {StatusReportsComponent} from './status-reports/status-reports.component';
- 
+import {DialogModule} from 'primeng/dialog';
+import {DialogService} from 'primeng/api';
+import { PeopleTicketComponent } from './people-ticket/people-ticket.component';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -78,6 +80,10 @@ const routes: Routes = [
     BitbucketCallBackComponent,
     BitbucketStatusComponent,
     StatusReportsComponent,
+    PeopleTicketComponent,
+  ],
+  entryComponents: [
+    PeopleTicketComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,9 +95,11 @@ const routes: Routes = [
     BrowserAnimationsModule,
     AngularDraggableModule,
     FormsModule,
-    
+    ReactiveFormsModule,
+    DynamicDialogModule,
+    DialogModule
   ],
-  providers: [GitService, CookieService],
+  providers: [GitService, , DialogService],
   exports: [RouterModule],
   bootstrap: [AppComponent],
 })

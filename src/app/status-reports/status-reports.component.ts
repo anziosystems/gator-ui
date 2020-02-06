@@ -1,11 +1,11 @@
-import {Component, OnInit, EventEmitter, Output, Inject, NgModule, ChangeDetectorRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {GitService, CustomEvent} from '../git-service';
-import {Route} from '@angular/compiler/src/core';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
-import Quill from 'quill';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { GitService, CustomEvent, DevDetails } from '../git-service';
+import { DialogService } from 'primeng/api';
 import * as FileSaver from 'file-saver';
-let _ = require('lodash');
+import { PeopleTicketComponent } from '../people-ticket/people-ticket.component';
+import { filter } from 'rxjs/internal/operators/filter';
+const _ = require('lodash');
 
 @Component({
   selector: 'app-status-reports',
@@ -45,7 +45,8 @@ export class StatusReportsComponent implements OnInit {
   ALL: number = 99;
   author: string;
 
-  constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef) {
+  constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef,
+    private dialogService: DialogService) {
     this.currentOrg = this.gitService.getCurrentOrg();
 
     this.textReviewer = '';
@@ -243,7 +244,29 @@ export class StatusReportsComponent implements OnInit {
     this.getReviewReports(99);
   }
   addReviewer() {
-    this.bShowReviewers = 99;
+    this.gitService.ready().then(result => {
+      this.gitService.getTopDevelopers(this.gitService.getCurrentOrg(), 15).subscribe(val => {
+        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
+        const developerNames = devs.map(item => {
+          const arr = _.split(item, '--');
+          return arr[0];
+        });
+
+        this.dialogService
+          .open(PeopleTicketComponent, {
+            data: {
+              options: developerNames,
+              items: this.textReviewer.split(', ').filter(x => x)
+            },
+            width: "50%",
+            header: 'Delete Folder',
+          }).onClose.pipe(filter(x => x)).subscribe(v => {
+            this.textReviewer = v.join(', ');
+          });
+      });
+    });
+
+
   }
 
   addJiraTickets() {
@@ -420,7 +443,7 @@ export class StatusReportsComponent implements OnInit {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], {type: PDF_TYPE});
+    const blob = new Blob([byteArray], { type: PDF_TYPE });
 
     FileSaver.saveAs(blob, 'MSR-' + new Date().getDay() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.html');
   }
