@@ -64,6 +64,7 @@ export class OrgListComponent implements OnInit {
   }
 
   gotoStatusReports() {
+    this.gitService.setCurrentContext('GIT');
     this.router.navigate(['/StatusReport']);
   }
 
@@ -78,6 +79,11 @@ export class OrgListComponent implements OnInit {
       queryParams: {Org: org.Org, refresh: new Date().getTime()},
     });
   }
+
+  settings(){
+    this.router.navigate(['/settings']);
+  }
+
 
   ngOnInit() {
     this.orgList = [];

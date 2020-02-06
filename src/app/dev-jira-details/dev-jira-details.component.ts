@@ -87,6 +87,7 @@ export class DevJiraDetailsComponent implements OnInit {
     this.gitService.getJiraAccountId4UserName(developer).then(
       accountId => {
         if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
+          console.log ('accountId is undefined or JiraOrgList is empty');
           this.bShowError = true;
           return;
         }
@@ -96,6 +97,7 @@ export class DevJiraDetailsComponent implements OnInit {
         this.gitService.jiraOrgList.forEach(
           org => {
             this.gitService.ready().then(result => {
+              console.log (`Getting Jira Issue for ${org.id} accountId: ${accountId} `);
               this.gitService.GetJiraIssues(org.id, accountId, 50, false).subscribe(val => {
                 /*
           JSON.parse (val)

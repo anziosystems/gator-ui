@@ -34,8 +34,11 @@ import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.comp
 import {StatusReportsComponent} from './status-reports/status-reports.component';
 import {DialogModule} from 'primeng/dialog';
 import {DialogService} from 'primeng/api';
-import { PeopleTicketComponent } from './people-ticket/people-ticket.component';
+import {PeopleTicketComponent} from './people-ticket/people-ticket.component';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {SettingsComponent} from './settings/settings.component';
+import {AdminComponent} from './admin/admin.component';
+import {PaymentComponent} from './payment/payment.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -47,7 +50,14 @@ const routes: Routes = [
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
-
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    children: [
+      {path: 'admin', component: AdminComponent},
+      {path: 'payment', component: PaymentComponent},
+    ],
+  },
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'prchart', component: PrchartComponent},
@@ -81,6 +91,9 @@ const routes: Routes = [
     BitbucketStatusComponent,
     StatusReportsComponent,
     PeopleTicketComponent,
+    SettingsComponent,
+    AdminComponent,
+    PaymentComponent,
   ],
   entryComponents: [
     PeopleTicketComponent,
@@ -97,7 +110,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     DynamicDialogModule,
-    DialogModule
+    DialogModule,
   ],
   providers: [GitService, , DialogService],
   exports: [RouterModule],
