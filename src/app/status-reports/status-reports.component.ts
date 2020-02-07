@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { GitService, CustomEvent, DevDetails } from '../git-service';
-import { DialogService } from 'primeng/api';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Router} from '@angular/router';
+import {GitService, CustomEvent, DevDetails} from '../git-service';
+import {DialogService} from 'primeng/api';
 import * as FileSaver from 'file-saver';
-import { PeopleTicketComponent } from '../people-ticket/people-ticket.component';
-import { filter } from 'rxjs/internal/operators/filter';
+import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
+import {filter} from 'rxjs/internal/operators/filter';
 const _ = require('lodash');
 
 @Component({
@@ -45,8 +45,7 @@ export class StatusReportsComponent implements OnInit {
   ALL: number = 99;
   author: string;
 
-  constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef,
-    private dialogService: DialogService) {
+  constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef, private dialogService: DialogService) {
     this.currentOrg = this.gitService.getCurrentOrg();
 
     this.textReviewer = '';
@@ -256,17 +255,17 @@ export class StatusReportsComponent implements OnInit {
           .open(PeopleTicketComponent, {
             data: {
               options: developerNames,
-              items: this.textReviewer.split(', ').filter(x => x)
+              items: this.textReviewer.split(', ').filter(x => x),
             },
-            width: "50%",
-            header: 'Delete Folder',
-          }).onClose.pipe(filter(x => x)).subscribe(v => {
+            width: '50%',
+            header: 'Choose Reviewers',
+          })
+          .onClose.pipe(filter(x => x))
+          .subscribe(v => {
             this.textReviewer = v.join(', ');
           });
       });
     });
-
-
   }
 
   addJiraTickets() {
@@ -445,7 +444,7 @@ export class StatusReportsComponent implements OnInit {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: PDF_TYPE });
+    const blob = new Blob([byteArray], {type: PDF_TYPE});
 
     FileSaver.saveAs(blob, 'MSR-' + new Date().getDay() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.html');
   }

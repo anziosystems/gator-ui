@@ -1,34 +1,34 @@
 <form class="people-ticket" [formGroup]="formGroup">
-
-    <div class="row">
-        <div class="col-sm-5">
-            <input type="text" class="form-control" formControlName="filterText">
-        </div>
+  <div class="row">
+    <div class="col-sm-5" style="    margin-bottom: 10px;">
+      <input type="text" class="form-control" formControlName="filterText" />
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-sm-5">
-            <select class="form-control" size="10" formControlName="all" (dblclick)="add()">
-                <option *ngFor="let c of sortBy()" [ngValue]="c">{{ c }}</option>
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <div>
-                <button class="btn btn-primary" [disabled]="!allOptionsControl.value" (click)="add()">Add</button>
-            </div>
-            <div>
-                <button class="btn btn-primary" [disabled]="!selectedOptionsControl.value" (click)="remove()">Remove</button>
-            </div>
-        </div>
-        <div class="col-sm-5">
-            <select class="form-control" size="10" formControlName="selected" (dblclick)="remove()">
-                <option *ngFor="let c of selectedOptions" [ngValue]="c">{{ c }}</option>
-            </select>
-            <button class="btn btn-primary" (click)="shift(0)" [disabled]="upDisabled">Up</button>
-            <button class="btn btn-primary" (click)="shift(1)" [disabled]="downDisabled">Down</button>
-        </div>
+  <div class="row">
+    <div class="col-sm-5">
+      <select class="form-control" size="10" style="min-height: 150px; max-height: 150px;" formControlName="all" (dblclick)="add()">
+        <option *ngFor="let c of sortBy()" [ngValue]="c" style="font-size: large;">{{ c }}</option>
+      </select>
     </div>
-    
-    <button type="submit" class="btn btn-primary" (click)="submit()">Submit</button>
-    <button type="button" class="btn btn-danger" (click)="close()">Cancel</button>
+    <div class="col-sm-2">
+      <div>
+        <button class="buttons-style" style="margin-left: -10px;margin-top: 15px;" [disabled]="!allOptionsControl.value" (click)="add()">Add</button>
+      </div>
+      <p></p>
+      <div>
+        <button class="buttons-style" style="margin-left: -10px;" [disabled]="!selectedOptionsControl.value" (click)="remove()">Remove</button>
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <select class="form-control" size="10" style="min-height: 150px;  max-height: 150px;" formControlName="selected" (dblclick)="remove()">
+        <option *ngFor="let c of selectedOptions" [ngValue]="c" style="font-size: large;">{{ c }}</option>
+      </select>
+      <!-- <button class="buttons-style" (click)="shift(0)" [disabled]="upDisabled">Up</button>
+            <button class="buttons-style" (click)="shift(1)" [disabled]="downDisabled">Down</button> -->
+    </div>
+  </div>
+
+  <button type="submit" class="buttons-style" (click)="submit()">Submit</button>
+  <button type="button" class="buttons-style" (click)="close()">Cancel</button>
 </form>

@@ -14,48 +14,8 @@ export class PeopleTicketComponent {
   public selectedOptionsControl: FormControl;
   public filterTextControl: FormControl;
 
-  public allOptions = [
-    "wage",
-    "shock",
-    "presence",
-    "virus",
-    "good",
-    "produce",
-    "switch",
-    "conclusion",
-    "growth",
-    "alcohol",
-    "rumor",
-    "qualification",
-    "excavation",
-    "affair",
-    "needle",
-    "trade",
-    "oven",
-    "beneficiary",
-    "tract",
-    "wardrobe",
-    "exemption",
-    "classroom",
-    "franchise",
-    "revolution",
-    "coerce",
-    "directory",
-    "discourage",
-    "tradition",
-    "skip",
-    "core",
-    "enter",
-    "feast",
-    "chin",
-    "sulphur",
-    "tablet",
-    "quit",
-    "barrel",
-    "earwax",
-    "vehicle",
-    "utter"
-  ]
+  public allOptions = [] 
+  
   public selectedOptions = [];
 
   public upDisabled = true;
