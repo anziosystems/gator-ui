@@ -112,7 +112,7 @@ const routes: Routes = [
     DynamicDialogModule,
     DialogModule,
   ],
-  providers: [GitService, , DialogService],
+  providers: [GitService, DialogService],
   exports: [RouterModule],
   bootstrap: [AppComponent],
 })
