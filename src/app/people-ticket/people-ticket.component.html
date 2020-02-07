@@ -11,13 +11,13 @@
         <option *ngFor="let c of sortBy()" [ngValue]="c" style="font-size: large;">{{ c }}</option>
       </select>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-2" style="align-items: center; align-content: center;">
       <div>
-        <button class="buttons-style" style="margin-left: -10px;margin-top: 15px;" [disabled]="!allOptionsControl.value" (click)="add()">Add</button>
+        <button class="buttons-style" style="margin-top: 15px;" [disabled]="!allOptionsControl.value" (click)="add()">Add</button>
       </div>
       <p></p>
       <div>
-        <button class="buttons-style" style="margin-left: -10px;" [disabled]="!selectedOptionsControl.value" (click)="remove()">Remove</button>
+        <button class="buttons-style" [disabled]="!selectedOptionsControl.value" (click)="remove()">Remove</button>
       </div>
     </div>
     <div class="col-sm-5">
