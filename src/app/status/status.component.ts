@@ -172,7 +172,7 @@ export class StatusComponent implements OnInit {
                 elem.style.width = '100%';
                 clearTimeout(t);
                 //Just firing an extra call to prepare the cache in BE 
-                this.gitService.getTopDevelopers(this.gitService.getCurrentOrg(), this.NO_OF_DAYS) ;
+                this.gitService.getGitTopDevelopers(this.gitService.getCurrentOrg(), this.NO_OF_DAYS) ;
                 //  this.router.navigate(['/dashboard']);  //No Need for user to click
               },
               error => {

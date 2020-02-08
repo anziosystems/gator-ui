@@ -23,6 +23,8 @@ export class DevDetails {
   public login: string;
   public id: number;
   public profileUrl: string;
+  public avatarUrl: string;
+  public email: string;
 }
 
 export class CustomEvent {
@@ -44,11 +46,12 @@ export class GitService {
   private loggedInGitDev: DevDetails;
   private currentDev: DevDetails;
   private currentContext: string; //JIRA/GIT
-
+  private gitUsersMap = new Map<string, DevDetails>();
   public httpOptions: any;
   public httpJirapOptions: any;
   public query: string;
   public JIRA_ORG_LIST: string = 'JIRA-ORG-LIST';
+  private NO_DAYS:number = 25;
 
   constructor(
     private http: HttpClient,
@@ -137,6 +140,35 @@ export class GitService {
     }
     return this.loggedInGitDev;
   }
+
+  async fillGitUserMap(): Promise<boolean> {
+    return new Promise((done, fail) => {
+    
+        this.getGitDev4Org(this.getCurrentOrg()).subscribe(result => {
+          if (result.code === 401) {
+            fail('401');
+            return;
+          }
+          result.forEach(e2 => {
+            this.gitUsersMap.set(e2.login.trim(), e2);
+          });
+          done(true);
+          return;
+        });
+      });
+    }
+
+    getGitDisplayName4Login (login: string): string {
+      if (this.gitUsersMap) {
+        return this.gitUsersMap.get (login).name;
+      }
+    }
+
+    getGitDevDetails4Login (login: string): DevDetails {
+      if (this.gitUsersMap) {
+        return this.gitUsersMap.get (login);
+      }
+    }
 
   /*
     jiraOrgList: Array(3)
@@ -378,9 +410,15 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getTopDevelopers(org: string, day: number): Observable<any> {
+  getGitTopDevelopers(org: string, day: number): Observable<any> {
     this.attachToken();
     const q = `TopDevForLastXDays?org=${org}&day=${day}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  getGitDev4Org(org: string): Observable<any> {
+    this.attachToken();
+    const q = `GitDev4Org?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
@@ -477,7 +515,7 @@ export class GitService {
     });
   }
 
-  async getOrgName4Id(val: string) {
+  async getJiraOrgName4Id(val: string) {
     this.jiraOrgList.forEach(org => {
       if (org.id === val) {
         return org.name;

@@ -151,6 +151,7 @@ export class StatusReportsComponent implements OnInit {
       self.textReviewer = val[0].Reviewer;
       self.manager = val[0].Manager;
       self.managerComment = val[0].ManagerComment;
+      if (val[0].ManagerStatus === null) val[0].ManagerStatus = this.ACHIEVED;
       self.managerStatus = val[0].ManagerStatus;
       self.bNeed = self.managerStatus === this.NEEDIMPROVEMENT;
       self.bExceed = self.managerStatus === this.EXCEED;
@@ -247,15 +248,17 @@ export class StatusReportsComponent implements OnInit {
   }
   //Show all the reports for the reviewer -
   showAllReview() {
-    this.getReviewReports(99);
+    this.getReviewReports(this.ALL);
   }
+
   addReviewer() {
     this.gitService.ready().then(result => {
-      this.gitService.getTopDevelopers(this.gitService.getCurrentOrg(), 15).subscribe(val => {
-        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
+      this.gitService.getGitDev4Org(this.gitService.getCurrentOrg()).subscribe(val => {
+        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
         const developerNames = devs.map(item => {
           const arr = _.split(item, '--');
-          return arr[0] + ' - ' + arr[1];
+          if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
+          return arr[0] + '  -  ' + arr[1];
         });
 
         this.dialogService
@@ -287,11 +290,14 @@ export class StatusReportsComponent implements OnInit {
   }
 
   save(status: number) {
-    if (!status) {
-      status = this.status;
+    if (this.textStatus.trim() === '') {
+      if (confirm('Please fill in status first')) {
+        return;
+      }
     }
+
     if (this.textReviewer.trim() === '') {
-      if (confirm('Would you like to add a reviewer? Please add your manager as a reviewer.')) {
+      if (confirm('Please add your manager as a reviewer.')) {
         return;
       }
     }
@@ -299,6 +305,10 @@ export class StatusReportsComponent implements OnInit {
     if (!this.currentOrg) {
       alert('Please select an organization before you submit the report.');
       return;
+    }
+
+    if (!status) {
+      status = this.status;
     }
 
     if (this.prevStatus === this.IN_PROGRESS) {
@@ -313,7 +323,9 @@ export class StatusReportsComponent implements OnInit {
     if (this.status === this.IN_PROGRESS) {
       this.author = this.gitService.getLoggedInGitDev().login;
     }
+
     this.managerStatus = this.bAchieved ? this.ACHIEVED : this.bNeed ? this.NEEDIMPROVEMENT : this.bExceed ? this.EXCEED : this.ACHIEVED;
+
     this.gitService
       .saveMSR(
         this.srId,

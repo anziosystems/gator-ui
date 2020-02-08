@@ -56,7 +56,9 @@ export class PeopleTicketComponent {
 
     let result = ordered;
     if (filterText && filterText.length) {
-      result = ordered.filter(x => x.indexOf(filterText) > -1);
+      result = ordered.filter(x => {
+        return x.toLowerCase().indexOf(filterText.toLowerCase()) > -1;
+      });
     }
 
     return result;
@@ -65,7 +67,7 @@ export class PeopleTicketComponent {
   add() {
     const val = this.allOptionsControl.value;
     if (!val) return;
-    const index = this.allOptions.findIndex(x => x == val);
+    const index = this.allOptions.findIndex(x => x === val);
     const element = this.allOptions.splice(index, 1).pop();
     this.selectedOptions.push(element);
     this.allOptionsControl.setValue('');
@@ -76,7 +78,7 @@ export class PeopleTicketComponent {
   remove() {
     const val = this.selectedOptionsControl.value;
     if (!val) return;
-    const index = this.selectedOptions.findIndex(x => x == val);
+    const index = this.selectedOptions.findIndex(x => x === val);
     const element = this.selectedOptions.splice(index, 1).pop();
     this.allOptions.push(element);
     this.selectedOptionsControl.setValue('');
@@ -86,7 +88,7 @@ export class PeopleTicketComponent {
 
   shift(shift: number = 0) {
     const val = this.selectedOptionsControl.value;
-    const index = this.selectedOptions.findIndex(x => x == val) + shift;
+    const index = this.selectedOptions.findIndex(x => x === val) + shift;
     const elements = this.selectedOptions.splice(index, 1);
     this.selectedOptions.splice(index - 1, 0, ...elements);
     this.upDisabled = this.checkUp();
@@ -98,7 +100,7 @@ export class PeopleTicketComponent {
     if (!val) {
       return true;
     }
-    const index = this.selectedOptions.findIndex(x => x == val);
+    const index = this.selectedOptions.findIndex(x => x === val);
     if (index === 0) return true;
     return false;
   }
@@ -108,7 +110,7 @@ export class PeopleTicketComponent {
     if (!val) {
       return true;
     }
-    const index = this.selectedOptions.findIndex(x => x == val);
+    const index = this.selectedOptions.findIndex(x => x === val);
     if (index === this.selectedOptions.length - 1) return true;
     return false;
   }
