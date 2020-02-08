@@ -203,8 +203,8 @@ export class StatusReportsComponent implements OnInit {
             break;
         }
 
-        item.LastUpdated = item.LastUpdated.substring(0, 10);
-
+        //item.LastUpdated = item.LastUpdated.substring(0, 10);
+        item.ReportDate = item.ReportDate.subsring(0,10);
         this.srList.push(item);
       });
     });
@@ -241,7 +241,8 @@ export class StatusReportsComponent implements OnInit {
               x.Status = 'Archived';
               break;
           }
-          x.LastUpdated = x.LastUpdated.substring(0, 10);
+          //x.LastUpdated = x.LastUpdated.substring(0, 10);
+          x.ReportDate = x.ReportDate.substring(0,10);
           this.srReviewList.push(x);
         });
       });

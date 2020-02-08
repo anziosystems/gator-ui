@@ -15,10 +15,10 @@
               id="m1-btn"
               (click)="getReportData(sr.SRId)"
               class="history-button"
-              title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.LastUpdated }}"
+              title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.ReportDate }}"
               [style.color]="sr.Status == 'In Progress' ? 'lightblue' : sr.Status == 'In Review' ? '#F75D59' : 'white'"
             >
-              {{ sr.LastUpdated }} {{ sr.Status }}
+              {{ sr.ReportDate }} {{ sr.Status }}
             </button>
           </div>
         </div>
@@ -44,8 +44,8 @@
 
         <div>
           <div *ngFor="let sr of srReviewList; let i = index">
-            <button id="m1-btn" (click)="getReportData4Review(sr.SRId)" class="history-button" title="{{ sr.SRId }} -{{ sr.UserId }} - {{ sr.Status }} - {{ sr.LastUpdated }}">
-              {{ sr.LastUpdated }} {{ sr.UserId }}
+            <button id="m1-btn" (click)="getReportData4Review(sr.SRId)" class="history-button" title="{{ sr.SRId }} -{{ sr.UserId }} - {{ sr.Status }} - {{ sr.ReportDate }}">
+              {{ sr.ReportDate }} {{ sr.UserId }}
             </button>
           </div>
         </div>
