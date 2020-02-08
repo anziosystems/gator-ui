@@ -204,7 +204,7 @@ export class StatusReportsComponent implements OnInit {
         }
 
         //item.LastUpdated = item.LastUpdated.substring(0, 10);
-        item.ReportDate = item.ReportDate.subsring(0,10);
+        item.ReportDate = item.ReportDate.subsring(0, 10);
         this.srList.push(item);
       });
     });
@@ -242,7 +242,7 @@ export class StatusReportsComponent implements OnInit {
               break;
           }
           //x.LastUpdated = x.LastUpdated.substring(0, 10);
-          x.ReportDate = x.ReportDate.substring(0,10);
+          x.ReportDate = x.ReportDate.substring(0, 10);
           this.srReviewList.push(x);
         });
       });
@@ -322,7 +322,11 @@ export class StatusReportsComponent implements OnInit {
     }
 
     if (this.status === this.IN_PROGRESS) {
-      this.author = this.gitService.getLoggedInGitDev().login;
+      if (!this.author) {
+        //dont just blindly update the autor, some time reviewer is looking at the In_Progress reports
+        //to, as he is mentioned in the reviewer field.
+        this.author = this.gitService.getLoggedInGitDev().login;
+      }
     }
 
     this.managerStatus = this.bAchieved ? this.ACHIEVED : this.bNeed ? this.NEEDIMPROVEMENT : this.bExceed ? this.EXCEED : this.ACHIEVED;
