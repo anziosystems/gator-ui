@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
 import {DialogService} from 'primeng/api';
 import * as FileSaver from 'file-saver';
+
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 const _ = require('lodash');
@@ -44,6 +45,9 @@ export class StatusReportsComponent implements OnInit {
   DELETE: number = 6;
   ALL: number = 99;
   author: string;
+  ACHIEVED: number = 3;
+  NEEDIMPROVEMENT: number = 1;
+  EXCEED: number = 7;
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef, private dialogService: DialogService) {
     this.currentOrg = this.gitService.getCurrentOrg();
@@ -70,18 +74,18 @@ export class StatusReportsComponent implements OnInit {
     this.getReports4User();
     this.quillDisable = false;
 
-    //this bring clicks on topdeveloper component to reviewer text box
+    // //this bring clicks on topdeveloper component to reviewer text box
     this.eventSub = this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
-      if (val.source === 'TOP-DEVELOPER') {
-        if (val.destination === 'STATUS-REPORT') {
-          if (this.textReviewer.length > 100) {
-            alert('enough');
-            return;
-          }
-          this.textReviewer = this.textReviewer + val.message + ',';
-        }
-      }
-      //this is to geet the git tickets in report
+      //   if (val.source === 'TOP-DEVELOPER') {
+      //     if (val.destination === 'STATUS-REPORT') {
+      //       if (this.textReviewer.length > 100) {
+      //         alert('enough');
+      //         return;
+      //       }
+      //       this.textReviewer = this.textReviewer + val.message + ',';
+      //     }
+      //   }
+      //this is to get the git tickets in report
       if (val.source === 'GIT') {
         if ((val.destination = 'STATUS-REPORT')) this.textStatus = val.message + ' <br /> ' + this.textStatus;
       }
@@ -117,7 +121,7 @@ export class StatusReportsComponent implements OnInit {
     this.textReviewer = '';
     this.manager = '';
     this.managerComment = '';
-    this.managerStatus = 0;
+    this.managerStatus = this.ACHIEVED;
     this.quillDisable = false;
     this.author = this.gitService.getLoggedInGitDev().login;
     this.bInReview = false;
@@ -148,6 +152,9 @@ export class StatusReportsComponent implements OnInit {
       self.manager = val[0].Manager;
       self.managerComment = val[0].ManagerComment;
       self.managerStatus = val[0].ManagerStatus;
+      self.bNeed = self.managerStatus === this.NEEDIMPROVEMENT;
+      self.bExceed = self.managerStatus === this.EXCEED;
+      self.bAchieved = self.managerStatus === this.ACHIEVED;
       self.quillDisable = self.status === self.IN_REVIEW || self.status === self.CLOSED || self.status === self.ARCHIVED;
       if (self.status === self.ARCHIVED || self.status === self.CLOSED) {
         self.bClosedReport = true;
@@ -248,7 +255,7 @@ export class StatusReportsComponent implements OnInit {
         const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
         const developerNames = devs.map(item => {
           const arr = _.split(item, '--');
-          return arr[0];
+          return arr[0] + ' - ' + arr[1];
         });
 
         this.dialogService
@@ -306,6 +313,7 @@ export class StatusReportsComponent implements OnInit {
     if (this.status === this.IN_PROGRESS) {
       this.author = this.gitService.getLoggedInGitDev().login;
     }
+    this.managerStatus = this.bAchieved ? this.ACHIEVED : this.bNeed ? this.NEEDIMPROVEMENT : this.bExceed ? this.EXCEED : this.ACHIEVED;
     this.gitService
       .saveMSR(
         this.srId,
@@ -433,6 +441,28 @@ export class StatusReportsComponent implements OnInit {
     this.bShowReviewers = -1;
     this.bShowGitPR = -1;
     this.bShowJira = -1;
+  }
+
+  bAchieved: boolean = true;
+  bExceed: boolean = false;
+  bNeed: boolean = false;
+
+  achieved() {
+    this.bAchieved = true;
+    this.bExceed = false;
+    this.bNeed = false;
+  }
+
+  exceed() {
+    this.bAchieved = false;
+    this.bExceed = true;
+    this.bNeed = false;
+  }
+
+  need() {
+    this.bAchieved = false;
+    this.bExceed = false;
+    this.bNeed = true;
   }
 
   downloadPDF() {

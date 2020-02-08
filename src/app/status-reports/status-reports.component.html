@@ -52,71 +52,87 @@
       </div>
     </div>
     <div class="flex-item-secondCol">
-      <p></p>
-      <!-- Status Report
-      <p></p> -->
-      <div style="font-size: 15px;     margin-left: 07px;">
-        <button class="buttons-style" style="background-color: rgb(207, 105, 74);" (click)="refresh()">Refresh</button>
-        <button class="buttons-style" style="background-color: rgb(73, 112, 71); " (click)="newReport()">New Report</button>
+      <div class="flex-column-container">
+        <div style="font-size: 15px;     margin-left: 07px;">
+          <button class="buttons-style" style="background-color: rgb(207, 105, 74);" (click)="refresh()">Refresh</button>
+          <button class="buttons-style" style="background-color: rgb(73, 112, 71); " (click)="newReport()">New Report</button>
 
-        <button class="buttons-style" style="background-color: rgb(73, 87, 150);" (click)="addGitPR()">Add Git PR</button>
-        <button class="buttons-style" style="background-color: rgb(155, 148, 88); " (click)="addJiraTickets()">Add Jira Tickets</button>
-        <!-- <button class="buttons-style" style="background-color: rgb(139, 103, 70);" (click)="comingSoon()">Add BitBucket Items</button> -->
-      </div>
+          <button class="buttons-style" style="background-color: rgb(73, 87, 150);" (click)="addGitPR()">Add Git PR</button>
+          <button class="buttons-style" style="background-color: rgb(155, 148, 88); " (click)="addJiraTickets()">Add Jira Tickets</button>
+          <!-- <button class="buttons-style" style="background-color: rgb(139, 103, 70);" (click)="comingSoon()">Add BitBucket Items</button> -->
+        </div>
 
-      <p></p>
-      <div style="font-size: large; margin-bottom: 10px;     margin-left: 7px;">
         <p></p>
-        Status Report for organization: {{ currentOrg }}
-      </div>
-
-      <div>
-        <div [ngStyle]="{'z-index': bShowReviewers}" style="width: 300px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
-          <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
-          <app-top-developers></app-top-developers>
-        </div>
-        <div [ngStyle]="{'z-index': bShowGitPR}" style="width: 500px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
-          <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
-          <app-dev-pull-details></app-dev-pull-details>
-        </div>
-        <div [ngStyle]="{'z-index': bShowJira}" style="width: 700px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
-          <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
-          <app-dev-jira-details></app-dev-jira-details>
+        <div style="font-size: large; margin-bottom: 10px;     margin-left: 7px;">
+          <p></p>
+          Status Report for organization: {{ currentOrg }}
         </div>
 
-        <div id="content-container" class="ql-bubble" style="height: 45vh; margin: 5px; color: honeydew; font-size: large;">
+        <div>
+          <div [ngStyle]="{'z-index': bShowReviewers}" style="width: 300px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
+            <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
+            <app-top-developers></app-top-developers>
+          </div>
+          <div [ngStyle]="{'z-index': bShowGitPR}" style="width: 500px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
+            <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
+            <app-dev-pull-details></app-dev-pull-details>
+          </div>
+          <div [ngStyle]="{'z-index': bShowJira}" style="width: 700px;  position:fixed; background-color: black; height: 500px; overflow: hidden;">
+            <button (click)="hide()" style="font-size: large; border: none; background-color: transparent; color:white">X</button>
+            <app-dev-jira-details></app-dev-jira-details>
+          </div>
+        </div>
+
+        <div id="content-container" class="ql-snow" style="height: 35vh; margin: 5px; background-color: honeydew; color:black; font-size: large;">
           <quill-editor [readOnly]="quillDisable" id="quill-editor" [(ngModel)]="textStatus"></quill-editor>
         </div>
-        <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; margin-top: 80px;">
-          Manager's Comment
+
+        <div>
+          <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; padding-top: 50px; ">
+            Manager's Comment
+          </div>
+          <div id="content-container2" class="ql-snow" style="background-color: honeydew; height: 20vh; margin: 5px; color: black; font-size: x-large;">
+            <quill-editor [readOnly]="quillManagerDisable" id="quill-editor2" [(ngModel)]="managerComment"></quill-editor>
+          </div>
         </div>
-        <div id="content-container2" class="ql-bubble" style="height: 10vh; margin: 5px; color: honeydew; font-size: x-large;">
-          <quill-editor [readOnly]="quillManagerDisable" id="quill-editor2" [(ngModel)]="managerComment"></quill-editor>
+        <div class="flex-row-container" style="float: right; margin-top: 50px; font-size: large; font-weight: normal;">
+          <div>
+            <input id="Exceeded" style=" height: 20px; width: 20px;" type="radio" value="Exceeded" name="Exceeded" [checked]="bExceed" (click)="exceed()" />
+            <label style="margin-left: 5px;font-size: large; font-weight: normal; margin-top: -5px; vertical-align: middle; " for="Exceeded">Exceeded</label>
+          </div>
+          <div style="margin-left: 20px;">
+            <input id="Acieved" style=" height: 20px; width: 20px;" type="radio" value="Acieved" name="Acieved" [checked]="bAchieved" (click)="achieved()" />
+            <label style="margin-left: 5px;font-size: large; font-weight: normal;vertical-align: middle;  " for="Acieved">Achieved</label>
+          </div>
+          <div style="margin-left: 20px;">
+            <input id="NeedImrpovement" style=" height: 20px; width: 20px;" type="radio" value="NeedImrpovement" name="NeedImrpovement" [checked]="bNeed" (click)="need()" />
+            <label style="margin-left: 5px;font-size: large; font-weight: normal;vertical-align: middle;" for="NeedImrpovement">Need Imrpovement</label>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; padding-top: 20px;">
+            Reviewers
+          </div>
+          <input
+            name="txtReviewer"
+            style="height:90%; width: 99.5%; margin-left: 7px; padding-left: 3px; color:black"
+            title="Please use Add Reviewers button to add the correct reviewers. DON'T TYPE."
+            [(ngModel)]="textReviewer"
+            disabled="true"
+          />
+        </div>
+        <p></p>
+        <div class="flex-row-container">
+          <button class="buttons-style" *ngIf="!bClosedReport" style="background-color: rgb(78, 88, 131);  margin-left: 7px;" (click)="addReviewer()">Manage Reviewers</button>
+          <button class="buttons-style" *ngIf="!bClosedReport" style="background-color: rgb(60, 95, 60);  margin-left: 7px;" (click)="save()">Save</button>
+          <button class="buttons-style" style="background-color:rgb(163, 161, 45); margin-left: 7px;" (click)="downloadPDF()">Download File</button>
+          <button class="buttons-style" *ngIf="!bClosedReport && bInReview" style="background-color:rgb(87, 45, 81); margin-left: 7px;" (click)="sendBack()">Send back</button>
+
+          <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="background-color:rgb(189, 38, 38); margin-left: 7px;" (click)="submit()">Submit</button>
+          <button class="buttons-style" *ngIf="bInReview" style="background-color:rgb(10, 10, 10); margin-left: 7px;" (click)="close()">Close</button>
+          <button class="buttons-style" style="background-color:rgb(110, 83, 83); margin-left: 7px;" (click)="delete()">Delete</button>
         </div>
       </div>
-
-      <p></p>
-      <div>
-        <div style="font-size: large; margin-bottom: 10px; margin-left: 7px; margin-top: 80px;">
-          Reviewers
-        </div>
-        <input
-          name="txtReviewer"
-          style="height:90%; width: 99.5%; margin-left: 7px; padding-left: 3px; color:black"
-          title="Please use Add Reviewers button to add the correct reviewers. DON'T TYPE."
-          [(ngModel)]="textReviewer"
-          disabled="true"
-        />
-      </div>
-      <p></p>
-      <button class="buttons-style" *ngIf="!bClosedReport" style="background-color: rgb(78, 88, 131);  margin-left: 7px;" (click)="addReviewer()">Manage Reviewers</button>
-      <button class="buttons-style" *ngIf="!bClosedReport" style="background-color: rgb(60, 95, 60);  margin-left: 7px;" (click)="save()">Save</button>
-      <button class="buttons-style" style="background-color:rgb(163, 161, 45); margin-left: 7px;" (click)="downloadPDF()">Download File</button>
-      <button class="buttons-style" *ngIf="!bClosedReport && bInReview" style="background-color:rgb(87, 45, 81); margin-left: 7px;" (click)="sendBack()">Send back</button>
-
-      <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="background-color:rgb(189, 38, 38); margin-left: 7px;" (click)="submit()">Submit</button>
-      <button class="buttons-style" *ngIf="bInReview" style="background-color:rgb(10, 10, 10); margin-left: 7px;" (click)="close()">Close</button>
-      <button class="buttons-style" style="background-color:rgb(110, 83, 83); margin-left: 7px;" (click)="delete()">Delete</button>
     </div>
   </div>
 </div>

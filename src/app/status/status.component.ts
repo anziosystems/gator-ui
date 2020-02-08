@@ -24,6 +24,7 @@ export class StatusComponent implements OnInit {
   hookFail: boolean = true;
   ctr = 0;
   bGetFromGit: boolean = false;
+  NO_OF_DAYS = 15;
 
   constructor(
     private gitService: GitService,
@@ -170,6 +171,8 @@ export class StatusComponent implements OnInit {
                 let elem = document.getElementById('myBar');
                 elem.style.width = '100%';
                 clearTimeout(t);
+                //Just firing an extra call to prepare the cache in BE 
+                this.gitService.getTopDevelopers(this.gitService.getCurrentOrg(), this.NO_OF_DAYS) ;
                 //  this.router.navigate(['/dashboard']);  //No Need for user to click
               },
               error => {

@@ -1,6 +1,6 @@
 @import '../css/lib';
 .people-ticket {
-  background-color: white;
+  background-color: rgb(214, 214, 214);
   color: #000;
   padding: 15px;
 }
@@ -8,11 +8,44 @@
 .buttons-style {
   margin-right: 10px;
   color: darkgrey;
-  border-style: ridge;
- // box-shadow: 4px 5px 5px 0px #181616;
+  box-shadow: 2px 2px 2px 0px #181616;
   height: 40px;
   width: 130px;
   font-size: large;
   margin-top: 10px;
 }
 
+// .ui-widget-header {
+//   background-color: black;
+// }
+
+.ui-dialog .ui-dialog-titlebar {
+  background-color: @components-background-color;
+}
+.ui-dialog-content.ui-widget-content {
+  background-color: @components-background-color;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #4c4c4e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a9a9af;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(63, 67, 83);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(111, 124, 150, 0.863);
+}
