@@ -68,6 +68,10 @@ export class OrgListComponent implements OnInit {
     this.router.navigate(['/StatusReport']);
   }
 
+  gotoICReports() {
+    this.gitService.setCurrentContext('GIT');
+    this.router.navigate(['/icReport']);
+  }
   data(org: any) {
     //Keep the current Org in session, angular apps with refresh browser will reload the gitservice and application will forget everything
     if (org) {
@@ -80,10 +84,9 @@ export class OrgListComponent implements OnInit {
     });
   }
 
-  settings(){
+  settings() {
     this.router.navigate(['/settings']);
   }
-
 
   ngOnInit() {
     this.orgList = [];

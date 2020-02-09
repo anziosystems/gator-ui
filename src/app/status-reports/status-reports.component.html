@@ -6,6 +6,8 @@
           class="buttons-style"
           style="background-color: rgb(51, 48, 51); 
       margin-right: 0px; width: 100%;"
+          (click)="getReports4User()"
+          title="Refresh"
         >
           Status Reports
         </button>
@@ -16,7 +18,7 @@
               (click)="getReportData(sr.SRId)"
               class="history-button"
               title="{{ sr.SRId }} - {{ sr.Status }} - {{ sr.ReportDate }}"
-              [style.color]="sr.Status == 'In Progress' ? 'lightblue' : sr.Status == 'In Review' ? '#F75D59' : 'white'"
+              [style.color]="sr.Status == 'In Progress' ? '#98ad77' : sr.Status == 'In Review' ? '#9c678f' : sr.Status == 'Closed' ? 'lightgrey' : 'darkgrey'"
             >
               {{ sr.ReportDate }} {{ sr.Status }}
             </button>
@@ -40,11 +42,18 @@
           style="background-color: rgb(51, 48, 51); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 10%; border-left-color: black;"
           (click)="showAllReview()"
           title="Filter."
+          
         />
 
         <div>
           <div *ngFor="let sr of srReviewList; let i = index">
-            <button id="m1-btn" (click)="getReportData4Review(sr.SRId)" class="history-button" title="{{ sr.SRId }} -{{ sr.UserId }} - {{ sr.Status }} - {{ sr.ReportDate }}">
+            <button
+              id="m1-btn"
+              (click)="getReportData4Review(sr.SRId)"
+              class="history-button"
+              [style.color]="sr.Status == 'In Progress' ? '#98ad77' : sr.Status == 'In Review' ? '#9c678f' : sr.Status == 'Closed' ? 'lightgrey' : 'darkgrey'"
+              title="{{ sr.SRId }} -{{ sr.UserId }} - {{ sr.Status }} - {{ sr.ReportDate }}"
+            >
               {{ sr.ReportDate }} {{ sr.UserId }}
             </button>
           </div>

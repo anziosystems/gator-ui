@@ -204,7 +204,7 @@ export class StatusReportsComponent implements OnInit {
         }
 
         //item.LastUpdated = item.LastUpdated.substring(0, 10);
-        item.ReportDate = item.ReportDate.subsring(0, 10);
+        item.ReportDate = item.ReportDate.substring(0, 10);
         this.srList.push(item);
       });
     });
@@ -346,7 +346,7 @@ export class StatusReportsComponent implements OnInit {
       )
       .subscribe(v => {
         console.log(v);
-        this.getReports4User();
+        // this.getReports4User(); //No need to reset the list box review list box
         alert('Your Report is saved.');
         this.reset();
       });

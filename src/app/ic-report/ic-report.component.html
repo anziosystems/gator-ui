@@ -1,0 +1,21 @@
+<div class="flex-column-container">
+  <div class="flex-row-container">
+    <div class="count-style">
+      <app-ic-counts></app-ic-counts>
+    </div>
+  </div>
+  <div class="flex-row-container">
+    <div class="flex-item-top-dev">
+      <app-top-developers></app-top-developers>
+    </div>
+    <div
+      style="display: flex; flex-direction:column;  
+    width: 100%;justify-content: flex-start; align-items: top;"
+    >
+    <p style="margin-left: auto ; margin-right: auto; margin-top: 10px; margin-bottom: 10px; font-size: x-large; ">Pull Request</p>
+      <canvas id="canvas" style="height:40%">{{ chart }} </canvas>
+      <p style="margin-left: auto ; margin-right: auto; margin-top: 10px; margin-bottom: 10px; font-size: x-large; ">Report Ratings</p>
+      <canvas id="canvas2" style="height:40%">{{ chart }} </canvas>
+    </div>
+  </div>
+</div>

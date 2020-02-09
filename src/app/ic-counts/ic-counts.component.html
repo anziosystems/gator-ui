@@ -1,0 +1,46 @@
+<div class="flex-container-Title">
+    <div class="flex-item">
+      <div style="font-size: 25px; color:white; margin-top: 10px">Today's</div>
+      <div class="flex-container-Number">
+        <div class="flex-item-number" style="color:whitesmoke">
+          <div (click)="data('opened', 1)" style="color: #9c678f; margin-right: 5px; cursor: pointer;" title="Open Pull Request">
+            {{ todayCount }}
+          </div>
+          -
+          <div (click)="data('closed', 1)" style="color: #98ad77;margin-left: 5px; cursor: pointer;" title="Closed Pull Request">{{ todayCloseCount }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-item">
+      <div style="font-size: 25px; color:white; margin-top: 10px">Last 7 days</div>
+      <div class="flex-container-Number">
+        <div class="flex-item-number" style="color:whitesmoke">
+          <div (click)="data('opened', 7)" style="color: #9c678f; margin-right: 5px ; cursor: pointer;" title="Open Pull Request">{{ weekCount }}</div>
+          -
+  
+          <div (click)="data('closed', 7)" style="color: #98ad77;margin-left: 5px ; cursor: pointer;" title="Closed Pull Request">{{ weekCloseCount }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-item">
+      <div style="font-size: 25px; color:white;  margin-top: 10px">Last 30 Days</div>
+      <div class="flex-container-Number">
+        <div class="flex-item-number" style="color:whitesmoke">
+          <div (click)="data('opened', 30)" style="color: #9c678f; margin-right: 5px; cursor: pointer;" title="Open Pull Request">{{ count }}</div>
+          -
+          <div (click)="data('closed', 30)" style="color: #98ad77;margin-left: 5px; cursor: pointer;" title="Closed Pull Request">{{ closeCount }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-item">
+      <div style="font-size: 25px; color:white;  margin-top: 10px">All time</div>
+      <div class="flex-container-Number">
+        <div class="flex-item-number" style="color:whitesmoke">
+          <div (click)="data('opened', 30)" style="color: #9c678f; margin-right: 5px; cursor: pointer;" title="Open Pull Request">{{ count }}</div>
+          -
+          <div (click)="data('closed', 30)" style="color: #98ad77;margin-left: 5px; cursor: pointer;" title="Closed Pull Request">{{ closeCount }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

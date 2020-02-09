@@ -39,6 +39,8 @@ import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {SettingsComponent} from './settings/settings.component';
 import {AdminComponent} from './admin/admin.component';
 import {PaymentComponent} from './payment/payment.component';
+import {IcReportComponent} from './ic-report/ic-report.component';
+import { IcCountsComponent } from './ic-counts/ic-counts.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -49,6 +51,7 @@ const routes: Routes = [
   {path: 'StatusReport', component: StatusReportsComponent},
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
+  {path: 'icReport', component: IcReportComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
   {
     path: 'settings',
@@ -94,10 +97,10 @@ const routes: Routes = [
     SettingsComponent,
     AdminComponent,
     PaymentComponent,
+    IcReportComponent,
+    IcCountsComponent,
   ],
-  entryComponents: [
-    PeopleTicketComponent,
-  ],
+  entryComponents: [PeopleTicketComponent],
   imports: [
     BrowserModule,
     ContextMenuModule.forRoot(),
