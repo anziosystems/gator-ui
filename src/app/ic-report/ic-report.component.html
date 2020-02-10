@@ -14,7 +14,7 @@
       <p style="flex:1; margin-left: auto ; margin-right: auto;  max-height:50px;margin-top: 10px; margin-bottom: 10px; font-size: x-large; ">Report Ratings</p>
       <canvas id="canvas2">{{ chart }} </canvas>
     </div>
-    <div id="editor" style="background-color: honeydew; height: 80vh; margin: 5px; color: black; font-size: x-large;">
+    <div id="editor" style="background-color: honeydew; height: 80vh;  overflow: hidden; margin: 5px; color: black; font-size: x-large;">
       <quill-editor [readOnly]="true" id="quill-editor2" [(ngModel)]="textStatus"></quill-editor>
     </div>
   </div>
