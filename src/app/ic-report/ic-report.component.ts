@@ -34,7 +34,7 @@ export class IcReportComponent implements OnInit {
   textStatus: string;
   getReports(login: string) {
     this.textStatus = '';
-    this.gitService.getSR4User(login, true).subscribe(val => {
+    this.gitService.getSR4User(login, false).subscribe(val => {
       val.map(item => {
         this.gitService.getSR4Id(item.SRId, false).subscribe(val => {
           if (!val) {
