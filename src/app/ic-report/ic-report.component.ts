@@ -17,10 +17,43 @@ export class IcReportComponent implements OnInit {
   constructor(private gitService: GitService) {}
 
   ngOnInit() {
-    let day = 30;
-    //currentOrg does not work with an standalone page. hardcode to see graph as an standalone page.
-    //replace this.gitService.getCurrentOrg() with LabShare
-    this.gitService.getGraphData4XDays(this.gitService.getCurrentOrg(), day).subscribe(results => {
+    this.gitService.onMyEvent.subscribe((val: string) => {
+      if (val.lastIndexOf('+') > 0) {
+        return;
+      }
+
+      if (val.startsWith('repo-')) {
+        return;
+      }
+
+      this.getGraphData(val);
+      this.getReports(val);
+    });
+  }
+
+  textStatus: string;
+  getReports(login: string) {
+    this.textStatus = '';
+    this.gitService.getSR4User(login, true).subscribe(val => {
+      val.map(item => {
+        this.gitService.getSR4Id(item.SRId, false).subscribe(val => {
+          if (!val) {
+            console.log('getSR4Id did not get any data.');
+            return;
+          }
+          this.textStatus = this.textStatus + val[0].StatusDetails;
+        });
+      });
+    });
+  }
+
+  reportsId: [number] = [0];
+
+  getGraphData(login: string) {
+    this.closeCtr = [];
+    this.openCtr = [];
+    this.allDates = [];
+    this.gitService.getGraphData4XDays(this.gitService.getCurrentOrg(), login, 90).subscribe(results => {
       results.map(res => {
         if (res.State === 'closed') {
           this.closeCtr.push(res.Ctr);
@@ -40,7 +73,6 @@ export class IcReportComponent implements OnInit {
         type: 'line',
         data: {
           labels: this.allDates,
-
           datasets: [
             {
               data: this.closeCtr,
@@ -57,6 +89,8 @@ export class IcReportComponent implements OnInit {
           ],
         },
         options: {
+          maintainAspectRatio: true,
+
           legned: {
             display: true,
           },
@@ -91,6 +125,7 @@ export class IcReportComponent implements OnInit {
           ],
         },
         options: {
+          maintainAspectRatio: true,
           legned: {
             display: true,
           },

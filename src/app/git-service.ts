@@ -51,7 +51,7 @@ export class GitService {
   public httpJirapOptions: any;
   public query: string;
   public JIRA_ORG_LIST: string = 'JIRA-ORG-LIST';
-  private NO_DAYS:number = 25;
+  private NO_DAYS: number = 25;
 
   constructor(
     private http: HttpClient,
@@ -143,32 +143,31 @@ export class GitService {
 
   async fillGitUserMap(): Promise<boolean> {
     return new Promise((done, fail) => {
-    
-        this.getGitDev4Org(this.getCurrentOrg()).subscribe(result => {
-          if (result.code === 401) {
-            fail('401');
-            return;
-          }
-          result.forEach(e2 => {
-            this.gitUsersMap.set(e2.login.trim(), e2);
-          });
-          done(true);
+      this.getGitDev4Org(this.getCurrentOrg()).subscribe(result => {
+        if (result.code === 401) {
+          fail('401');
           return;
+        }
+        result.forEach(e2 => {
+          this.gitUsersMap.set(e2.login.trim(), e2);
         });
+        done(true);
+        return;
       });
-    }
+    });
+  }
 
-    getGitDisplayName4Login (login: string): string {
-      if (this.gitUsersMap) {
-        return this.gitUsersMap.get (login).name;
-      }
+  getGitDisplayName4Login(login: string): string {
+    if (this.gitUsersMap) {
+      return this.gitUsersMap.get(login).name;
     }
+  }
 
-    getGitDevDetails4Login (login: string): DevDetails {
-      if (this.gitUsersMap) {
-        return this.gitUsersMap.get (login);
-      }
+  getGitDevDetails4Login(login: string): DevDetails {
+    if (this.gitUsersMap) {
+      return this.gitUsersMap.get(login);
     }
+  }
 
   /*
     jiraOrgList: Array(3)
@@ -264,10 +263,10 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getGraphData4XDays(org: string, day: number): any {
+  getGraphData4XDays(org: string, login: string = null, day: number): any {
     this.attachToken();
     // let org = this.currentOrg ;
-    const q = `GetGraphData4XDays?org=${org}&day=${day}`;
+    const q = `GetGraphData4XDays?org=${org}&login=${login}&day=${day}`;
 
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
@@ -396,9 +395,9 @@ export class GitService {
   }
 
   // GetPullRequestCount for last 7 days, 30 days etc
-  getPullRequestCount(org: string, day: number = 7): Observable<any> {
+  getPullRequestCount(org: string, login: string = null, day: number = 7): Observable<any> {
     this.attachToken();
-    const q = `PullRequestCountForLastXDays?org=${org}&day=${day}`;
+    const q = `PullRequestCountForLastXDays?org=${org}&login=${login}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 

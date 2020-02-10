@@ -18,6 +18,7 @@ export class PullRequestCountComponent implements OnInit {
   todayCloseCount: number = 0;
   weekCloseCount: number = 0;
   navigationSubscription: any;
+  login: string;
 
   constructor(private gitService: GitService, private router: Router) {
     this.count = 0;
@@ -50,37 +51,35 @@ export class PullRequestCountComponent implements OnInit {
   //0: {state: "closed", ctr: 27}
   // {state: "commit", ctr: 16}
   // {state: "open", ctr: 30}
-   
-  assignValues (val: any, day: number) {
-    let ctr: number = 0 
+
+  assignValues(val: any, day: number) {
+    let ctr: number = 0;
     let cctr: number = 0;
 
     if (val[0]) {
-      if (val[0].state === 'closed') {
-        cctr = val[0].ctr ;
+      if (val[0].state.toLowerCase() === 'closed') {
+        cctr = val[0].ctr;
       } else {
-        if (val[0].state === 'commit') { //sometime there is no close only commit
-        //  cctr =  val[0].ctr ;
-        } else {
-          ctr = val[0].ctr ; //must be only open then 
+        if (val[0].state.toLowerCase() === 'open') {
+          ctr = val[0].ctr;
         }
       }
     }
     if (val[1]) {
-      if (val[1].state === 'commit') {
-      //  cctr =  cctr + val[1].ctr ;
-      } else {
-        if (val[1].state === 'close') {
-           cctr =  cctr + val[1].ctr ;
-        } else {
-          ctr = val[1].ctr ; //must be only open then 
-        }
+      if (val[1].state.toLowerCase() === 'closed') {
+        cctr = cctr + val[1].ctr;
+      }
+      if (val[1].state.toLowerCase() === 'open') {
+        ctr = val[1].ctr;
       }
     }
 
     if (val[2]) {
-      if (val[2].state === 'open') {
-        ctr = val[2].ctr ;
+      if (val[2].state.toLowerCase() === 'open') {
+        ctr = val[2].ctr;
+      }
+      if (val[2].state.toLowerCase() === 'closed') {
+        cctr = val[2].ctr;
       }
     }
 
@@ -96,7 +95,6 @@ export class PullRequestCountComponent implements OnInit {
       this.count = ctr;
       this.closeCount = cctr;
     }
-
   }
 
   initializeData() {
@@ -108,25 +106,25 @@ export class PullRequestCountComponent implements OnInit {
     this.closeCount = 0;
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), 1).subscribe(val => {
-        this.assignValues (val,1) ;    
+      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), this.login, 1).subscribe(val => {
+        this.assignValues(val, 1);
       });
     });
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), 7).subscribe(val => {
-        this.assignValues (val,7) ;
+      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), this.login, 7).subscribe(val => {
+        this.assignValues(val, 7);
       });
     });
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), 30).subscribe(val => {
-        this.assignValues (val, 30) ;
+      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), this.login, 30).subscribe(val => {
+        this.assignValues(val, 30);
+      });
     });
-  });
-}
+  }
 
-ngOnInit() {
+  ngOnInit() {
     this.initializeData();
   }
 }

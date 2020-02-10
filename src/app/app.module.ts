@@ -20,7 +20,7 @@ import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {QuillModule} from 'ngx-quill';
 import {HookErrorComponent} from './hook-error/hook-error.component';
-import {PrchartComponent} from './prchart/prchart.component';
+
 import {AngularDraggableModule} from 'angular2-draggable';
 import {TweetsComponent} from './tweets/tweets.component';
 import {BreakingnewsComponent} from './breakingnews/breakingnews.component';
@@ -63,7 +63,7 @@ const routes: Routes = [
   },
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
-  {path: 'prchart', component: PrchartComponent},
+
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -82,7 +82,7 @@ const routes: Routes = [
     StatusComponent,
     OrgListComponent,
     HookErrorComponent,
-    PrchartComponent,
+
     TweetsComponent,
     BreakingnewsComponent,
     DevJiraDetailsComponent,
