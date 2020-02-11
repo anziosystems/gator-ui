@@ -41,7 +41,7 @@ export class IcReportComponent implements OnInit {
             console.log('getSR4Id did not get any data.');
             return;
           }
-          this.textStatus = this.textStatus + val[0].StatusDetails;
+          this.textStatus = 'Only for Admins'; //this.textStatus + val[0].StatusDetails;
         });
       });
     });
