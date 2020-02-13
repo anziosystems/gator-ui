@@ -1,9 +1,9 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, Inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
 import {DialogService} from 'primeng/api';
 import * as FileSaver from 'file-saver';
-
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 const _ = require('lodash');
@@ -49,9 +49,15 @@ export class StatusReportsComponent implements OnInit {
   NEEDIMPROVEMENT: number = 1;
   EXCEED: number = 7;
 
-  constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef, private dialogService: DialogService) {
+  constructor(
+    private gitService: GitService,
+    private router: Router,
+    @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
+    private cdRef: ChangeDetectorRef,
+    private dialogService: DialogService,
+  ) {
     this.currentOrg = this.gitService.getCurrentOrg();
-    let loggedInUser =  this.gitService.getLoggedInGitDev().login;
+    let loggedInUser = this.gitService.getLoggedInGitDev().login;
     if (!loggedInUser) {
       this.router.navigate(['/login']);
       return;
@@ -72,8 +78,13 @@ export class StatusReportsComponent implements OnInit {
     this.currentOrg = this.gitService.getCurrentOrg();
     this.srList = [];
     this.srReviewList = [];
-
-    this.textStatus = '';
+    let tempStatus = sessionStorage.getItem ('statusText') ;
+    if (tempStatus) {
+      this.textStatus = tempStatus;
+      this.sessionStorage.remove ('statusText',)
+    } else {
+      this.textStatus = '';
+    }
     this.textReviewer = '';
     this.getReports4User();
     this.quillDisable = false;
@@ -259,6 +270,12 @@ export class StatusReportsComponent implements OnInit {
   addReviewer() {
     this.gitService.ready().then(result => {
       this.gitService.getGitDev4Org(this.gitService.getCurrentOrg()).subscribe(val => {
+        if (val) {
+          if (val.code === 404) {
+            sessionStorage.setItem ('statusText', this.textStatus);
+            this.router.navigate(['/login']);
+          }
+        }
         const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
         const developerNames = devs.map(item => {
           const arr = _.split(item, '--');
