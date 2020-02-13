@@ -5,9 +5,10 @@
 
     <p></p>
     <div *ngFor="let org of orgList; let i = index">
-      <button id="m1-btn" (click)="data(org)" class="menu2-button box-shadow" [style.color]="colors[i]" [style.background-color]="back_colors[i]" title="{{ org.Org }}">
+      <button id="m1-btn" [ngStyle]="getMyStyle(org.Org)" (click)="data(org)" class="menu2-button box-shadow" title="{{ org.Org }}">
         {{ org.Org | uppercase | slice: 0:3 }}
       </button>
+
       <p></p>
     </div>
 

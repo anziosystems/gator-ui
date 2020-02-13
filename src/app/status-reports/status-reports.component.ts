@@ -51,7 +51,11 @@ export class StatusReportsComponent implements OnInit {
 
   constructor(private gitService: GitService, private router: Router, private cdRef: ChangeDetectorRef, private dialogService: DialogService) {
     this.currentOrg = this.gitService.getCurrentOrg();
-
+    let loggedInUser =  this.gitService.getLoggedInGitDev().login;
+    if (!loggedInUser) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.textReviewer = '';
     this.textStatus = '';
     this.quillManagerDisable = true;
