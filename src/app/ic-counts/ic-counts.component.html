@@ -6,37 +6,37 @@
         <div (click)="data('opened', 1)" class="open-class" title="Open Pull Request">
           {{ todayCount }}
         </div>
-
+        
         <div (click)="data('closed', 1)" class="close-class" title="Closed Pull Request">{{ todayCloseCount }}</div>
       </div>
     </div>
   </div>
   <div class="flex-item">
-    <div class="title-class">Last 7 days</div>
+    <div class="title-class">7 Days</div>
     <div class="flex-container-Number">
       <div class="flex-item-number">
         <div (click)="data('opened', 7)" class="open-class" title="Open Pull Request">{{ weekCount }}</div>
-
+        
         <div (click)="data('closed', 7)" class="close-class" title="Closed Pull Request">{{ weekCloseCount }}</div>
       </div>
     </div>
   </div>
   <div class="flex-item">
-    <div class="title-class">Last 30 Days</div>
+    <div class="title-class">30 Days</div>
     <div class="flex-container-Number">
       <div class="flex-item-number">
         <div (click)="data('opened', 30)" class="open-class" title="Open Pull Request">{{ count }}</div>
-
+        
         <div (click)="data('closed', 30)" class="close-class" title="Closed Pull Request">{{ closeCount }}</div>
       </div>
     </div>
   </div>
   <div class="flex-item">
-    <div class="title-class">Last 90 Days</div>
+    <div class="title-class">90 Days</div>
     <div class="flex-container-Number">
       <div class="flex-item-number">
         <div (click)="data('opened', 30)" class="open-class" title="Open Pull Request">{{ NintyOpenCount }}</div>
-
+        
         <div (click)="data('closed', 30)" class="close-class" title="Closed Pull Request">{{ NintyCloseCount }}</div>
       </div>
     </div>
