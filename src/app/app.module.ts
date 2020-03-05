@@ -42,6 +42,7 @@ import {PaymentComponent} from './payment/payment.component';
 import {IcReportComponent} from './ic-report/ic-report.component';
 import {IcCountsComponent} from './ic-counts/ic-counts.component';
 import {AboutComponent} from './about/about.component';
+import { OrgChartComponent } from './org-chart/org-chart.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -53,6 +54,7 @@ const routes: Routes = [
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'icReport', component: IcReportComponent},
+  {path: 'orgChart', component: OrgChartComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
   {
     path: 'settings',
@@ -102,6 +104,7 @@ const routes: Routes = [
     IcReportComponent,
     IcCountsComponent,
     AboutComponent,
+    OrgChartComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

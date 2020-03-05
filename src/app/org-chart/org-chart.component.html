@@ -1,0 +1,15 @@
+<div class="flex-column-container">
+  <div class="flex-row-container">
+    <input
+      name="txtReviewer"
+      style="height:50%;width:70%; margin-left: 7px; padding-left: 3px; color:black"
+      title="Please use Add Reviewers button to add the correct reviewers. DON'T TYPE."
+      [(ngModel)]="textReviewer"
+      disabled="true"
+    />
+    <button class="button-style" (click)="addDeveloper()">Add Developer</button>
+  </div>
+  <div class="flex-row-container">
+    Org Chart here
+  </div>
+</div>
