@@ -40,7 +40,8 @@ import {SettingsComponent} from './settings/settings.component';
 import {AdminComponent} from './admin/admin.component';
 import {PaymentComponent} from './payment/payment.component';
 import {IcReportComponent} from './ic-report/ic-report.component';
-import { IcCountsComponent } from './ic-counts/ic-counts.component';
+import {IcCountsComponent} from './ic-counts/ic-counts.component';
+import {AboutComponent} from './about/about.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -59,6 +60,7 @@ const routes: Routes = [
     children: [
       {path: 'admin', component: AdminComponent},
       {path: 'payment', component: PaymentComponent},
+      {path: 'about', component: AboutComponent},
     ],
   },
   {path: 'orglist', component: OrgListComponent},
@@ -99,6 +101,7 @@ const routes: Routes = [
     PaymentComponent,
     IcReportComponent,
     IcCountsComponent,
+    AboutComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

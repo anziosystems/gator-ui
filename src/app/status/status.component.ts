@@ -33,7 +33,10 @@ export class StatusComponent implements OnInit {
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
   ) {
     this.bGetFromGit = sessionStorage.get('LBC');
-
+    if (!this.bGetFromGit) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.loginAndSetup();
   }
 
@@ -171,8 +174,8 @@ export class StatusComponent implements OnInit {
                 let elem = document.getElementById('myBar');
                 elem.style.width = '100%';
                 clearTimeout(t);
-                //Just firing an extra call to prepare the cache in BE 
-                this.gitService.getGitTopDevelopers(this.gitService.getCurrentOrg(), this.NO_OF_DAYS) ;
+                //Just firing an extra call to prepare the cache in BE
+                this.gitService.getGitTopDevelopers(this.gitService.getCurrentOrg(), this.NO_OF_DAYS);
                 //  this.router.navigate(['/dashboard']);  //No Need for user to click
               },
               error => {

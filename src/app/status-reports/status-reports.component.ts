@@ -57,6 +57,16 @@ export class StatusReportsComponent implements OnInit {
     private dialogService: DialogService,
   ) {
     this.currentOrg = this.gitService.getCurrentOrg();
+    if (!this.currentOrg) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    
+    if (!this.gitService.getLoggedInGitDev()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     let loggedInUser = this.gitService.getLoggedInGitDev().login;
     if (!loggedInUser) {
       this.router.navigate(['/login']);
