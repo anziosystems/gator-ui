@@ -293,7 +293,7 @@ export class StatusReportsComponent implements OnInit {
 
     this.getReviewer(peopleFilter).then(r => {
       r.split(',').forEach(x =>
-        x.split('-').forEach((v, i, a) => {
+        x.split('--').forEach((v, i, a) => {
           if (i === 1) {
             peopleList.push(a[1].trim());
           }
@@ -322,7 +322,7 @@ export class StatusReportsComponent implements OnInit {
           const developerNames = devs.map(item => {
             const arr = _.split(item, '--');
             if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
-            return arr[0] + '  -  ' + arr[1];
+            return arr[0] + '  --  ' + arr[1];
           });
 
           this.dialogService
