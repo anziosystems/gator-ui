@@ -201,7 +201,7 @@ export class GitService {
 
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
- 
+
    public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
  // public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
@@ -607,5 +607,22 @@ export class GitService {
     if (org) {
       this.jiraCurrentOrg = org;
     }
+  }
+
+  getOrgChart(org: string, bustTheCache: boolean = false): any {
+    this.attachToken(true);
+    const q = `GetOrgChart?bustTheCache=${bustTheCache}&org=${org}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  saveOrgChart(userId: string, org: string, orgChart: string): Observable<any> {
+    const q = `saveOrgChart`;
+    this.attachJiraToken();
+    let body: any = {
+      org: org,
+      userId: userId,
+      orgChart: orgChart,
+    };
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
 }
