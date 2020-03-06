@@ -202,8 +202,8 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
- // public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -478,8 +478,9 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetSR4User4Review(userId: string, status: number, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
-    const q = `GetSR4User4Review?userid=${userId}&status=${status}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
+  GetSR4User4Review(userId: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+    const q = `GetSR4User4Review?userid=${userId}&status=${status}&userFilter=${userFilter}&dateFilter=${dateFilter}
+    &pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }

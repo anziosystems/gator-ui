@@ -29,7 +29,7 @@
         <button
           class="buttons-style"
           style="background-color: rgb(51, 48, 51); color:white;
-      margin-right: 0px; width: 90%;"
+      margin-right: 0px; width: 70%;"
           (click)="showAllReview()"
           title="Show all reports where I am mentioned as reviewer regardless of status."
         >
@@ -37,11 +37,18 @@
         </button>
 
         <img
-          src="../../assets/filter.png"
+          src="../../assets/people.png"
           class="buttons-style"
-          style="background-color: rgb(51, 48, 51); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 10%; border-left-color: black;"
-          (click)="showAllReview()"
-          title="Filter."
+          style="background-color: rgb(92, 86, 92); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
+          (click)="showByPeople()"
+          title="Filter by People."
+        />
+        <img
+          src="../../assets/Calendar.png"
+          class="buttons-style"
+          style="background-color:rgb(144, 133, 144); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
+          (click)="showByDate()"
+          title="Filter by Date."
         />
 
         <div>
@@ -63,19 +70,19 @@
       <div class="flex-column-container">
         <div style="font-size: 15px;     margin-left: 07px;">
           <button class="buttons-style" style="background-color: rgb(211, 143, 111);" (click)="refresh()">Refresh</button>
-          <button class="buttons-style" style="background-color: rgb(116, 98, 133);" (click)="newReport()">New Report</button>
+          <button class="buttons-style" style="background-color: rgb(116, 98, 133);" (click)="newReport()">New</button>
 
-          <button class="buttons-style" (click)="addGitPR()">Add Git PR</button>
-          <button class="buttons-style" (click)="addJiraTickets()">Add Jira Tickets</button>
-          <button class="buttons-style" *ngIf="!bClosedReport" style="color:white; background-color: rgb(93, 107, 78); margin-left: 7px;" (click)="save()">Save</button>
-          <button class="buttons-style" style="background-color: khaki; margin-left: 7px;" (click)="downloadPDF()">Download File</button>
-          <button class="buttons-style" *ngIf="!bClosedReport && bInReview" style=" margin-left: 7px;" (click)="sendBack()">Send back</button>
+          <button class="buttons-style" (click)="addGitPR()">+ Git PR</button>
+          <button class="buttons-style" (click)="addJiraTickets()">+ Jira Tickets</button>
+          <button class="buttons-style" *ngIf="!bClosedReport" style="color:white; background-color: rgb(93, 107, 78);" (click)="save()">Save</button>
+          <button class="buttons-style" style="background-color: khaki;" (click)="downloadPDF()">Download</button>
+          <button class="buttons-style" *ngIf="!bClosedReport && bInReview" (click)="sendBack()">Send back</button>
 
-          <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="color:white; background-color: rgb(97, 46, 56);  margin-left: 7px;" (click)="submit()">
+          <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="color:white; background-color: rgb(97, 46, 56); " (click)="submit()">
             Submit
           </button>
-          <button class="buttons-style" *ngIf="bInReview" style=" margin-left: 7px;" (click)="close()">Close</button>
-          <button class="buttons-style" style="  margin-left: 7px;" (click)="delete()">Delete</button>
+          <button class="buttons-style" *ngIf="bInReview" (click)="close()">Close</button>
+          <button class="buttons-style" (click)="delete()">Delete</button>
 
           <!-- <button class="buttons-style" style="background-color: rgb(139, 103, 70);" (click)="comingSoon()">Add BitBucket Items</button> -->
         </div>
@@ -141,7 +148,7 @@
             [(ngModel)]="textReviewer"
             disabled="true"
           />
-          <button class="buttons-style" *ngIf="!bClosedReport" style="margin-left: 7px;vertical-align: top;" (click)="addReviewer()">Add Reviewers</button>
+          <button class="buttons-style" *ngIf="!bClosedReport" style="margin-left: 7px;vertical-align: top; margin-top: 0px;" (click)="addReviewer()">+ Reviewers</button>
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ export class StatusReportsComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    
+
     if (!this.gitService.getLoggedInGitDev()) {
       this.router.navigate(['/login']);
       return;
@@ -88,10 +88,10 @@ export class StatusReportsComponent implements OnInit {
     this.currentOrg = this.gitService.getCurrentOrg();
     this.srList = [];
     this.srReviewList = [];
-    let tempStatus = sessionStorage.getItem ('statusText') ;
+    let tempStatus = sessionStorage.getItem('statusText');
     if (tempStatus) {
       this.textStatus = tempStatus;
-      this.sessionStorage.remove ('statusText',)
+      this.sessionStorage.remove('statusText');
     } else {
       this.textStatus = '';
     }
@@ -237,13 +237,15 @@ export class StatusReportsComponent implements OnInit {
     this.getReviewReports(this.IN_REVIEW);
   }
 
-  getReviewReports(status: number) {
+  getReviewReports(status: number, userFilter: string[] = null, dateFilter: string = null) {
     this.srReviewList = [];
     //review reports
     this.gitService
       .GetSR4User4Review(
         this.gitService.getLoggedInGitDev().login,
         status, //inreview
+        userFilter ? userFilter.toString() : null,
+        dateFilter ? dateFilter : null,
         true,
       )
       .subscribe(val => {
@@ -274,38 +276,70 @@ export class StatusReportsComponent implements OnInit {
   }
   //Show all the reports for the reviewer -
   showAllReview() {
-    this.getReviewReports(this.ALL);
+    this.getReviewReports(this.ALL, null, null);
+  }
+
+  showByDate() {
+    let current_datetime = new Date();
+    let month = prompt('Enter the YEAR-MONTH', current_datetime.getFullYear() + '-' + current_datetime.getMonth());
+
+    let formatted_date = month + '-01';
+    this.getReviewReports(this.ALL, null, formatted_date);
+  }
+
+  showByPeople() {
+    let peopleFilter = '';
+    let peopleList: string[] = [];
+
+    this.getReviewer(peopleFilter).then(r => {
+      r.split(',').forEach(x =>
+        x.split('-').forEach((v, i, a) => {
+          if (i === 1) {
+            peopleList.push(a[1].trim());
+          }
+        }),
+      );
+      this.getReviewReports(this.ALL, peopleList, null);
+    });
   }
 
   addReviewer() {
-    this.gitService.ready().then(result => {
-      this.gitService.getGitDev4Org(this.gitService.getCurrentOrg()).subscribe(val => {
-        if (val) {
-          if (val.code === 404) {
-            sessionStorage.setItem ('statusText', this.textStatus);
-            this.router.navigate(['/login']);
-          }
-        }
-        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
-        const developerNames = devs.map(item => {
-          const arr = _.split(item, '--');
-          if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
-          return arr[0] + '  -  ' + arr[1];
-        });
+    this.getReviewer(this.textReviewer).then(r => (this.textReviewer = r));
+  }
 
-        this.dialogService
-          .open(PeopleTicketComponent, {
-            data: {
-              options: developerNames,
-              items: this.textReviewer.split(', ').filter(x => x),
-            },
-            width: '50%',
-            header: 'Choose Reviewers',
-          })
-          .onClose.pipe(filter(x => x))
-          .subscribe(v => {
-            this.textReviewer = v.join(', ');
+  getReviewer(listReviewers: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gitService.ready().then(result => {
+        this.gitService.getGitDev4Org(this.gitService.getCurrentOrg()).subscribe(val => {
+          if (val) {
+            if (val.code === 404) {
+              sessionStorage.setItem('statusText', this.textStatus);
+              this.router.navigate(['/login']);
+              reject();
+            }
+          }
+          const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
+          const developerNames = devs.map(item => {
+            const arr = _.split(item, '--');
+            if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
+            return arr[0] + '  -  ' + arr[1];
           });
+
+          this.dialogService
+            .open(PeopleTicketComponent, {
+              data: {
+                options: developerNames,
+                items: listReviewers.split(', ').filter(x => x),
+              },
+              width: '50%',
+              header: 'Choose Reviewers',
+            })
+            .onClose.pipe(filter(x => x))
+            .subscribe(v => {
+              listReviewers = v.join(', ');
+              resolve(listReviewers);
+            });
+        });
       });
     });
   }
