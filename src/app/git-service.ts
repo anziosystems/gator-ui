@@ -25,6 +25,7 @@ export class DevDetails {
   public profileUrl: string;
   public avatarUrl: string;
   public email: string;
+  public tenantId: number;
 }
 
 export class CustomEvent {
@@ -149,7 +150,13 @@ export class GitService {
           return;
         }
         result.forEach(e2 => {
-          this.gitUsersMap.set(e2.login.trim(), e2);
+          let dd = new DevDetails();
+          dd.name = e2.Name;
+          dd.login = e2.Login;
+          dd.avatarUrl = e2.AvatarUrl;
+          dd.email = e2.email;
+          dd.tenantId = e2.TenantId;
+          this.gitUsersMap.set(e2.login.trim(), dd);
         });
         done(true);
         return;
@@ -157,16 +164,38 @@ export class GitService {
     });
   }
 
-  getGitDisplayName4Login(login: string): string {
-    if (this.gitUsersMap) {
-      return this.gitUsersMap.get(login).name;
-    }
+  getGitDisplayName4Login(login: string): Promise<string> {
+    return new Promise((done, fail) => {
+      try {
+        if (this.gitUsersMap.size === 0) {
+          this.fillGitUserMap().then(x => {
+            let v = this.gitUsersMap.get(login);
+            done(v.name);
+          });
+        } else {
+          done(this.gitUsersMap.get(login).name);
+        }
+      } catch (ex) {
+        fail(ex);
+      }
+    });
   }
 
-  getGitDevDetails4Login(login: string): DevDetails {
-    if (this.gitUsersMap) {
-      return this.gitUsersMap.get(login);
-    }
+  //wrong check
+  getGitDevDetails4Login(login: string): Promise<DevDetails> {
+    return new Promise((done, fail) => {
+      try {
+        if (this.gitUsersMap.size === 0) {
+          this.fillGitUserMap().then(x => {
+            done(this.gitUsersMap.get(login));
+          });
+        } else {
+          done(this.gitUsersMap.get(login));
+        }
+      } catch (ex) {
+        fail(ex);
+      }
+    });
   }
 
   /*
@@ -449,7 +478,8 @@ export class GitService {
     managerStatus: number,
   ): Observable<any> {
     const q = `SaveMSR`;
-    this.attachJiraToken();
+
+    this.attachToken();
     let body: any = {
       srId: srId,
       org: org,
@@ -623,6 +653,52 @@ export class GitService {
       org: org,
       userId: userId,
       orgChart: orgChart,
+    };
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
+  }
+
+  getUserRole(org: string, userid: string, bustTheCache: boolean = false): Observable<any> {
+    const q = `getUserRole?org=${org}&userid=${userid}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  getRole4Org(org: string, bustTheCache: boolean = false): Observable<any> {
+    const q = `getRole4Org?org=${org}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  isUserAdmin(org: string, userid: string, bustTheCache: boolean = false): Observable<any> {
+    const q = `isUserAdmin?org=${org}&userid=${userid}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  isUserMSRAdmin(org: string, userid: string, bustTheCache: boolean = false): Observable<any> {
+    const q = `isUserMSRAdmin?org=${org}&userid=${userid}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  saveUserRole(userIds: string, org: string, role: string): Observable<any> {
+    const q = `saveUserRole`;
+    this.attachToken();
+    let body: any = {
+      org: org,
+      userId: userIds,
+      role: role,
+    };
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
+  }
+
+  deleteUserRole(userIds: string, org: string, role: string): Observable<any> {
+    const q = `deleteUserRole`;
+    this.attachToken();
+    let body: any = {
+      org: org,
+      userId: userIds,
+      role: role,
     };
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }

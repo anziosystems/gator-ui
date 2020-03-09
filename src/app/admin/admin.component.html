@@ -1,4 +1,41 @@
-   <div>
-    Admin Details
+<div class="admin-style">
+  <div class="col-continer">
+    <div
+      style="font-size: large;padding-bottom: 20px; margin-bottom: 10px;"
+      style="padding-bottom: 20px;
+    font-size: x-large;
+color:rgb(187, 201, 207)"
+    >
+      Choose admininstrator for {{ currentOrg }}:
+    </div>
+    <div class="row-container">
+      <div class="listbox">
+        <div
+          *ngFor="let ur of allUsers; let i = index"
+          style="margin-bottom: 5px; color:blanchedalmond"
+          (dblclick)="moveUser2Admin(ur)"
+          title="Double click to move the user to admnin role"
+        >
+          {{ ur.Name }}- {{ ur.login }}
+        </div>
+      </div>
+      <!-- <div class="col-container">
+      <button class="buttons-style">></button>
+      <button class="buttons-style"><</button>
+    </div> -->
+      <div class="listbox" style="margin-left: 30px; margin-right: 90vw;">
+        <div
+          *ngFor="let ur of userRoles; let i = index"
+          (dblclick)="moveAdmin2User(ur)"
+          style="margin-bottom: 5px; color:rgb(187, 201, 207)"
+          title="Double click to move the user out of admnin"
+        >
+          {{ ur.Name }} - {{ ur.login }}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-continer" style="margin-top: 30px;">
+      <button id="m1-btn" class="buttons-style" (click)="save()" title="Save">Save</button>
+    </div> -->
   </div>
- 
+</div>

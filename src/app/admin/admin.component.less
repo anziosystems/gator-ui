@@ -1,1 +1,48 @@
-@import '../settings/settings.component.less';
+@import '../css/lib';
+
+.admin-style {
+  background-color: @main-background-color;
+  height: 100vh;
+  padding-top: 10px;
+  padding-left: 50px;
+}
+
+.listbox {
+  height: 300px;
+  width: 400px;
+  overflow-y: scroll;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  padding: 5px;
+  cursor: pointer;
+  font-size: large;
+}
+.buttons-style {
+  margin-right: 10px;
+  margin-top: 10px;
+  border-style: none;
+  box-shadow: 4px 5px 5px 0px #181616;
+  height: 40px;
+  width: 150px;
+  font-size: large;
+  color: black;
+}
+
+.row-container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1px auto;
+  flex: 1;
+  line-height: 1;
+  float: left;
+}
+
+.col-container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1px auto;
+  padding-top: 50px;
+  flex: 1;
+  line-height: 1;
+}
