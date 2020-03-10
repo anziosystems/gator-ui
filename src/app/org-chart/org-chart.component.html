@@ -1,15 +1,58 @@
 <div class="flex-column-container">
-  <div class="flex-row-container">
-    <input
-      name="txtReviewer"
-      style="height:50%;width:70%; margin-left: 7px; padding-left: 3px; color:black"
-      title="Please use Add Reviewers button to add the correct reviewers. DON'T TYPE."
-      [(ngModel)]="textReviewer"
-      disabled="true"
-    />
-    <button class="button-style" (click)="addDeveloper()">Add Developer</button>
-  </div>
-  <div class="flex-row-container">
-    Org Chart here
-  </div>
+    <div class="flex-row-container">
+        <form class="form-inline">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="txtReviewer" class="sr-only">names</label>
+                <input type="text" class="form-control txtReviewer" aria-label="Name" aria-describedby="basic-addon2"
+                    name="txtReviewer"
+                    placeholder="Please use Add Reviewers button to add the correct reviewers. DON'T TYPE."
+                    [(ngModel)]="textReviewer"
+                    disabled="true"
+                    width="500px"
+                />
+            </div>
+            <button class="btn btn-primary form-control" (click)="addDeveloper()">Add Developer</button>
+            <button class="btn btn-primary form-control" (click)="buildOrg()">Build Organization Tree</button>
+        </form>
+    </div>
+
+    <div class="">
+        <div id="myDiagramDiv" style="background-color: #34343C; border: solid 1px black; height: 570px;width:100%"></div>
+        <hr/>
+        <div>
+                <p>
+                    <button id="zoomToFit" class="text-primary" (click)="zoomToFit()">Zoom to Fit</button>
+                    <button id="centerRoot" class="text-primary" (click)="centerRoot()">Center on root</button>
+                </p>
+
+                <b>Instructions:</b>
+
+                <ul>
+                    <li>Double click: add new person.</li>
+                    <li>Right Click:
+                        <ul>
+                            <li>Vacate Position - remove the information specfic to the current person in that role
+                            <li>Remove Role - removes the role entirely and reparents any children</li>
+                            <li>Remove Department - removes the role and the whole subtree</li>
+                        </ul>
+                    </li>
+                    <li>Save: save the new data.</li>
+                    <li>Load: load/refresh data.</li>
+                </ul>
+
+                <div>
+                  <div id="myInspector">
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <button id="SaveButton" class="text-primary" (click)="save()" >Save</button>
+                    <button class="text-primary" (click)="load()">Load</button>
+                    Diagram Model saved in JSON format:
+                </div>
+                <textarea id="mySavedModel" style="width:100%; height:270px;color:black"> {{model | json}} </textarea>
+            </div>
+        </div>
+    </div>
 </div>
