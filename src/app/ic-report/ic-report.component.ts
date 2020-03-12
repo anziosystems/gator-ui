@@ -34,16 +34,22 @@ export class IcReportComponent implements OnInit {
   textStatus: string;
   getReports(login: string) {
     this.textStatus = '';
-    this.gitService.getSR4User(login, false).subscribe(val => {
-      val.map(item => {
-        this.gitService.getSR4Id(item.SRId, false).subscribe(val => {
-          if (!val) {
-            console.log('getSR4Id did not get any data.');
-            return;
-          }
-          this.textStatus = 'Only for Admins'; //this.textStatus + val[0].StatusDetails;
+    this.gitService.isUserAdmin(this.gitService.getCurrentOrg(), this.gitService.getLoggedInGitDev().login).subscribe(x => {
+      if (x === 0) {
+        this.textStatus = 'Sorry, only admin can see this';
+      } else {
+        this.gitService.getSR4User(login, false).subscribe(val => {
+          val.map(item => {
+            this.gitService.getSR4Id(item.SRId, false).subscribe(val => {
+              if (!val) {
+                console.log('getSR4Id did not get any data.');
+                return;
+              }
+              this.textStatus = this.textStatus + val[0].StatusDetails;
+            });
+          });
         });
-      });
+      }
     });
   }
 
