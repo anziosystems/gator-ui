@@ -98,8 +98,14 @@ export class GitService {
     }
   }
 
+  //This current dev is about which dev is clicked on TopDev and other places. If you want to know the current logged in user then call
+  //getGitLoggedInUSerDetails
+
   getCurrentDev(): DevDetails {
     if (!this.currentDev) {
+      this.currentDev = this.sessionStorage.get('CURRENT-DEV');
+    }
+    if (!this.currentDev.login) {
       this.currentDev = this.sessionStorage.get('CURRENT-DEV');
     }
     return this.currentDev;
@@ -231,8 +237,8 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -640,15 +646,16 @@ export class GitService {
     }
   }
 
-  getOrgChart(org: string, bustTheCache: boolean = false): any {
+  getOrgChart(org: string, bustTheCache: boolean = false): Observable<any> {
     this.attachToken(true);
     const q = `GetOrgChart?bustTheCache=${bustTheCache}&org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  //This post call will never be made if no one is listening to the return observable.
   saveOrgChart(userId: string, org: string, orgChart: string): Observable<any> {
     const q = `saveOrgChart`;
-    this.attachJiraToken();
+    this.attachToken();
     let body: any = {
       org: org,
       userId: userId,
