@@ -89,7 +89,13 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
-    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.gitService.getCurrentOrg(), this.diagram.model.toJson()).subscribe(x => x);
+    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.gitService.getCurrentOrg(), this.diagram.model.toJson()).subscribe(x => {
+      if (x.code === 401) {
+        alert('You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com');
+      } else {
+        alert('Org Chart updated!');
+      }
+    });
   }
 
   public centerRoot() {
@@ -157,7 +163,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
           this.model.nodeDataArray.push({
             key: i,
             name: e.name.trim(),
-            //"title": "title",
+            userid: e.userName.trim(),
             parent: 1,
           });
         }
@@ -405,15 +411,21 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
             },
             new go.Binding('text', 'name').makeTwoWay(),
           ),
-          /*$(go.TextBlock, "Title: ", textStyle(), { row: 1, column: 0 }),
-                    $(go.TextBlock, textStyle(),
-                    {
-                        row: 1, column: 1, columnSpan: 4,
-                        editable: true, isMultiline: false,
-                        minSize: new go.Size(10, 14),
-                        margin: new go.Margin(0, 0, 0, 3)
-                    },
-                    new go.Binding("text", "title").makeTwoWay()),*/
+          // $(go.TextBlock, 'Title: ', textStyle(), {row: 1, column: 0}),
+          // $(
+          //   go.TextBlock,
+          //   textStyle(),
+          //   {
+          //     row: 1,
+          //     column: 1,
+          //     columnSpan: 4,
+          //     editable: true,
+          //     isMultiline: false,
+          //     minSize: new go.Size(10, 14),
+          //     margin: new go.Margin(0, 0, 0, 3),
+          //   },
+          //   new go.Binding('text', 'userid').makeTwoWay(),
+          // ),
           //$(go.TextBlock, textStyle(), { row: 2, column: 0 }, new go.Binding("text", "key", function(v) { return "ID: " + v; })),
           // $(go.TextBlock, textStyle(), { name: "boss", row: 2, column: 3, }, // we include a name so we can access this TextBlock when deleting Nodes/Links
           //new go.Binding("text", "parent", function(v) { return "Boss id: " + v; })),
