@@ -133,13 +133,14 @@ export class GitService {
     }
   }
 
+  //Gets Current loggedIn User
   public getLoggedInGitDev(): DevDetails {
     if (!this.loggedInGitDev.hasOwnProperty('name')) {
       //it is an empty object
       let data = this.sessionStorage.get('GIT_CURRENT_USER');
       if (!data) {
-        console.log('no entry for GCU. exiting. Let the user re-login');
-        return; //TODO: Force a re-login
+        console.log('getLoggedInGitDev ==> no entry for GCU. exiting. Let the user re-login');
+        return null; //TODO: Force a re-login
       }
       // let buff = atob(data);
 
@@ -237,8 +238,8 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
- // public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -333,7 +334,6 @@ export class GitService {
   }
 
   public getCurrentOrg(): string {
-    if (!this.currentOrg) {
       this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
       if (!this.currentOrg) {
         this.checkOrg().then(r => {
@@ -341,10 +341,38 @@ export class GitService {
         });
         return;
       }
-    }
+
     return this.currentOrg;
   }
 
+  
+  /*
+  If current org is undefined, then get the org list and we get 404 then go back to login. 
+  and this sets the currentOrg to firstOrg
+  */
+ async checkOrg() {
+  return new Promise((resolve, reject) => {
+    if (this.currentOrg === undefined || this.currentOrg === null) {
+      this.getOrgList().subscribe(result => {
+        if (result.code === 404) {
+          console.log ('CheckOrg - Unauthorize!!!');
+          this.router.navigate(['/login']);
+        }
+        if (result.length > 0) {
+          this.currentOrg = result[0].Org;
+          if (!this.currentOrg) {
+            this.setCurrentOrg(result[0].Org);
+          }
+          resolve();
+        } else {
+          reject();
+        }
+      });
+    } else {
+      resolve();
+    }
+  });
+}
   public setCurrentOrg(org: string) {
     if (org) {
       this.currentOrg = org;
@@ -378,31 +406,6 @@ export class GitService {
     }
   }
 
-  /*
-  If current org is undefined, then get the org list and we get 404 then go back to login. 
-  and this sets the currentOrg to firstOrg
-  */
-  async checkOrg() {
-    return new Promise((resolve, reject) => {
-      if (this.currentOrg === undefined || this.currentOrg === null) {
-        this.getOrgList().subscribe(result => {
-          if (result.code === 404) {
-            this.router.navigate(['/login']);
-          }
-          if (result.length > 0) {
-            if (!this.currentOrg) {
-              this.setCurrentOrg(result[0].Org);
-            }
-            resolve();
-          } else {
-            reject();
-          }
-        });
-      } else {
-        resolve();
-      }
-    });
-  }
 
   //All componenets call this to make sure that token is in place to call other calls.
   async ready(): Promise<boolean> {

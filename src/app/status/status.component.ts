@@ -33,10 +33,7 @@ export class StatusComponent implements OnInit {
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
   ) {
     this.bGetFromGit = sessionStorage.get('LBC');
-    if (!this.bGetFromGit) {
-      this.router.navigate(['/login']);
-      return;
-    }
+   
     this.loginAndSetup();
   }
 
