@@ -23,6 +23,10 @@ export class BreakingnewsComponent implements OnInit {
     this.updateBreakingNews();
   }
 
+  ngOnDestroy() {
+    clearInterval(this.timer);
+  }
+
   getData(): Promise<boolean> {
     return new Promise((done, fail) => {
       this.gitService.ready().then(result => {
