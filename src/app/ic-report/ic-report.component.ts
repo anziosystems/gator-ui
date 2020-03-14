@@ -53,19 +53,19 @@ export class IcReportComponent implements OnInit {
                 let status = '';
                 if (item.ManagerStatus) {
                   if (item.ManagerStatus === this.ACHIEVED) {
-                    this.reviewData[1] += this.ACHIEVED;
+                    this.reviewData[1] += 1;
                     status = 'Achieved';
                   }
                   if (item.ManagerStatus === this.NEEDIMPROVEMENT) {
-                    this.reviewData[2] += this.NEEDIMPROVEMENT;
+                    this.reviewData[2] += 1;
                     status = 'Need Improvement';
                   }
                   if (item.ManagerStatus === this.EXCEED) {
-                    this.reviewData[0] += this.EXCEED;
+                    this.reviewData[0] += 1; //Just increment by one there is no need to increment it by 7
                     status = 'Exceeded';
                   }
                 } else {
-                  this.reviewData[1] += this.ACHIEVED;
+                  this.reviewData[1] += 1;
                   status = 'Achieved';
                 }
                 if (!item.ManagerComment) {
