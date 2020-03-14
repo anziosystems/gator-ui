@@ -12,7 +12,10 @@ export class IcReportComponent implements OnInit {
   closeCtr: number[] = [];
   openCtr: number[] = [];
   allDates: number[] = [];
-
+  reviewData: number[] = [0, 3, 0];
+  ACHIEVED: number = 3;
+  NEEDIMPROVEMENT: number = 1;
+  EXCEED: number = 7;
   chart = [];
   constructor(private gitService: GitService) {}
 
@@ -26,30 +29,70 @@ export class IcReportComponent implements OnInit {
         return;
       }
 
+      this.getReports(val).then(() => {
+        this.getReviewData(val);
+      });
       this.getGraphData(val);
-      this.getReports(val);
     });
   }
 
   textStatus: string;
-  getReports(login: string) {
+  async getReports(login: string): Promise<any> {
     this.textStatus = '';
-    this.gitService.isUserAdmin(this.gitService.getCurrentOrg(), this.gitService.getLoggedInGitDev().login).subscribe(x => {
-      if (x === 0) {
-        this.textStatus = 'Sorry, only admin can see this';
-      } else {
-        this.gitService.getSR4User(login, false).subscribe(val => {
-          val.map(item => {
-            this.gitService.getSR4Id(item.SRId, false).subscribe(val => {
-              if (!val) {
-                console.log('getSR4Id did not get any data.');
-                return;
-              }
-              this.textStatus = this.textStatus + val[0].StatusDetails;
+    this.reviewData = [0, 0, 0];
+    return new Promise((done, fail) => {
+      this.gitService.isUserAdmin(this.gitService.getCurrentOrg(), this.gitService.getLoggedInGitDev().login).subscribe(x => {
+        if (x === 0) {
+          this.textStatus = 'Sorry, only admin can see this';
+          this.reviewData = [0, 0, 0];
+        } else {
+          //Get all the reports for the user
+          this.gitService.getSR4User(login, false).subscribe(async val => {
+            await Promise.all(
+              val.map(item => {
+                let status = '';
+                if (item.ManagerStatus) {
+                  if (item.ManagerStatus === this.ACHIEVED) {
+                    this.reviewData[1] += this.ACHIEVED;
+                    status = 'Achieved';
+                  }
+                  if (item.ManagerStatus === this.NEEDIMPROVEMENT) {
+                    this.reviewData[2] += this.NEEDIMPROVEMENT;
+                    status = 'Need Improvement';
+                  }
+                  if (item.ManagerStatus === this.EXCEED) {
+                    this.reviewData[0] += this.EXCEED;
+                    status = 'Exceeded';
+                  }
+                } else {
+                  this.reviewData[1] += this.ACHIEVED;
+                  status = 'Achieved';
+                }
+                if (!item.ManagerComment) {
+                  item.ManagerComment = 'No Comments';
+                }
+                if (item)
+                  this.textStatus =
+                    this.textStatus +
+                    item.StatusDetails +
+                    '<p style="color: red"' +
+                    "<br> ---------------------- Manager's Comment ----------------------------" +
+                    '<br>' +
+                    item.ManagerComment +
+                    '<br>' +
+                    'Rating: ' +
+                    status +
+                    '<br>Reviewer: ' +
+                    item.Reviewer +
+                    '<br>' +
+                    '___________________________________________________ </p> <br>';
+              }),
+            ).then(res => {
+              done(true);
             });
           });
-        });
-      }
+        }
+      });
     });
   }
 
@@ -114,41 +157,46 @@ export class IcReportComponent implements OnInit {
           },
         },
       });
+    });
+  }
 
-      this.chart = new Chart('canvas2', {
-        type: 'bar',
-        data: {
-          labels: this.allDates,
+  getReviewData(login: string) {
+    this.closeCtr = [];
+    this.openCtr = [];
+    this.allDates = [];
+    this.chart = new Chart('canvas2', {
+      type: 'bar',
+      data: {
+        labels: ['Exceeded', 'Achieved', 'Need Improvement'],
 
-          datasets: [
+        datasets: [
+          {
+            data: this.reviewData,
+            borderColor: '#98FB98',
+            fill: true,
+            label: 'Report Ratings',
+            backgroundColor: '#98FB98',
+          },
+        ],
+      },
+      options: {
+        maintainAspectRatio: true,
+        legned: {
+          display: true,
+        },
+        scales: {
+          xAxes: [
             {
-              data: this.closeCtr,
-              borderColor: '#98FB98',
-              fill: true,
-              label: 'Report Ratings',
-              backgroundColor: '#98FB98',
+              display: true,
+            },
+          ],
+          yAxes: [
+            {
+              display: true,
             },
           ],
         },
-        options: {
-          maintainAspectRatio: true,
-          legned: {
-            display: true,
-          },
-          scales: {
-            xAxes: [
-              {
-                display: true,
-              },
-            ],
-            yAxes: [
-              {
-                display: true,
-              },
-            ],
-          },
-        },
-      });
+      },
     });
   }
 }

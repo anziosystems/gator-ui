@@ -68,6 +68,7 @@ export class StatusComponent implements OnInit {
     //Get the Tenant details - This will be logged in User
     this.gitService.getGitLoggedInUSerDetails(this.bGetFromGit).subscribe(r2 => {
       let dd = new DevDetails();
+      console.log (`loginAndSetup=> ${r2.Id}`)
       dd.name = r2.DisplayName;
       dd.login = r2.UserName;
       dd.image = r2.Photo;

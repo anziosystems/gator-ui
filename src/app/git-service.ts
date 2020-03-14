@@ -121,14 +121,14 @@ export class GitService {
 
   public setLoggedInGitDev(v: DevDetails) {
     if (v) {
-      if (v.name) {
+      if (v.login) {
         this.loggedInGitDev = new DevDetails();
         this.loggedInGitDev.name = v.name;
         this.loggedInGitDev.image = v.image;
         this.loggedInGitDev.login = v.login;
         this.loggedInGitDev.id = v.id;
         this.loggedInGitDev.profileUrl = v.profileUrl;
-        this.sessionStorage.set('GIT_CURRENT_USER', v);
+        this.sessionStorage.set('LOGGEDIN_USER', v);
       }
     }
   }
@@ -137,7 +137,7 @@ export class GitService {
   public getLoggedInGitDev(): DevDetails {
     if (!this.loggedInGitDev.hasOwnProperty('name')) {
       //it is an empty object
-      let data = this.sessionStorage.get('GIT_CURRENT_USER');
+      let data = this.sessionStorage.get('LOGGEDIN_USER');
       if (!data) {
         console.log('getLoggedInGitDev ==> no entry for GCU. exiting. Let the user re-login');
         return null; //TODO: Force a re-login
@@ -233,13 +233,14 @@ export class GitService {
 
 
   */
+
   public JiraUsersList: any;
 
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  // public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -334,45 +335,44 @@ export class GitService {
   }
 
   public getCurrentOrg(): string {
-      this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
-      if (!this.currentOrg) {
-        this.checkOrg().then(r => {
-          return this.currentOrg;
-        });
-        return;
-      }
+    this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
+    if (!this.currentOrg) {
+      this.checkOrg().then(r => {
+        return this.currentOrg;
+      });
+      return;
+    }
 
     return this.currentOrg;
   }
 
-  
   /*
   If current org is undefined, then get the org list and we get 404 then go back to login. 
   and this sets the currentOrg to firstOrg
   */
- async checkOrg() {
-  return new Promise((resolve, reject) => {
-    if (this.currentOrg === undefined || this.currentOrg === null) {
-      this.getOrgList().subscribe(result => {
-        if (result.code === 404) {
-          console.log ('CheckOrg - Unauthorize!!!');
-          this.router.navigate(['/login']);
-        }
-        if (result.length > 0) {
-          this.currentOrg = result[0].Org;
-          if (!this.currentOrg) {
-            this.setCurrentOrg(result[0].Org);
+  async checkOrg() {
+    return new Promise((resolve, reject) => {
+      if (this.currentOrg === undefined || this.currentOrg === null) {
+        this.getOrgList().subscribe(result => {
+          if (result.code === 404) {
+            console.log('CheckOrg - Unauthorize!!!');
+            this.router.navigate(['/login']);
           }
-          resolve();
-        } else {
-          reject();
-        }
-      });
-    } else {
-      resolve();
-    }
-  });
-}
+          if (result.length > 0) {
+            this.currentOrg = result[0].Org;
+            if (!this.currentOrg) {
+              this.setCurrentOrg(result[0].Org);
+            }
+            resolve();
+          } else {
+            reject();
+          }
+        });
+      } else {
+        resolve();
+      }
+    });
+  }
   public setCurrentOrg(org: string) {
     if (org) {
       this.currentOrg = org;
@@ -405,7 +405,6 @@ export class GitService {
       console.log(ex);
     }
   }
-
 
   //All componenets call this to make sure that token is in place to call other calls.
   async ready(): Promise<boolean> {
