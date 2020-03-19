@@ -42,6 +42,7 @@ export class TopDevelopersComponent implements OnInit {
   filterQuery: string;
   OrgDevelopers: any[];
   bCallingFromInit: boolean = false;
+  selectedDev: string;
   items = [{label: 'Send Kudoes'}, {label: 'Monthly Status Reports'}, {label: 'Survery'}];
 
   @Output()
@@ -71,7 +72,7 @@ export class TopDevelopersComponent implements OnInit {
 
   GetData(dev: DevDetails) {
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
-
+    this.selectedDev = dev.login;
     if (this.gitService.getCurrentContext() === 'JIRA') {
       this.jiraData(dev);
     } else {
@@ -79,6 +80,25 @@ export class TopDevelopersComponent implements OnInit {
     }
   }
 
+  getMyStyle(val: DevDetails) {
+    let clr = 'white';
+    if (this.gitService.getCurrentContext() === 'JIRA') {
+      clr = 'rgb(86, 125, 143)';
+    } else {
+      clr = 'rgb(170, 125, 105)';
+    }
+
+    if (this.selectedDev === val.login) {
+      return {
+        color: clr,
+      };
+    } else {
+      return {
+        color: 'white',
+      };
+    }
+  }
+  
   gitData(developer: DevDetails) {
     const date = new Date();
 

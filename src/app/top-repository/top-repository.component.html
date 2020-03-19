@@ -9,7 +9,7 @@
     <div div class="flex-item">
       <div style="display: flex; direction: row;cursor: pointer;">
         <!-- <a href="https://github.com/labshare/{{repo}}" target="_blank" style="text-decoration: none; " -->
-        <div (click)="data(repo)">{{ repo }}</div>
+        <div (click)="data(repo)" [ngStyle]="getMyStyle(repo)" >{{ repo }}</div>
       </div>
     </div>
   </div>

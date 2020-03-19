@@ -11,7 +11,7 @@
     <div div class="flex-item">
       <div style="display: flex; direction: row;cursor: pointer;">
         <img src="{{ dev.image }}" style="height:40px; width:40px;  margin-right: 7px;  border-radius: 50%; cursor: pointer;" />
-        <div (click)="GetData(dev)" style="margin-top:8px; cursor: pointer;">{{ dev.name }}</div>
+        <div (click)="GetData(dev)" style="margin-top:8px; cursor: pointer;" [ngStyle]="getMyStyle(dev)">{{ dev.name }}</div>
         <!-- <img
           src="../../assets/jira.png"
           (click)="jiraData(dev)"

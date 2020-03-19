@@ -92,7 +92,7 @@ export class StatusComponent implements OnInit {
             //for every org check the hook
             this.orgList.forEach(element => {
               if (this.bGetFromGit) {
-                this.messages.push('Checking GitGator hook in ' + element.Org);
+                this.messages.push('Checking Git Gator hook in ' + element.Org);
               }
               this.gitService.getHookStatus(element.Org).subscribe(r3 => {
                 let hookStatus = r3.val;
@@ -105,17 +105,17 @@ export class StatusComponent implements OnInit {
                     let hookReturn = r4.val;
                     if (hookReturn === 201) {
                       if (this.bGetFromGit) {
-                        this.successMessages.push('GitGator hook is installed for org ' + element.Org);
+                        this.successMessages.push('Git Gator hook is installed for org ' + element.Org);
                       }
                     } else {
                       if (hookReturn === 422) {
                         if (this.bGetFromGit) {
-                          this.messages.push('GitGator hook is already installed for org ' + element.Org);
+                          this.messages.push('Git Gator hook is already installed for org ' + element.Org);
                         }
                       } else {
                         if (hookReturn === 404) {
                           if (this.bGetFromGit) {
-                            this.errMessages.push("Couldn't install GitGator hook. Please install manually for org: " + element.Org);
+                            this.errMessages.push("Couldn't install Git Gator hook. Please install manually for org: " + element.Org);
                             this.hookFail = true;
                           }
                         }
@@ -124,7 +124,7 @@ export class StatusComponent implements OnInit {
                   });
                 } else {
                   if (this.bGetFromGit) {
-                    this.messages.push('GitGator hook is already installed in ' + element.Org);
+                    this.messages.push('Git Gator hook is already installed in ' + element.Org);
                   }
                 }
               });

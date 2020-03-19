@@ -15,6 +15,7 @@ export class TopRepositoryComponent implements OnInit {
   repositories: any[];
   OrgRepositories: any[];
   navigationSubscription: any;
+  selectedRepo: string;
 
   constructor(
     private gitService: GitService,
@@ -28,7 +29,20 @@ export class TopRepositoryComponent implements OnInit {
     });
   }
 
+  getMyStyle(val: string) {
+    if (this.selectedRepo === val) {
+      return {
+        color: 'rgb(170, 125, 105)',
+      };
+    } else {
+      return {
+        color: 'white',
+      };
+    }
+  }
+
   data(repo: string) {
+    this.selectedRepo = repo;
     this.gitService.trigger('repo-' + repo);
     const date = new Date();
     this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');

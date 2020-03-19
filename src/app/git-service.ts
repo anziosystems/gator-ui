@@ -240,7 +240,7 @@ export class GitService {
   JiraUsersMap = new Map();
 
   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  // public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -248,8 +248,13 @@ export class GitService {
   private _onMyEvent = new Subject<string>();
   private _onJiraEvent = new Subject<string>();
   private _onComponentMessage = new Subject<string>();
+  private _isLoggedIn = new Subject<boolean>();
 
   //return the event as observable so others can subscribe to it
+  public get onIsLoggedInEvent(): Observable<boolean> {
+    return this._isLoggedIn.asObservable();
+  }
+
   public get onMyEvent(): Observable<string> {
     return this._onMyEvent.asObservable();
   }
@@ -272,6 +277,11 @@ export class GitService {
    DevPullDetailsComponent is subscribing it
    this.gitService.onMyEvent.subscribe((val: string) => {
   */
+
+  public triggerIsLoggedIn(value: boolean) {
+    this._isLoggedIn.next(value);
+  }
+
   public trigger(value: string) {
     this._onMyEvent.next(value);
   }

@@ -22,7 +22,11 @@ export class OrgListComponent implements OnInit {
     private router: Router,
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
-  ) {}
+  ) {
+    this.gitService.onIsLoggedInEvent.subscribe (v => {
+      this.loggedIn = v;
+    })
+  }
 
   logout() {
     this.storage.remove('token');

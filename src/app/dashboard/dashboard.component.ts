@@ -58,6 +58,7 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+   this.gitService.triggerIsLoggedIn (true);
 
     // //Jira
     // let jiratoken = this.storage.get('JiraToken');
