@@ -48,7 +48,7 @@ export class BreakingnewsComponent implements OnInit {
   }
 
   updateBreakingNews() {
-    this.breakingNews = 'Breaking news will come here..';
+    this.breakingNews = 'Please wait ...Breaking news will appear here..';
     this.getData().then(() => {
       this.timer = setInterval(() => {
         this.ctr = this.ctr + 1;
