@@ -267,7 +267,7 @@ export class GitService {
     return this._onJiraEvent.asObservable();
   }
 
-  public get onComponentMessage(): Observable<string> {
+  public get onGlobalComponentMessage(): Observable<string> {
     return this._onComponentMessage.asObservable();
   }
 
@@ -294,7 +294,7 @@ export class GitService {
     this._onJiraEvent.next(value);
   }
 
-  public broadcastComponentMessage(value: string) {
+  public broadcastGlobalComponentMessage(value: string) {
     this._onComponentMessage.next(value);
   }
 
