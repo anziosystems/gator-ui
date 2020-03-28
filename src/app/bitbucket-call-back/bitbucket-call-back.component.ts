@@ -16,7 +16,7 @@ export class BitbucketCallBackComponent implements OnInit {
       if (BitBucketToken) {
         this.gitService.setJiraToken (BitBucketToken);
         this.storage.set('BitBucket', BitBucketToken);
-        this.gitService.broadcastComponentMessage('SHOW_BITBUCKET_DETAILS');
+        this.gitService.broadcastGlobalComponentMessage('SHOW_BITBUCKET_DETAILS');
         this.router.navigate(['/bitbucketStatus']);
       }
     });

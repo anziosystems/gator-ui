@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit {
     //   this.router.navigate(['/jira-login']);
     // }
 
-    this.gitService.onComponentMessage.subscribe((val: string) => {
+    this.gitService.onGlobalComponentMessage.subscribe((val: string) => {
       if (val === 'CLOSE_PULL_DETAILS') {
         this.isShowDetail = false;
       }
@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.trigger(this.gitService.getCurrentDev().login);
-    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 
   jiraData() {
@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit {
 
     // }
     this.gitService.triggerJira(this.gitService.getCurrentDev().name);
-    this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
 
   onStatefulInit() {

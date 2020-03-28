@@ -49,7 +49,7 @@ export class DevJiraDetailsComponent implements OnInit {
   }
 
   closePane() {
-    this.gitService.broadcastComponentMessage('CLOSE_JIRA_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('CLOSE_JIRA_DETAILS');
     this.bHideDetails = true;
   }
 

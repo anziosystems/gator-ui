@@ -45,7 +45,7 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   closePane() {
-    this.gitService.broadcastComponentMessage('CLOSE_PULL_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('CLOSE_PULL_DETAILS');
     this.bHideDetails = true;
   }
 

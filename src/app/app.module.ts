@@ -42,9 +42,14 @@ import {PaymentComponent} from './payment/payment.component';
 import {IcReportComponent} from './ic-report/ic-report.component';
 import {IcCountsComponent} from './ic-counts/ic-counts.component';
 import {AboutComponent} from './about/about.component';
-import { OrgChartComponent } from './org-chart/org-chart.component';
+import {OrgChartComponent} from './org-chart/org-chart.component';
+import {HomeComponent} from './home/home.component';
+import {ContactusComponent} from './contactus/contactus.component';
 
 const routes: Routes = [
+  {path: 'home', component: HomeComponent},
+  {path: 'contact', component: ContactusComponent},
+  {path: 'about', component: AboutComponent},
   {path: 'login', component: LoginComponent},
   {path: 'bitbucketlogin', component: BitbucketLoginComponent},
   {path: 'callback', component: CallbackComponent},
@@ -62,7 +67,6 @@ const routes: Routes = [
     children: [
       {path: 'admin', component: AdminComponent},
       {path: 'payment', component: PaymentComponent},
-      {path: 'about', component: AboutComponent},
     ],
   },
   {path: 'orglist', component: OrgListComponent},
@@ -70,7 +74,7 @@ const routes: Routes = [
 
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
-  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
 ];
 
 @NgModule({
@@ -105,6 +109,8 @@ const routes: Routes = [
     IcCountsComponent,
     AboutComponent,
     OrgChartComponent,
+    HomeComponent,
+    ContactusComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

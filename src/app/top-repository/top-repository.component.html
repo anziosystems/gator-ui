@@ -1,6 +1,6 @@
 <div class="flex-container  box-shadow">
   <div class="flex-item-header">
-    Repositories    <br />
+    Repositories <br />
     <input type="text" #box (keyup)="filterRepo(box.value)" style="color: black" />
     <br />
   </div>
@@ -9,7 +9,8 @@
     <div div class="flex-item">
       <div style="display: flex; direction: row;cursor: pointer;">
         <!-- <a href="https://github.com/labshare/{{repo}}" target="_blank" style="text-decoration: none; " -->
-        <div (click)="data(repo)" [ngStyle]="getMyStyle(repo)" >{{ repo }}</div>
+
+        <div (click)="data(repo)" style="padding-top:5px;padding-bottom: 7px;" [ngStyle]="getMyStyle(repo)">{{ repo }}</div>
       </div>
     </div>
   </div>

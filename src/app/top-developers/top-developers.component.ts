@@ -39,17 +39,21 @@ export class TopDevelopersComponent implements OnInit {
   developers: any[];
   devDetails: any[];
   navigationSubscription: any;
+  backgroundColor:string = '#26262fcc' ;
   filterQuery: string;
   OrgDevelopers: any[];
   bCallingFromInit: boolean = false;
   selectedDev: string;
   items = [{label: 'Send Kudoes'}, {label: 'Monthly Status Reports'}, {label: 'Survery'}];
 
-  @Output()
-  messageEvent = new EventEmitter<string>(); //TODO: delete not used
-
   constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router) {
     this.developers = [];
+
+    this.gitService.onGlobalComponentMessage.subscribe((val: string) => {
+      if (val === 'REPO_CLICKED') {
+        this.backgroundColor  = '#26262fcc' ;
+      }
+    });
 
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
@@ -80,6 +84,26 @@ export class TopDevelopersComponent implements OnInit {
     }
   }
 
+  getBGStyle(val: DevDetails) {
+    let clr = 'white';
+    if (this.selectedDev === val.login) {
+      if (this.gitService.getCurrentContext() === 'JIRA') {
+        clr = 'rgb(86, 125, 143)';
+      } else {
+        clr = 'rgb(170, 125, 105)';
+      }
+      return {
+        background: clr,
+        color: 'white',
+      };
+    } else {
+      return {
+        background: '#26262fcc',
+        color: 'white',
+      };
+    }
+  }
+
   getMyStyle(val: DevDetails) {
     let clr = 'white';
     if (this.gitService.getCurrentContext() === 'JIRA') {
@@ -98,7 +122,7 @@ export class TopDevelopersComponent implements OnInit {
       };
     }
   }
-  
+
   gitData(developer: DevDetails) {
     const date = new Date();
 
@@ -107,7 +131,7 @@ export class TopDevelopersComponent implements OnInit {
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.setCurrentDev(developer);
     this.gitService.trigger(developer.login);
-    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     //This to add developer in the status report component
     if (!this.bCallingFromInit) {
       this.gitService.triggerCustomEvent({
@@ -134,7 +158,7 @@ export class TopDevelopersComponent implements OnInit {
 
     // }
     this.gitService.triggerJira(developer.name);
-    this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
 
   filterDev(str: string) {
@@ -145,6 +169,10 @@ export class TopDevelopersComponent implements OnInit {
     str = str.toLowerCase();
     this.developers = this.OrgDevelopers.filter(d => d.name.toLowerCase().substring(0, str.length) === str);
   }
+
+  defaultBackground: string;
+  defaultColor: string;
+
   initializeData() {
     this.developers = [];
 

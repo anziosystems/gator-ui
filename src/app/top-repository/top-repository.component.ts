@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
 import {Router, NavigationEnd} from '@angular/router';
+import * as _ from 'lodash';
 // import { UsageService } from '@labshare/ngx-core-services';
 
 @Component({
@@ -45,7 +46,8 @@ export class TopRepositoryComponent implements OnInit {
     this.selectedRepo = repo;
     this.gitService.trigger('repo-' + repo);
     const date = new Date();
-    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('REPO_CLICKED');
 
     // this.usageService.send ({event: 'Repo Details', info: 'Repo: ' + repo,  LogTime: date.toUTCString()});
   }
@@ -72,7 +74,7 @@ export class TopRepositoryComponent implements OnInit {
     this.gitService.ready().then(result => {
       this.gitService.getTopRepositories(this.gitService.getCurrentOrg(), 15).subscribe(val => {
         // Filter out the duplicates
-        this.repositories = val.map(item => item.Repo).filter((value, index, self) => self.indexOf(value) === index);
+        this.repositories = val.map(item => _.upperFirst(item.Repo)).filter((value, index, self) => self.indexOf(value) === index);
         this.OrgRepositories = this.repositories;
       });
     });

@@ -15,7 +15,7 @@ export class JiraCallBackComponent implements OnInit {
       if (JiraToken) {
         this.gitService.setJiraToken(JiraToken);
         this.storage.set('JiraToken', JiraToken);
-        this.gitService.broadcastComponentMessage('SHOW_JIRA_DETAILS');
+        this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
         this.router.navigate(['/jiraStatus']);
       }
     });

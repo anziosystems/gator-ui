@@ -45,7 +45,7 @@ export class PullRequestCountComponent implements OnInit {
 
   data(action: string, day: number) {
     this.gitService.trigger(action + '+' + day.toString());
-    this.gitService.broadcastComponentMessage('SHOW_PULL_DETAILS');
+    this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 
   //0: {state: "closed", ctr: 27}
