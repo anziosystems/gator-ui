@@ -45,8 +45,10 @@ import {AboutComponent} from './about/about.component';
 import {OrgChartComponent} from './org-chart/org-chart.component';
 import {HomeComponent} from './home/home.component';
 import {ContactusComponent} from './contactus/contactus.component';
+import { HelpComponent } from './help/help.component';
 
 const routes: Routes = [
+  {path: 'help', component: HelpComponent},
   {path: 'home', component: HomeComponent},
   {path: 'contact', component: ContactusComponent},
   {path: 'about', component: AboutComponent},
@@ -111,6 +113,7 @@ const routes: Routes = [
     OrgChartComponent,
     HomeComponent,
     ContactusComponent,
+    HelpComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

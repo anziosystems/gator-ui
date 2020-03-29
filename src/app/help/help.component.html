@@ -1,0 +1,44 @@
+<div>
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="http://anziosystems.azurewebsites.net/">Anzio <span class="logo-dec">System</span></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class=""><a href="home">Home</a></li>
+          <li class=""><a href="about">About</a></li>
+          <li class="active"><a href="help">Help</a></li>
+          <li class=""><a href="contact">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="banner-info">
+      <h2 class="bnr-sub-title">Help</h2>
+      <p class="bnr-para content"></p>
+      <h3>Webhook installtion failed, because you may not have the permission. Please install it manually.</h3>
+      <p style="color:rgb(129, 105, 129)">
+        Someone else from your orgnization may have already installed the hook. We need only one hook per organization. If that is the case than you are good.
+      </p>
+      <h4 class="bluestyle">Without webhooks Git Gator will not update your data. Please ask the admin of your orgnization to install webhook.</h4>
+      <P>Follow these simple steps to Manually Install web hook?</P>
+
+      1. Goto your organization page on the github <br />
+      2. Navigate to the "Settings" tab. <br />
+      3. Select the "Webhooks" option on the left menu. <br />
+      4. Click "Add Webhook" <br />
+      5. put 'https://gatorgithook.azurewebsites.net/api/httptrigger' in payload URL <br />
+      6. Select "application/json" as the encoding type. <br />
+      7. select radio button 'Let me select individual events.' <br />
+      8. check 'Pull requests' <br />
+      9. click on Add webhook <br />
+    </div>
+  </div>
+  <footer id="footer">
+    <div class="row text-center">
+      <p>Copyright &copy; 2020 Anzio&nbsp;<span style="color: #E92987;">Systems</span>. All Rights Reserved.</p>
+    </div>
+  </footer>
+</div>
