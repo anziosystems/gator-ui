@@ -11,7 +11,7 @@
   <div class="flex-row-container">
     <div class="flex-item">
       <!-- <a (click)="process()" class="btn-more btn"> Process </a> -->
-      <p-tree [value]="data" selectionMode="single" [loading]="loading" (onNodeSelect)="nodeSelect($event)">
+      <p-tree [value]="data" selectionMode="single" (onNodeSelect)="nodeSelect($event)">
         <!-- <ng-template let-node pTemplate="default">
                 <input [(ngModel)]="node.label" type="text" style="width:100%; color: black;" />
               </ng-template> -->
