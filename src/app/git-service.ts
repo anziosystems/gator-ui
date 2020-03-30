@@ -53,7 +53,7 @@ export class GitService {
   public query: string;
   public JIRA_ORG_LIST: string = 'JIRA-ORG-LIST';
   private NO_DAYS: number = 25;
- /*
+  /*
     jiraOrgList: Array(3)
     0:
     avatarUrl: "https://site-admin-avatar-cdn.prod.public.atl-paas.net/avatars/240/koala.png"
@@ -62,9 +62,9 @@ export class GitService {
     scopes: (4) ["manage:jira-configuration", "write:jira-work", "read:jira-work", "read:jira-user"]
     url: "https://labshare.atlassian.net"
   */
- jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
+  jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
 
- /*
+  /*
  JiraUsersList: Array(3)
  0: (20)
  1: (234)
@@ -82,21 +82,21 @@ export class GitService {
 
  */
 
- public JiraUsersList: any;
+  public JiraUsersList: any;
 
- //Keeps the map od Jira display Name and accountId
- JiraUsersMap = new Map();
+  //Keeps the map od Jira display Name and accountId
+  JiraUsersMap = new Map();
 
- //public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
- public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
- public gitApiUrl: string = this.gatorApiUrl + '/service/';
+  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
- //Components listen to each other using this
- private _onCustomEvent = new Subject<CustomEvent>();
- private _onMyEvent = new Subject<string>();
- private _onJiraEvent = new Subject<string>();
- private _onComponentMessage = new Subject<string>();
- private _isLoggedIn = new Subject<boolean>();
+  //Components listen to each other using this
+  private _onCustomEvent = new Subject<CustomEvent>();
+  private _onMyEvent = new Subject<string>();
+  private _onJiraEvent = new Subject<string>();
+  private _onComponentMessage = new Subject<string>();
+  private _isLoggedIn = new Subject<boolean>();
 
   constructor(
     private http: HttpClient,
@@ -249,7 +249,6 @@ export class GitService {
     });
   }
 
- 
   //return the event as observable so others can subscribe to it
   public get onIsLoggedInEvent(): Observable<boolean> {
     return this._isLoggedIn.asObservable();
