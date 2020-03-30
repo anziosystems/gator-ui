@@ -10,19 +10,14 @@
   </div>
   <div class="flex-row-container">
     <div class="flex-item">
-      <p-tree [value]="data" selectionMode="single" (onNodeSelect)="nodeSelect($event)">
-      </p-tree>
+      <p-tree [value]="data" selectionMode="single" (onNodeSelect)="nodeSelect($event)"> </p-tree>
     </div>
     <div style="display: flex; flex-direction:column;  width: 100%;justify-content: flex-start; align-items: top;">
       <div style="flex:1; padding-left: 10px;">
         <div style="float: left; height: 45px;display:flex; flex-direction: row;">
-          <button class="button-style" style="color:rgb(158, 92, 54)" (click)="gitData()">Git</button>
+          <button class="button-style" style="color:rgb(158, 92, 54)" (click)="gitData2()">Git</button>
           <button class="button-style separator">|</button>
-          <button class="button-style" style="color:rgb(61, 109, 128)" (click)="jiraData()">Jira</button>
-          <!-- <button class="button-style separator">|</button>
-            <button class="button-style">TFS</button>
-            <button class="button-style separator">|</button>
-            <button class="button-style">BitBucket</button> -->
+          <button class="button-style" style="color:rgb(61, 109, 128)" (click)="jiraData2()">Jira</button>
         </div>
       </div>
       <div style="display: flex; flex-direction: column">

@@ -2,7 +2,6 @@ import {Component, OnInit, EventEmitter, Inject, Output, Injectable, ViewChild} 
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
-
 import {TreeNode} from 'primeng/api';
 import {ChildActivationEnd} from '@angular/router';
 
@@ -26,12 +25,6 @@ export class OrgDetailsComponent implements OnInit {
     }
     this.gitService.triggerIsLoggedIn(true);
 
-    // //Jira
-    // let jiratoken = this.storage.get('JiraToken');
-    // if (!jiratoken) {
-    //   this.router.navigate(['/jira-login']);
-    // }
-
     this.gitService.onGlobalComponentMessage.subscribe((val: string) => {
       if (val === 'CLOSE_PULL_DETAILS') {
         this.isShowDetail = false;
@@ -53,13 +46,40 @@ export class OrgDetailsComponent implements OnInit {
   }
 
   nodeSelect(obj) {
-    // alert(obj.node.label + ' ' + obj.node.data);
     let d = new DevDetails();
     d.login = obj.node.data;
     d.name = obj.node.label;
     this.GetData(d);
   }
 
+  gitData2() {
+    this.gitService.setCurrentContext('GIT');
+    const date = new Date();
+
+    // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+    //this trigger kicks dev-pull-details components as it is subscribed to
+    //this trigger, which in turn goes and fill the devloper details for git
+    this.gitService.trigger(this.gitService.getCurrentDev().login);
+    this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
+  }
+
+  jiraData2() {
+    const date = new Date();
+    this.gitService.setCurrentContext('JIRA');
+    // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
+    //
+    if (!this.storage.get('JiraToken')) {
+      this.router.navigate(['/jira-login']);
+      return;
+    }
+    // else {
+    //   //Delete this else clause
+    //   this.router.navigate(['/jiraStatus']);
+
+    // }
+    this.gitService.triggerJira(this.gitService.getCurrentDev().name);
+    this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
+  }
   gitData(developer: DevDetails) {
     const date = new Date();
 
@@ -70,14 +90,6 @@ export class OrgDetailsComponent implements OnInit {
     this.gitService.trigger(developer.login);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     this.isShowDetail = true;
-    //This to add developer in the status report component
-    // if (!this.bCallingFromInit) {
-    //   this.gitService.triggerCustomEvent({
-    //     source: 'TOP-DEVELOPER',
-    //     destination: 'STATUS-REPORT',
-    //     message: developer.login,
-    //   });
-    //}
   }
 
   jiraData(developer: DevDetails) {
@@ -90,11 +102,7 @@ export class OrgDetailsComponent implements OnInit {
       this.router.navigate(['/jira-login']);
       return;
     }
-    // else {
-    //   //Delete this else clause
-    //   this.router.navigate(['/jiraStatus']);
 
-    // }
     this.gitService.triggerJira(developer.name);
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
