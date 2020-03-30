@@ -153,7 +153,7 @@ export class OrgDetailsComponent implements OnInit {
     let _obj;
     this.gitService.getOrgChart(this.gitService.getCurrentOrg(), true).subscribe(v => {
       if (!v[0]) {
-        alert('Create the Org chart firrst');
+        alert('Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg());
         this.router.navigate(['/orgChart']);
       }
       _obj = JSON.parse(v[0].OrgChart);
@@ -184,14 +184,14 @@ export class OrgDetailsComponent implements OnInit {
         let data = new TNode();
         data.label = x.parent.name;
         data.data = x.parent.userid;
-        data.expandedIcon = 'pi pi-folder-open';
-        data.collapsedIcon = 'pi pi-folder';
+        data.expandedIcon = 'pi';
+        data.collapsedIcon = 'pi';
         for (let y of x.child) {
           let c = new TNode();
           c.label = y.name;
           c.data = y.userid;
-          c.expandedIcon = 'pi pi-folder-open';
-          c.collapsedIcon = 'pi pi-folder';
+          c.expandedIcon = 'pi ';
+          c.collapsedIcon = 'pi ';
           data.children.push(c);
         }
         Data.push(data);

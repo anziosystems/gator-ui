@@ -64,6 +64,7 @@ export class BreakingnewsComponent implements OnInit {
           this.desc = this.devDetails[this.ctr].title;
           this.pullReqUrl = this.devDetails[this.ctr].pullrequesturl;
           this.breakingNews = `${this.desc} - ${this.login} - ${this.repo}`;
+          this.breakingNews = this.breakingNews.trim();
           this.cd.detectChanges();
         });
       }, 8000);
