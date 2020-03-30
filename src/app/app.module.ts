@@ -1,4 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {TreeModule} from 'primeng/tree';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
@@ -45,10 +46,12 @@ import {AboutComponent} from './about/about.component';
 import {OrgChartComponent} from './org-chart/org-chart.component';
 import {HomeComponent} from './home/home.component';
 import {ContactusComponent} from './contactus/contactus.component';
-import { HelpComponent } from './help/help.component';
+import {HelpComponent} from './help/help.component';
+import {OrgDetailsComponent} from './org-details/org-details.component';
 
 const routes: Routes = [
   {path: 'help', component: HelpComponent},
+  {path: 'od', component: OrgDetailsComponent},
   {path: 'home', component: HomeComponent},
   {path: 'contact', component: ContactusComponent},
   {path: 'about', component: AboutComponent},
@@ -114,10 +117,12 @@ const routes: Routes = [
     HomeComponent,
     ContactusComponent,
     HelpComponent,
+    OrgDetailsComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [
     BrowserModule,
+    TreeModule,
     ContextMenuModule.forRoot(),
     QuillModule.forRoot(),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),

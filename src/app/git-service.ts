@@ -53,6 +53,50 @@ export class GitService {
   public query: string;
   public JIRA_ORG_LIST: string = 'JIRA-ORG-LIST';
   private NO_DAYS: number = 25;
+ /*
+    jiraOrgList: Array(3)
+    0:
+    avatarUrl: "https://site-admin-avatar-cdn.prod.public.atl-paas.net/avatars/240/koala.png"
+    id: "0e493c98-6102-463a-bc17-4980be22651b"
+    name: "labshare"
+    scopes: (4) ["manage:jira-configuration", "write:jira-work", "read:jira-work", "read:jira-user"]
+    url: "https://labshare.atlassian.net"
+  */
+ jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
+
+ /*
+ JiraUsersList: Array(3)
+ 0: (20)
+ 1: (234)
+ 2: (456)
+ JiraUsersList: Array(3)
+   0: Array(29)
+   0:
+   accountId: "5d53f3cbc6b9320d9ea5bdc2"  //
+   accountType: "app"
+   active: true
+   avatarUrls: {48x48: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=48&s=48", 24x24: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=24&s=24", 16x16: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=16&s=16", 32x32: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=32&s=32"}
+   displayName: "Jira Outlook"
+   self: "https://api.atlassian.com/ex/jira/786d2410-0054-411f-90ed-392c8cc1aad1/rest/api/3/user?accountId=5d53f3cbc6b9320d9ea5bdc2"
+
+
+ */
+
+ public JiraUsersList: any;
+
+ //Keeps the map od Jira display Name and accountId
+ JiraUsersMap = new Map();
+
+ //public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+ public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+ public gitApiUrl: string = this.gatorApiUrl + '/service/';
+
+ //Components listen to each other using this
+ private _onCustomEvent = new Subject<CustomEvent>();
+ private _onMyEvent = new Subject<string>();
+ private _onJiraEvent = new Subject<string>();
+ private _onComponentMessage = new Subject<string>();
+ private _isLoggedIn = new Subject<boolean>();
 
   constructor(
     private http: HttpClient,
@@ -205,51 +249,7 @@ export class GitService {
     });
   }
 
-  /*
-    jiraOrgList: Array(3)
-    0:
-    avatarUrl: "https://site-admin-avatar-cdn.prod.public.atl-paas.net/avatars/240/koala.png"
-    id: "0e493c98-6102-463a-bc17-4980be22651b"
-    name: "labshare"
-    scopes: (4) ["manage:jira-configuration", "write:jira-work", "read:jira-work", "read:jira-user"]
-    url: "https://labshare.atlassian.net"
-  */
-  jiraOrgList: any; //jiraOrgList [0].name , jiraOrgList [0].id  etc
-
-  /*
-  JiraUsersList: Array(3)
-  0: (20)
-  1: (234)
-  2: (456)
-  JiraUsersList: Array(3)
-    0: Array(29)
-    0:
-    accountId: "5d53f3cbc6b9320d9ea5bdc2"  //
-    accountType: "app"
-    active: true
-    avatarUrls: {48x48: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=48&s=48", 24x24: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=24&s=24", 16x16: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=16&s=16", 32x32: "https://secure.gravatar.com/avatar/40cff14f727dbf6…c.atl-paas.net%2Finitials%2FJO-4.png&size=32&s=32"}
-    displayName: "Jira Outlook"
-    self: "https://api.atlassian.com/ex/jira/786d2410-0054-411f-90ed-392c8cc1aad1/rest/api/3/user?accountId=5d53f3cbc6b9320d9ea5bdc2"
-
-
-  */
-
-  public JiraUsersList: any;
-
-  //Keeps the map od Jira display Name and accountId
-  JiraUsersMap = new Map();
-
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  public gitApiUrl: string = this.gatorApiUrl + '/service/';
-
-  //Components listen to each other using this
-  private _onCustomEvent = new Subject<CustomEvent>();
-  private _onMyEvent = new Subject<string>();
-  private _onJiraEvent = new Subject<string>();
-  private _onComponentMessage = new Subject<string>();
-  private _isLoggedIn = new Subject<boolean>();
-
+ 
   //return the event as observable so others can subscribe to it
   public get onIsLoggedInEvent(): Observable<boolean> {
     return this._isLoggedIn.asObservable();

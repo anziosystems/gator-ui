@@ -23,9 +23,9 @@ export class OrgListComponent implements OnInit {
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
   ) {
-    this.gitService.onIsLoggedInEvent.subscribe (v => {
+    this.gitService.onIsLoggedInEvent.subscribe(v => {
       this.loggedIn = v;
-    })
+    });
   }
 
   logout() {
@@ -48,10 +48,14 @@ export class OrgListComponent implements OnInit {
     this.router.navigate(['/icReport']);
   }
 
-  
   gotoOrg() {
     this.gitService.setCurrentContext('GIT');
     this.router.navigate(['/orgChart']);
+  }
+
+  gotoOrgD() {
+    this.gitService.setCurrentContext('GIT');
+    this.router.navigate(['/od']);
   }
 
   data(org: any) {

@@ -1,10 +1,11 @@
 import {Component, OnInit, EventEmitter, Inject, Output, Injectable, ViewChild} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
+import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 import {debug} from 'util';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+
 import * as _ from 'lodash';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
 import {ContextMenuComponent} from 'ngx-contextmenu';
