@@ -120,7 +120,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
         const developerNames = devs.map(item => {
           const arr = _.split(item, '--');
           if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
-          return arr[0] + '  -  ' + arr[1];
+          return arr[0] + '  --  ' + arr[1];
         });
 
         this.dialogService
@@ -145,7 +145,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.textReviewer !== '') {
       let arrSelected = this.textReviewer.split(',');
       arrSelected.forEach(e => {
-        let person = e.split('-');
+        let person = e.split('--');
         this.arrPeople.push({name: person[0], userName: person[1]});
       });
 
