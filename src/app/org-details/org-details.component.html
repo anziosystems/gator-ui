@@ -1,33 +1,3 @@
-<div class="flex-column-container">
-  <div class="flex-row-container">
-    <div class="count-style">
-      <!-- <app-pull-request-count></app-pull-request-count> -->
-      <app-ic-counts></app-ic-counts>
-    </div>
-    <div class="flex-item-firstRow">
-      <app-breakingnews></app-breakingnews>
-    </div>
-  </div>
-  <div class="flex-row-container">
-    <div class="flex-item">
-      <p-tree [value]="data" selectionMode="single" (onNodeSelect)="nodeSelect($event)"> </p-tree>
-    </div>
-    <div style="display: flex; flex-direction:column;  width: 100%;justify-content: flex-start; align-items: top;">
-      <div style="padding-left: 10px;">
-        <div style="float: left; height: 45px;display:flex; flex-direction: row;">
-          <button class="button-style" style="color:rgb(158, 92, 54)" (click)="gitData2()">Git</button>
-          <button class="button-style separator">|</button>
-          <button class="button-style" style="color:rgb(61, 109, 128)" (click)="jiraData2()">Jira</button>
-        </div>
-      </div>
-      <div style="display: flex; flex-direction: column">
-        <div class="flex-detail-item" [hidden]="!isShowDetail">
-          <app-dev-pull-details></app-dev-pull-details>
-        </div>
-        <div class="flex-detail-item" [hidden]="!isJiraShowDetail">
-          <app-dev-jira-details></app-dev-jira-details>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="flex-container">
+  <p-tree [value]="data" selectionMode="single" (onNodeSelect)="nodeSelect($event)"> </p-tree>
 </div>

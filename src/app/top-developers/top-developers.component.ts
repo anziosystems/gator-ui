@@ -74,7 +74,10 @@ export class TopDevelopersComponent implements OnInit {
       this.navigationSubscription.unsubscribe();
     }
   }
-
+ 
+  showOD () {
+    this.gitService.broadcastGlobalComponentMessage ('SHOW_OD');
+  }
   GetData(dev: DevDetails) {
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
     this.selectedDev = dev.login;

@@ -59,6 +59,7 @@ export class OrgListComponent implements OnInit {
   }
 
   data(org: any) {
+    this.gitService.broadcastGlobalComponentMessage ('HIDE_OD');
     //Keep the current Org in session, angular apps with refresh browser will reload the gitservice and application will forget everything
     if (org) {
       this.gitService.setCurrentOrg(org.Org);

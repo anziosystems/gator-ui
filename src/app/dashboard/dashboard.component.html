@@ -9,11 +9,14 @@
     </div>
   </div>
   <div class="flex-row-container">
-    <div class="flex-item">
+    <div class="flex-item" [hidden]="isShowOD">
       <app-top-developers></app-top-developers>
     </div>
-    <div class="flex-item">
+    <div class="flex-item" [hidden]="isShowOD">
       <app-top-repository></app-top-repository>
+    </div>
+    <div class="flex-item" [hidden]="!isShowOD" style="font-size: large; color:gainsboro">
+      <app-org-details></app-org-details>
     </div>
     <div style="display: flex; flex-direction:column;  width: 100%;justify-content: flex-start; align-items: top;">
       <div

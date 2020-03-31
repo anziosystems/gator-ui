@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
   orgs: any;
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
+  isShowOD: boolean = false;
   constructor(
     private gitService: GitService,
     private router: Router,
@@ -58,7 +59,7 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-   this.gitService.triggerIsLoggedIn (true);
+    this.gitService.triggerIsLoggedIn(true);
 
     // //Jira
     // let jiratoken = this.storage.get('JiraToken');
@@ -81,6 +82,13 @@ export class DashboardComponent implements OnInit {
       if (val === 'SHOW_JIRA_DETAILS') {
         this.isJiraShowDetail = true;
         this.isShowDetail = false;
+      }
+
+      if (val === 'SHOW_OD') {
+        this.isShowOD = true;
+      }
+      if (val === 'HIDE_OD') {
+        this.isShowOD = false;
       }
     });
   }
