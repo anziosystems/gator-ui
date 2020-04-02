@@ -69,16 +69,16 @@
     <div class="flex-item-secondCol">
       <div class="flex-column-container">
         <div style="font-size: 15px;     margin-left: 07px;">
-          <button class="buttons-style" style="background-color: rgb(211, 143, 111);" (click)="refresh()">Refresh</button>
-          <button class="buttons-style" style="background-color: rgb(116, 98, 133);" (click)="newReport()">New</button>
+          <button class="buttons-style" style="background-color: #C7E9FF;" (click)="refresh()">Refresh</button>
+          <button class="buttons-style" style="background-color: #FFC7FE;" (click)="newReport()">New</button>
 
-          <button class="buttons-style" (click)="addGitPR()">+ Git PR</button>
-          <button class="buttons-style" (click)="addJiraTickets()">+ Jira Tickets</button>
-          <button class="buttons-style" *ngIf="!bClosedReport" style="color:white; background-color: rgb(93, 107, 78);" (click)="save()">Save</button>
-          <button class="buttons-style" style="background-color: khaki;" (click)="downloadPDF()">Download</button>
+          <button class="buttons-style" style="background-color: #E0F3FF;" (click)="addGitPR()">+ Git PR</button>
+          <button class="buttons-style" style="background-color: #E0F3FF;" (click)="addJiraTickets()">+ Jira Tickets</button>
+          <button class="buttons-style" *ngIf="!bClosedReport" style="color:white; background-color: rgb(111, 151, 69);" (click)="save()">Save</button>
+          <button class="buttons-style" style="background-color: #FFE8C7;" (click)="downloadPDF()">Download</button>
           <button class="buttons-style" *ngIf="!bClosedReport && bInReview" (click)="sendBack()">Send back</button>
 
-          <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="color:white; background-color: rgb(97, 46, 56); " (click)="submit()">
+          <button class="buttons-style" *ngIf="!bInReview && !bClosedReport" style="color:#E2FFD4; background-color: rgb(190, 71, 95); " (click)="submit()">
             Submit
           </button>
           <button class="buttons-style" *ngIf="bInReview" (click)="close()">Close</button>
