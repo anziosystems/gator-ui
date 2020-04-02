@@ -41,8 +41,14 @@ export class OrgDetailsComponent implements OnInit {
         this.isJiraShowDetail = true;
         this.isShowDetail = false;
       }
+      if (val === 'SHOW_OD') {
+        this.process();
+      }
+      // if (val === 'HIDE_OD') {
+      //   this.isShowOD = false;
+      // }
     });
-    this.process();
+    
   }
 
   nodeSelect(obj) {
