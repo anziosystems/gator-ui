@@ -83,7 +83,8 @@ export class JiraStatusComponent implements OnInit {
               //for every org get the dev's
               this.orgList.forEach(element => {
                 this.messages.push(`Get Dev list for :${element.name}`);
-                this.gitService.getJiraUsers(element.id, true).subscribe(u => {
+                this.gitService.getJiraUsers(element.id, true).subscribe(str => {
+                  let u = JSON.parse(str);
                   if (u.code === 401) {
                     clearTimeout(t);
                     this.errMessages.push('Unauthorized. Token Expired');
@@ -92,11 +93,12 @@ export class JiraStatusComponent implements OnInit {
                       return;
                     });
                   }
-                  if (u.count) {
-                    this.messages.push(`Found ${u.count} Dev for :${element.name}`);
+                  if (u.length) {
+                    this.messages.push(`Found ${u.length} Dev for :${element.name}`);
                   }
+
                   u.forEach(e2 => {
-                    this.gitService.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
+                    this.gitService.JiraUsersMap.set(e2.displayName.trim(), e2.accountId.trim());
                   });
 
                   // this.gitService.JiraUsersList.push(result);
