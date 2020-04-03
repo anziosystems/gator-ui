@@ -1,13 +1,16 @@
 import {Component, OnInit, ChangeDetectorRef, Inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
-import {DialogService} from 'primeng/api';
+
 import * as FileSaver from 'file-saver';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 import {Message} from '@angular/compiler/src/i18n/i18n_ast';
 const _ = require('lodash');
+import {MessageService} from 'primeng/api';
+import {ConfirmationService} from 'primeng/api';
+import {DialogService} from 'primeng/api';
 
 @Component({
   selector: 'app-admin',
@@ -25,6 +28,8 @@ export class AdminComponent implements OnInit {
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
     private cdRef: ChangeDetectorRef,
     private dialogService: DialogService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) {
     this.currentOrg = this.gitService.getCurrentOrg();
     if (!this.currentOrg) {
@@ -49,7 +54,7 @@ export class AdminComponent implements OnInit {
       return value !== u;
     });
     this.allUsers.push(u);
-    this.deleteUserRole (u.login);
+    this.deleteUserRole(u.login);
   }
 
   moveUser2Admin(u: any) {
@@ -85,27 +90,26 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  alertmsgs = [];
   save(login: string) {
-    // let s: string = '';
-    // this.userRoles.forEach(x => {
-    //   s = s + x.login + ',';
-    // });
     this.gitService.saveUserRole(login, this.currentOrg, 'Admin').subscribe(x => {
-      if (x.code === 401) {
-        alert('You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com');
+      if (x) {
+        if (x.code === 401) {
+          this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com', detail: ''});
+          return;
+        }
       } else {
-        console.log ("record updated!")
+        this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
       }
     });
   }
 
   deleteUserRole(login: string) {
-    
     this.gitService.deleteUserRole(login, this.currentOrg, 'Admin').subscribe(x => {
       if (x.code === 401) {
-        alert('You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com');
+        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com', detail: ''});
       } else {
-        console.log ("record updated!")
+        this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
       }
     });
   }

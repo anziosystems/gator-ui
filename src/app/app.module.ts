@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {TreeModule} from 'primeng/tree';
+
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
@@ -21,7 +21,7 @@ import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {QuillModule} from 'ngx-quill';
 import {HookErrorComponent} from './hook-error/hook-error.component';
-
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {AngularDraggableModule} from 'angular2-draggable';
 import {TweetsComponent} from './tweets/tweets.component';
 import {BreakingnewsComponent} from './breakingnews/breakingnews.component';
@@ -33,10 +33,19 @@ import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.compone
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
 import {StatusReportsComponent} from './status-reports/status-reports.component';
+
 import {DialogModule} from 'primeng/dialog';
 import {DialogService} from 'primeng/api';
-import {PeopleTicketComponent} from './people-ticket/people-ticket.component';
+import {MessageService} from 'primeng/api';
+import {TreeModule} from 'primeng/tree';
+import {ToastModule} from 'primeng/toast';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {ChartModule, CalendarModule, SharedModule, MessageModule, MessagesModule} from 'primeng/primeng';
+import {CardModule} from 'primeng/card';
+import {ConfirmationService} from 'primeng/api';
+
+import {PeopleTicketComponent} from './people-ticket/people-ticket.component';
+
 import {SettingsComponent} from './settings/settings.component';
 import {AdminComponent} from './admin/admin.component';
 import {PaymentComponent} from './payment/payment.component';
@@ -95,7 +104,6 @@ const routes: Routes = [
     StatusComponent,
     OrgListComponent,
     HookErrorComponent,
-
     TweetsComponent,
     BreakingnewsComponent,
     DevJiraDetailsComponent,
@@ -123,6 +131,14 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     TreeModule,
+    CardModule,
+    CalendarModule,
+    SharedModule,
+    ChartModule,
+    ToastModule,
+    MessagesModule,
+    MessageModule,
+    ConfirmDialogModule,
     ContextMenuModule.forRoot(),
     QuillModule.forRoot(),
     RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}),
@@ -135,7 +151,7 @@ const routes: Routes = [
     DynamicDialogModule,
     DialogModule,
   ],
-  providers: [GitService, DialogService],
+  providers: [GitService, DialogService, MessageService, ConfirmationService],
   exports: [RouterModule],
   bootstrap: [AppComponent],
 })

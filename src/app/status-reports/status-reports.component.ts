@@ -1,12 +1,15 @@
 import {Component, OnInit, ChangeDetectorRef, Inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
-import {DialogService} from 'primeng/api';
+
 import * as FileSaver from 'file-saver';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 const _ = require('lodash');
+import {MessageService} from 'primeng/api';
+import {ConfirmationService} from 'primeng/api';
+import {DialogService} from 'primeng/api';
 
 @Component({
   selector: 'app-status-reports',
@@ -55,6 +58,8 @@ export class StatusReportsComponent implements OnInit {
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
     private cdRef: ChangeDetectorRef,
     private dialogService: DialogService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
   ) {
     this.currentOrg = this.gitService.getCurrentOrg();
     if (!this.currentOrg) {
@@ -119,6 +124,7 @@ export class StatusReportsComponent implements OnInit {
         if ((val.destination = 'STATUS-REPORT')) this.textStatus = val.message + ' <br /> ' + this.textStatus;
       }
     });
+    this.messageService.add({severity: 'success', summary: `Current Organization:${this.currentOrg}`, detail: `Current Organization:${this.currentOrg}`});
   }
 
   //When review listbox is clicked
@@ -155,9 +161,14 @@ export class StatusReportsComponent implements OnInit {
     this.quillManagerDisable = true;
   }
 
+  alertmsgs = [];
   newReport() {
+    //  this.messageService.add({severity: 'success', summary: `Current Organization:${this.currentOrg}`, detail: ``});
     this.reset();
-    alert('Please type your MSR below. After the report is written please add reviewer and submit.');
+    // this.messageService.add({severity: 'success', summary: `Please type your MSR below. After the report is written please add reviewer and submit.`, detail: ``});
+
+    this.alertmsgs.push({severity: 'info', summary: 'Please type your MSR below. After the report is written please add reviewer and submit.', detail: ''});
+   
   }
 
   getReportForId(id: number) {
@@ -268,7 +279,7 @@ export class StatusReportsComponent implements OnInit {
               x.Status = 'Archived';
               break;
           }
-   
+
           x.ReportDate = x.ReportDate.substring(0, 10);
           this.srReviewList.push(x);
         });
@@ -357,19 +368,17 @@ export class StatusReportsComponent implements OnInit {
 
   save(status: number) {
     if (this.textStatus.trim() === '') {
-      if (confirm('Please fill in status first')) {
-        return;
-      }
+      this.alertmsgs.push({severity: 'error', summary: 'Please fill in status first', detail: ''});
+      return;
     }
 
     if (this.textReviewer.trim() === '') {
-      if (confirm('Please add your manager as a reviewer.')) {
-        return;
-      }
+      this.alertmsgs.push({severity: 'warn', summary: 'Reviwer Missing!', detail: 'Please add your manager as a reviewer'});
+      return;
     }
 
     if (!this.currentOrg) {
-      alert('Please select an organization before you submit the report.');
+      this.alertmsgs.push({severity: 'error', summary: 'Please select an organization before you submit the report.', detail: ''});
       return;
     }
 
@@ -381,7 +390,11 @@ export class StatusReportsComponent implements OnInit {
       //if it is coming from In_progress then let it go
     } else {
       if (this.comingFromStatusReportWindow && this.status === this.IN_REVIEW) {
-        alert('Report is In-Review, you cannot edit it. Ask your reviewer to send it back to you to edit it.');
+        this.alertmsgs.push({
+          severity: 'warning',
+          summary: 'Report In-Review',
+          detail: 'Report is In-Review, you cannot edit it. Ask your reviewer to send it back to you to edit it.',
+        });
         return;
       }
     }
@@ -410,9 +423,7 @@ export class StatusReportsComponent implements OnInit {
         this.managerStatus,
       )
       .subscribe(v => {
-        console.log(v);
-        // this.getReports4User(); //No need to reset the list box review list box
-        alert('Your Report is saved.');
+        this.alertmsgs.push({severity: 'warning', summary: 'Success', detail: 'Your Report is saved'});
         this.reset();
       });
   }
@@ -420,51 +431,89 @@ export class StatusReportsComponent implements OnInit {
   submit() {
     if (this.author === this.gitService.getLoggedInGitDev().login) {
       if (this.status === this.IN_REVIEW) {
-        alert('This report is already submitted');
+        this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'This report is already submitted'});
         return;
       }
     }
-    if (confirm('Once you submit you can not edit the report afterwards.')) {
-      this.save(this.IN_REVIEW);
-    }
+    this.confirmationService.confirm({
+      message: 'Once you submit you can not edit the report afterwards.',
+      accept: () => {
+        this.save(this.IN_REVIEW);
+      },
+    });
   }
 
   delete() {
     if (this.status === this.IN_PROGRESS) {
-      if (confirm('Are you sure? You want to delete this report?.')) {
-        this.gitService
-          .saveMSR(
-            this.srId,
-            this.author,
-            this.currentOrg,
-            '',
-            '',
-            this.DELETE,
-            '', //links
-            this.manager,
-            this.managerComment,
-            this.managerStatus,
-          )
-          .subscribe(v => {
-            console.log(v);
-            this.getReports4User();
-            this.reset();
-          });
-      }
-    } else {
-      alert('You can delete only reports which are in-progress status.');
+      this.confirmationService.confirm({
+        message: 'Are you sure? You want to delete this report?',
+        accept: () => {
+          this.gitService
+            .saveMSR(
+              this.srId,
+              this.author,
+              this.currentOrg,
+              '',
+              '',
+              this.DELETE,
+              '', //links
+              this.manager,
+              this.managerComment,
+              this.managerStatus,
+            )
+            .subscribe(v => {
+              console.log(v);
+              this.getReports4User();
+              this.reset();
+            });
+        },
+        reject: () => {
+          this.alertmsgs.push({severity: 'warning', summary: 'Sorry!', detail: 'You can delete only reports which are in-progress status.'});
+        },
+      });
+
+      // if (confirm('Are you sure? You want to delete this report?.')) {
+      //   this.gitService
+      //     .saveMSR(
+      //       this.srId,
+      //       this.author,
+      //       this.currentOrg,
+      //       '',
+      //       '',
+      //       this.DELETE,
+      //       '', //links
+      //       this.manager,
+      //       this.managerComment,
+      //       this.managerStatus,
+      //     )
+      //     .subscribe(v => {
+      //       console.log(v);
+      //       this.getReports4User();
+      //       this.reset();
+      //     });
+      // }
+      // } else {
+      // this.alertmsgs.push({severity: 'warning', summary: 'Sorry!', detail: 'You can delete only reports which are in-progress status.'});
+      // }
     }
   }
 
   close() {
     if (this.comingFromStatusReportWindow && this.status === this.IN_REVIEW) {
-      alert('You cannot close this report. Report has to be in Review to be closed. Add Reviewer and ask them to close this report.');
+      this.alertmsgs.push({
+        severity: 'warning',
+        summary: 'Sorry!',
+        detail: 'You cannot close this report. Report has to be in Review to be closed. Add Reviewer and ask them to close this report.',
+      });
       return;
     }
 
-    if (confirm('Once you submit you can not edit the report afterwards.')) {
-      this.save(this.CLOSED);
-    }
+    this.confirmationService.confirm({
+      message: 'Once you submit you can not edit the report afterwards.',
+      accept: () => {
+        this.save(this.CLOSED);
+      },
+    });
   }
 
   refresh() {

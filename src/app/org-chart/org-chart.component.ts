@@ -1,6 +1,8 @@
 import {Component, OnInit, ChangeDetectorRef, Inject, AfterViewInit, OnChanges} from '@angular/core';
 import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
+import {MessageService} from 'primeng/api';
+import {ConfirmationService} from 'primeng/api';
 import {DialogService} from 'primeng/api';
 import * as FileSaver from 'file-saver';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
@@ -32,6 +34,9 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
     private cdRef: ChangeDetectorRef,
     private dialogService: DialogService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+
   ) {
     this.currentOrg = this.gitService.getCurrentOrg();
     if (!this.currentOrg) {
@@ -85,15 +90,18 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     };
   }
 
+  alertmsgs = [];
   public save() {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
     this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.gitService.getCurrentOrg(), this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
-        alert('You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com');
+        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com', detail: ''});
+        return;
+       
       } else {
-        alert('Org Chart updated!');
+        this.alertmsgs.push({severity: 'success', summary: 'Org Chart Updated', detail: ''});
       }
     });
   }

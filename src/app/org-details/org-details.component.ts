@@ -1,21 +1,33 @@
-import {Component, OnInit, EventEmitter, Inject, Output, Injectable, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, EventEmitter, Inject, Output, Injectable, ViewChild, AfterViewInit} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
 import {TreeNode} from 'primeng/api';
 import {ChildActivationEnd} from '@angular/router';
-
+import {MessageService} from 'primeng/api';
+import {ConfirmationService} from 'primeng/api';
+import {DialogService} from 'primeng/api';
 @Component({
   selector: 'app-org-details',
   templateUrl: './org-details.component.html',
   styleUrls: ['./org-details.component.less'],
+  //encapsulation: ViewEncapsulation.None, -- dosn't work
 })
 export class OrgDetailsComponent implements OnInit {
   data: TreeNode[];
   selectedPerson: TreeNode;
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
-  constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router) {}
+  alertmsgs = [];
+  constructor(
+    private gitService: GitService,
+    private dialogService: DialogService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService,
+
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     let token = this.storage.get('token');
@@ -48,7 +60,6 @@ export class OrgDetailsComponent implements OnInit {
       //   this.isShowOD = false;
       // }
     });
-    
   }
 
   nodeSelect(obj) {
@@ -159,7 +170,9 @@ export class OrgDetailsComponent implements OnInit {
     let _obj;
     this.gitService.getOrgChart(this.gitService.getCurrentOrg(), true).subscribe(v => {
       if (!v[0]) {
-        alert('Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg());
+        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg(), detail: ''});
+        //alert('Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg());
+
         this.router.navigate(['/orgChart']);
       }
       _obj = JSON.parse(v[0].OrgChart);
