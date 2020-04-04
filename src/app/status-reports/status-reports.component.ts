@@ -168,7 +168,6 @@ export class StatusReportsComponent implements OnInit {
     // this.messageService.add({severity: 'success', summary: `Please type your MSR below. After the report is written please add reviewer and submit.`, detail: ``});
 
     this.alertmsgs.push({severity: 'info', summary: 'Please type your MSR below. After the report is written please add reviewer and submit.', detail: ''});
-   
   }
 
   getReportForId(id: number) {
@@ -423,7 +422,7 @@ export class StatusReportsComponent implements OnInit {
         this.managerStatus,
       )
       .subscribe(v => {
-        this.alertmsgs.push({severity: 'warning', summary: 'Success', detail: 'Your Report is saved'});
+        this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'Your Report is saved'});
         this.reset();
       });
   }

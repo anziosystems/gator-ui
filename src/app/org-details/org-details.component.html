@@ -1,9 +1,4 @@
 <div class="flex-container">
-  <p-tree [value]="data" selectionMode="single" (onNodeSelect)="nodeSelect($event)">
-    <!-- <div style="background-color: blue;">
-      <ng-template let-node pTemplate="default">
-        <input [(ngModel)]="node.label" style="color:gainsboro; background-color: black; border: none;" />
-      </ng-template>
-    </div> -->
+  <p-tree [value]="data" selectionMode="single" styleClass="ui-tree" (onNodeSelect)="nodeSelect($event)">
   </p-tree>
 </div>

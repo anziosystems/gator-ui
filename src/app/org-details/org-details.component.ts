@@ -11,7 +11,7 @@ import {DialogService} from 'primeng/api';
   selector: 'app-org-details',
   templateUrl: './org-details.component.html',
   styleUrls: ['./org-details.component.less'],
-  //encapsulation: ViewEncapsulation.None, -- dosn't work
+  // encapsulation: ViewEncapsulation.Emulated,
 })
 export class OrgDetailsComponent implements OnInit {
   data: TreeNode[];
