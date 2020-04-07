@@ -95,7 +95,7 @@ export class AdminComponent implements OnInit {
     this.gitService.saveUserRole(login, this.currentOrg, 'Admin').subscribe(x => {
       if (x) {
         if (x.code === 401) {
-          this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com', detail: ''});
+          this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
           return;
         }
       } else {
@@ -107,7 +107,7 @@ export class AdminComponent implements OnInit {
   deleteUserRole(login: string) {
     this.gitService.deleteUserRole(login, this.currentOrg, 'Admin').subscribe(x => {
       if (x.code === 401) {
-        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to help.anziosystems.com', detail: ''});
+        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
       } else {
         this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
       }

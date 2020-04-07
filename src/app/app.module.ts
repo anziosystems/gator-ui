@@ -88,7 +88,7 @@ const routes: Routes = [
 
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '', component:HomeComponent},
 ];
 
 @NgModule({
