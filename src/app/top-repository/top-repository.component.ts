@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GitService} from '../git-service';
 import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
-import {debug} from 'util';
+
 import {Router, NavigationEnd} from '@angular/router';
 import * as _ from 'lodash';
 // import { UsageService } from '@labshare/ngx-core-services';

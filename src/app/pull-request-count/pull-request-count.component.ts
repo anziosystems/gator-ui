@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GitService} from '../git-service';
 import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
-import {debug, isNullOrUndefined} from 'util';
+
 import {Router, NavigationEnd} from '@angular/router';
 
 @Component({

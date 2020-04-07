@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {GitService, DevDetails} from '../git-service';
 import {Router} from '@angular/router';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-status',
@@ -68,7 +68,7 @@ export class StatusComponent implements OnInit {
     //Get the Tenant details - This will be logged in User
     this.gitService.getGitLoggedInUSerDetails(this.bGetFromGit).subscribe(r2 => {
       let dd = new DevDetails();
-      console.log (`loginAndSetup=> ${r2.Id}`)
+      console.log(`loginAndSetup=> ${r2.Id}`);
       dd.name = r2.DisplayName;
       dd.login = r2.UserName;
       dd.image = r2.Photo;
@@ -98,8 +98,7 @@ export class StatusComponent implements OnInit {
               //   let hookStatus = r3.val;
               //   if (!hookStatus) {
               //     this.errMessages.push("For GitGator to work properly, you must install the web hook manually for org: " + element.Org);
-                  
-                          
+
               //     //lets install the hook
               //     // if (this.bGetFromGit) {
               //     //   this.messages.push('Installing web hook in ' + element.Org);

@@ -2,7 +2,7 @@ import {Component, OnInit, Inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {GitService} from '../git-service';
-import {SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-login',

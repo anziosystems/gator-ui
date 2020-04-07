@@ -15,7 +15,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
 import {environment} from '../environments/environment';
 import {GitService, DevDetails} from './git-service';
-import {LOCAL_STORAGE, StorageServiceModule} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, StorageServiceModule} from 'ngx-webstorage-service';
 import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
@@ -35,12 +35,12 @@ import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.comp
 import {StatusReportsComponent} from './status-reports/status-reports.component';
 
 import {DialogModule} from 'primeng/dialog';
-import {DialogService} from 'primeng/api';
+import {DialogService} from 'primeng/dynamicDialog';
 import {MessageService} from 'primeng/api';
 import {TreeModule} from 'primeng/tree';
 import {ToastModule} from 'primeng/toast';
 import {DynamicDialogModule} from 'primeng/dynamicdialog';
-import {ChartModule, CalendarModule, SharedModule, MessageModule, MessagesModule} from 'primeng/primeng';
+import {ChartModule, CalendarModule, SharedModule, MessageModule, MessagesModule} from 'primeng';
 import {CardModule} from 'primeng/card';
 import {ConfirmationService} from 'primeng/api';
 
@@ -88,7 +88,7 @@ const routes: Routes = [
 
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
-  {path: '', component:HomeComponent},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
 ];
 
 @NgModule({

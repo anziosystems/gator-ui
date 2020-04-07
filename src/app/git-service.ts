@@ -1,7 +1,7 @@
 import {Injectable, Input, Inject, Optional, SkipSelf} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of, Subject} from 'rxjs';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {Router} from '@angular/router';
 import {promise} from 'protractor';
 import {resolve} from 'path';

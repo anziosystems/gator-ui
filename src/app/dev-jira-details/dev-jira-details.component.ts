@@ -3,7 +3,7 @@ import {Router, NavigationEnd} from '@angular/router';
 import {GitService, CustomEvent} from '../git-service';
 import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
-import {debug} from 'util';
+
 import * as _ from 'lodash';
 // import {UsageService} from '@labshare/ngx-core-services';
 import {getLocaleDateTimeFormat} from '@angular/common';
@@ -87,17 +87,17 @@ export class DevJiraDetailsComponent implements OnInit {
     this.gitService.getJiraAccountId4UserName(developer).then(
       accountId => {
         if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
-          console.log ('accountId is undefined or JiraOrgList is empty');
+          console.log('accountId is undefined or JiraOrgList is empty');
           this.bShowError = true;
           return;
         }
-        //For Jira, I get issues for all the org's he belong to, we dont filter on the org, where as in Git we do. 
+        //For Jira, I get issues for all the org's he belong to, we dont filter on the org, where as in Git we do.
         //Reasoning is user total load we would like to see, hence all the org tickets
         //org name is written in details of the Jira ticket
         this.gitService.jiraOrgList.forEach(
           org => {
             this.gitService.ready().then(result => {
-              console.log (`Getting Jira Issue for ${org.id} accountId: ${accountId} `);
+              console.log(`Getting Jira Issue for ${org.id} accountId: ${accountId} `);
               this.gitService.GetJiraIssues(org.id, accountId, 50, false).subscribe(val => {
                 /*
           JSON.parse (val)

@@ -3,9 +3,9 @@ import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/api';
+import {DialogService} from 'primeng/dynamicDialog';
 import * as FileSaver from 'file-saver';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 import * as go from 'gojs';
@@ -36,7 +36,6 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     private dialogService: DialogService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-
   ) {
     this.currentOrg = this.gitService.getCurrentOrg();
     if (!this.currentOrg) {
@@ -99,7 +98,6 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
       if (x.code === 401) {
         this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
         return;
-       
       } else {
         this.alertmsgs.push({severity: 'success', summary: 'Org Chart Updated', detail: ''});
       }

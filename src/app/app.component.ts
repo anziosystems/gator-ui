@@ -1,16 +1,16 @@
-import { Component, OnInit, Inject, NgModule } from '@angular/core';
+import {Component, OnInit, Inject, NgModule} from '@angular/core';
 //import {StatefulComponent} from '@labshare/ngx-stateful';
-import { ChangeDetectorRef } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, Input } from '@angular/core';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { forwardRef, Optional, SkipSelf, ApplicationRef } from '@angular/core';
-import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
-import { Subscription } from 'rxjs';
+import {ChangeDetectorRef} from '@angular/core';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {ChangeDetectionStrategy, Input} from '@angular/core';
+import {Router, RouterModule, ActivatedRoute} from '@angular/router';
+import {forwardRef, Optional, SkipSelf, ApplicationRef} from '@angular/core';
+import {LOCAL_STORAGE, WebStorageService} from 'ngx-webstorage-service';
+import {Subscription} from 'rxjs';
 
 export const STATE = () => ({
-  items: [{ name: 'Team' }, { name: 'Repositories' }, { name: 'Developers' }],
-  sectionItems: [{ name: 'Team' }, { name: 'Repositories' }, { name: 'Developers' }],
+  items: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
+  sectionItems: [{name: 'Team'}, {name: 'Repositories'}, {name: 'Developers'}],
   topNav: {
     iconColor: 'rgb(150, 150, 150)',
     background: 'rgb(36, 35, 35)',
@@ -33,8 +33,7 @@ type PaneType = 'left' | 'right';
 })
 export class AppComponent implements OnInit {
   @Input() activePane: PaneType = 'left';
-  constructor(inj: ChangeDetectorRef, public appRef: ApplicationRef, private router: Router,
-    @Inject(LOCAL_STORAGE) private storage: WebStorageService) { }
+  constructor(inj: ChangeDetectorRef, public appRef: ApplicationRef, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {}
 
   title = 'Gator';
 
@@ -43,9 +42,9 @@ export class AppComponent implements OnInit {
     location.reload();
   }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
   get inDashboard() {
     return this.router.url.startsWith('/dashboard');
   }

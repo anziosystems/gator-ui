@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewEncapsulation, EventEmitter, Inject, Output, Injectable, ViewChild, AfterViewInit} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {TreeNode} from 'primeng/api';
 import {ChildActivationEnd} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/api';
+import {DialogService} from 'primeng/dynamicDialog';
 @Component({
   selector: 'app-org-details',
   templateUrl: './org-details.component.html',

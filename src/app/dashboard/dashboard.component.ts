@@ -1,6 +1,6 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {ChangeDetectionStrategy, Input} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService} from '../git-service';

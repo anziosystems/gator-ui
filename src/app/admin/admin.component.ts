@@ -1,16 +1,15 @@
 import {Component, OnInit, ChangeDetectorRef, Inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
-
 import * as FileSaver from 'file-saver';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 import {Message} from '@angular/compiler/src/i18n/i18n_ast';
 const _ = require('lodash');
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/api';
+import {DialogService} from 'primeng/dynamicDialog';
 
 @Component({
   selector: 'app-admin',

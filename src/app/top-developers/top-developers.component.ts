@@ -1,10 +1,9 @@
 import {Component, OnInit, EventEmitter, Inject, Output, Injectable, ViewChild} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
-import {LOCAL_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
-import {debug} from 'util';
 
 import * as _ from 'lodash';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
@@ -40,7 +39,7 @@ export class TopDevelopersComponent implements OnInit {
   developers: any[];
   devDetails: any[];
   navigationSubscription: any;
-  backgroundColor:string = '#26262fcc' ;
+  backgroundColor: string = '#26262fcc';
   filterQuery: string;
   OrgDevelopers: any[];
   bCallingFromInit: boolean = false;
@@ -52,7 +51,7 @@ export class TopDevelopersComponent implements OnInit {
 
     this.gitService.onGlobalComponentMessage.subscribe((val: string) => {
       if (val === 'REPO_CLICKED') {
-        this.backgroundColor  = '#26262fcc' ;
+        this.backgroundColor = '#26262fcc';
       }
     });
 
@@ -64,7 +63,7 @@ export class TopDevelopersComponent implements OnInit {
     });
   }
 
-  @ViewChild(ContextMenuComponent, {static: false}) public basicMenu: ContextMenuComponent;
+  @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
 
   ngOnDestroy() {
     // avoid memory leaks here by cleaning up after ourselves. If we
@@ -74,9 +73,9 @@ export class TopDevelopersComponent implements OnInit {
       this.navigationSubscription.unsubscribe();
     }
   }
- 
-  showOD () {
-    this.gitService.broadcastGlobalComponentMessage ('SHOW_OD');
+
+  showOD() {
+    this.gitService.broadcastGlobalComponentMessage('SHOW_OD');
   }
   GetData(dev: DevDetails) {
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');

@@ -2,7 +2,7 @@ import {Component, OnInit, EventEmitter, Output, Inject} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
 import {Route} from '@angular/compiler/src/core';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-org-list',
@@ -59,7 +59,7 @@ export class OrgListComponent implements OnInit {
   }
 
   data(org: any) {
-    this.gitService.broadcastGlobalComponentMessage ('HIDE_OD');
+    this.gitService.broadcastGlobalComponentMessage('HIDE_OD');
     //Keep the current Org in session, angular apps with refresh browser will reload the gitservice and application will forget everything
     if (org) {
       this.gitService.setCurrentOrg(org.Org);

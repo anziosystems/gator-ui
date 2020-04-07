@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute, RouterLink} from '@angular/router';
 import {GitService} from '../git-service';
-import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-settings',

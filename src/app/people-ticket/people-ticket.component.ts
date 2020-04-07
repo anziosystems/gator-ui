@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {DynamicDialogRef, DynamicDialogConfig} from 'primeng/api';
+import {DynamicDialogRef, DynamicDialogConfig} from 'primeng/dynamicDialog';
 import {FormGroup, FormControl} from '@angular/forms';
 
 @Component({

@@ -3,7 +3,7 @@ import {Router, NavigationEnd} from '@angular/router';
 import {GitService, CustomEvent} from '../git-service';
 import {Observable, of, Subject} from 'rxjs';
 import {toArray} from 'rxjs/operators';
-import {debug} from 'util';
+
 import * as _ from 'lodash';
 // import {UsageService} from '@labshare/ngx-core-services';
 import {getLocaleDateTimeFormat} from '@angular/common';
