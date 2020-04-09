@@ -6,7 +6,7 @@ import {TreeNode} from 'primeng/api';
 import {ChildActivationEnd} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/dynamicDialog';
+import {DialogService} from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-org-details',
   templateUrl: './org-details.component.html',
