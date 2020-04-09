@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {GitService, CustomEvent, DevDetails} from '../git-service';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/dynamicDialog';
+import {DialogService} from 'primeng/dynamicdialog';
 import * as FileSaver from 'file-saver';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';

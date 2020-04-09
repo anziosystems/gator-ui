@@ -35,7 +35,7 @@ import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.comp
 import {StatusReportsComponent} from './status-reports/status-reports.component';
 
 import {DialogModule} from 'primeng/dialog';
-import {DialogService} from 'primeng/dynamicDialog';
+import {DialogService} from 'primeng/dynamicdialog';
 import {MessageService} from 'primeng/api';
 import {TreeModule} from 'primeng/tree';
 import {ToastModule} from 'primeng/toast';

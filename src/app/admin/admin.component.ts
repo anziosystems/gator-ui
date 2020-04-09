@@ -9,7 +9,7 @@ import {Message} from '@angular/compiler/src/i18n/i18n_ast';
 const _ = require('lodash');
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/dynamicDialog';
+import {DialogService} from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-admin',

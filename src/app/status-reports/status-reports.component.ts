@@ -8,7 +8,7 @@ import {filter} from 'rxjs/internal/operators/filter';
 const _ = require('lodash');
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
-import {DialogService} from 'primeng/dynamicDialog';
+import {DialogService} from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-status-reports',
