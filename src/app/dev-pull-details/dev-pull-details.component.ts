@@ -63,6 +63,11 @@ export class DevPullDetailsComponent implements OnInit {
     this.developer = '';
     this.bShowName = false;
     this.gitService.ready().then(result => {
+      this.gitService.onDevLoginIdChanged.subscribe((val: string) => { 
+        this.bShowName = false;
+        this.getDeveloperDetails(val);
+      });
+
       this.gitService.onMyEvent.subscribe((val: string) => {
         if (val === undefined) {
           console.log('subscription event returned undefined. Exiting');
@@ -88,9 +93,6 @@ export class DevPullDetailsComponent implements OnInit {
                 v.title = v.title.replace(/\+/g, ' ');
               });
             });
-          } else {
-            this.bShowName = false;
-            this.getDeveloperDetails(val);
           }
         }
       });

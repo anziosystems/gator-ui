@@ -553,7 +553,8 @@ export class StatusReportsComponent implements OnInit {
       message: 'true',
     });
     let dev = this.gitService.getLoggedInGitDev();
-    this.gitService.trigger(dev.login);
+    //this.gitService.trigger(dev.login);
+    this.gitService.broadcastDevLoginId (dev.login);
     this.bShowGitPR = 99;
   }
 

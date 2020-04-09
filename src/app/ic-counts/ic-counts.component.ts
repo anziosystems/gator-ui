@@ -134,17 +134,11 @@ export class IcCountsComponent implements OnInit {
     this.NintyCloseCount = 0;
     //Assign the right value for login
 
-    this.gitService.onMyEvent.subscribe((val: string) => {
-      if (val.lastIndexOf('+') > 0) {
-        return;
-      }
-
-      if (val.startsWith('repo-')) {
-        return;
-      }
-
+    this.gitService.onDevLoginIdChanged.subscribe((val: string) => {
       this.getPRCount(val);
     });
+
+
   }
 
   getPRCount(login: string) {

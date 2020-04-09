@@ -1,0 +1,11 @@
+<div class="flex-container">
+  <dev
+    class="bar"
+    [style.background-color]="repo.Color"
+    [style.min-width]="repo.Size"
+    [style.max-width]="repo.Size"
+    title="{{ repo.Name }} - {{ repo.Size }}"
+    *ngFor="let repo of repos; let i = index"
+    >&nbsp;
+  </dev>
+</div>

@@ -20,15 +20,7 @@ export class IcReportComponent implements OnInit {
   constructor(private gitService: GitService) {}
 
   ngOnInit() {
-    this.gitService.onMyEvent.subscribe((val: string) => {
-      if (val.lastIndexOf('+') > 0) {
-        return;
-      }
-
-      if (val.startsWith('repo-')) {
-        return;
-      }
-
+    this.gitService.onDevLoginIdChanged.subscribe((val: string) => {
       this.getReports(val).then(() => {
         this.getReviewData(val);
       });

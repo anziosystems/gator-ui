@@ -133,7 +133,8 @@ export class TopDevelopersComponent implements OnInit {
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.setCurrentDev(developer);
-    this.gitService.trigger(developer.login);
+    //this.gitService.trigger(developer.login);
+    this.gitService.broadcastDevLoginId (developer.login);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     //This to add developer in the status report component
     if (!this.bCallingFromInit) {

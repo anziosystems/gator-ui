@@ -258,6 +258,10 @@ export class GitService {
     return this._onMyEvent.asObservable();
   }
 
+  public get onDevLoginIdChanged(): Observable<string> {
+    return this._onDevNameEvent.asObservable();
+  }
+
   public get onCustomEvent(): Observable<CustomEvent> {
     return this._onCustomEvent.asObservable();
   }
@@ -281,8 +285,19 @@ export class GitService {
     this._isLoggedIn.next(value);
   }
 
+  /*
+    This trigger is overloaded some time it gets a value like this
+                   => action + '+' + day.toString()
+    sometime just  => developer.login 
+    someitime      => 'repo-' + repo
+  */
+  //Note: Move some events to broadcastDevLoginId
   public trigger(value: string) {
     this._onMyEvent.next(value);
+  }
+
+  public broadcastDevLoginId(value: string) {
+    this._onDevNameEvent.next(value);
   }
 
   public triggerCustomEvent(value: CustomEvent) {
@@ -677,6 +692,12 @@ export class GitService {
 
   getUserRole(org: string, userid: string, bustTheCache: boolean = false): Observable<any> {
     const q = `getUserRole?org=${org}&userid=${userid}`;
+    this.attachToken();
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  GetRepoParticipation4Login(org: string, login: string, days:number, bustTheCache: boolean = false): Observable<any> {
+    const q = `GetRepoParticipation4Login?org=${org}&login=${login}&days=${days}&bustTheCache='false'`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
