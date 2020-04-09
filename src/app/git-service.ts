@@ -94,6 +94,7 @@ export class GitService {
   //Components listen to each other using this
   private _onCustomEvent = new Subject<CustomEvent>();
   private _onMyEvent = new Subject<string>();
+  private _onDevNameEvent = new Subject<string>();
   private _onJiraEvent = new Subject<string>();
   private _onComponentMessage = new Subject<string>();
   private _isLoggedIn = new Subject<boolean>();
@@ -696,7 +697,7 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetRepoParticipation4Login(org: string, login: string, days:number, bustTheCache: boolean = false): Observable<any> {
+  GetRepoParticipation4Login(org: string, login: string, days: number, bustTheCache: boolean = false): Observable<any> {
     const q = `GetRepoParticipation4Login?org=${org}&login=${login}&days=${days}&bustTheCache='false'`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
