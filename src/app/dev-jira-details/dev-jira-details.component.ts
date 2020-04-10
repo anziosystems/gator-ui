@@ -116,7 +116,7 @@ export class DevJiraDetailsComponent implements OnInit {
           JSON.parse (val).issues[0].fields.summary
           JSON.parse (val).issues[0].self  //url
         */
-                if (val === '401' || val === '402' || val === null) {
+                if (val === '401' || val === '402' ) {
                   this.router.navigate(['/jira-login']);
                   return;
                 }
