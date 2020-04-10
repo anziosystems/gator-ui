@@ -111,8 +111,8 @@ export class IcReportComponent implements OnInit {
       });
 
       //this.allDates = res.map ( res => res.Date );
-
-      for (let i = 1; i < this.closeCtr.length; i++) {
+      //NOTE: Now i am only showing openCtr - if you change then below line need to change
+      for (let i = 1; i < this.openCtr.length; i++) {
         this.allDates.push(i);
       }
 
@@ -121,12 +121,12 @@ export class IcReportComponent implements OnInit {
         data: {
           labels: this.allDates,
           datasets: [
-            {
-              data: this.closeCtr,
-              borderColor: '#98FB98',
-              fill: false,
-              label: 'close',
-            },
+            // {
+            //   data: this.closeCtr,
+            //   borderColor: '#98FB98',
+            //   fill: false,
+            //   label: 'close',
+            // },
             {
               data: this.openCtr,
               borderColor: '#ff00ff',
