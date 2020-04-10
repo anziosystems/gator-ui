@@ -24,10 +24,13 @@
     </div>
     <!-- Chart-->
     <div style="display: flex; flex-direction:column ;justify-content:center; width:40%; align-items: top;">
+      <p>Review Ratings:</p>
       <!-- <p style="flex:1; margin-left: auto ; margin-right: auto;  max-height:50px;margin-top: 10px; margin-bottom: 10px; font-size: x-large; ">Report Ratings</p> -->
-      <canvas id="canvas2"> {{ chart }} </canvas>
-      <!-- <p style="flex:1; margin-left: auto ; margin-right: auto; max-height:50px; margin-top: 10px; margin-bottom: 10px; font-size: x-large; ">Pull Request</p>
-      <canvas id="canvas">{{ chart }} </canvas> -->
+      <canvas id="canvas2" style="background-color: honeydew;"> {{ chart }} </canvas>
+      <br />
+      <p>Last 90 days PR open: {{ totalOpen }} and close: {{ totalClose }}</p>
+      <!-- <p style="flex:1; margin-left: auto ; margin-right: auto; max-height:50px; margin-top: 10px; margin-bottom: 10px; font-size: x-large; ">Pull Request</p> -->
+      <canvas id="canvas" style="background-color: honeydew; ">{{ chart }} </canvas>
     </div>
   </div>
 </div>

@@ -325,10 +325,10 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getGraphData4XDays(org: string, login: string = null, day: number): any {
+  getGraphData4XDays(org: string, login: string = null, day: number, bustTheCache: boolean = false): any {
     this.attachToken();
     // let org = this.currentOrg ;
-    const q = `GetGraphData4XDays?org=${org}&login=${login}&day=${day}`;
+    const q = `GetGraphData4XDays?org=${org}&login=${login}&day=${day}&bustTheCache=${bustTheCache}`;
 
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }

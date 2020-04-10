@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GitService} from '../git-service';
 import {WeekDay} from '@angular/common';
 import {Chart} from 'chart.js';
+import {preserveWhitespacesDefault} from '@angular/compiler';
 
 @Component({
   selector: 'app-ic-report',
@@ -89,18 +90,23 @@ export class IcReportComponent implements OnInit {
   }
 
   reportsId: [number] = [0];
-
+  totalClose = 0;
+  totalOpen = 0;
   getGraphData(login: string) {
     this.closeCtr = [];
     this.openCtr = [];
     this.allDates = [];
+    this.totalClose = 0;
+    this.totalOpen = 0;
     this.gitService.getGraphData4XDays(this.gitService.getCurrentOrg(), login, 90).subscribe(results => {
       results.map(res => {
         if (res.State === 'closed') {
           this.closeCtr.push(res.Ctr);
+          this.totalClose = this.totalClose + res.Ctr;
         }
         if (res.State === 'open') {
           this.openCtr.push(res.Ctr);
+          this.totalOpen = this.totalOpen + res.Ctr;
         }
       });
 
@@ -131,7 +137,7 @@ export class IcReportComponent implements OnInit {
         },
         options: {
           maintainAspectRatio: true,
-
+          events: [],
           legned: {
             display: true,
           },
@@ -160,11 +166,9 @@ export class IcReportComponent implements OnInit {
       type: 'bar',
       data: {
         labels: ['Exceeded', 'Achieved', 'Need Improvement'],
-
         datasets: [
           {
             data: this.reviewData,
-            borderColor: '#98FB98',
             fill: true,
             label: 'Review Ratings',
             backgroundColor: ['#75a0c9', '#98FB98', '#9c678f'],
@@ -173,8 +177,12 @@ export class IcReportComponent implements OnInit {
       },
       options: {
         maintainAspectRatio: true,
+        events: [],
         legned: {
           display: true,
+          labels: {
+            fontColor: 'rgb(255, 255, 255)',
+          },
         },
         scales: {
           xAxes: [
