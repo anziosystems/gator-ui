@@ -1,5 +1,4 @@
 import {BrowserModule} from '@angular/platform-browser';
-
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
@@ -33,7 +32,6 @@ import {BitbucketLoginComponent} from './bitbucket-login/bitbucket-login.compone
 import {BitbucketCallBackComponent} from './bitbucket-call-back/bitbucket-call-back.component';
 import {BitbucketStatusComponent} from './bitbucket-status/bitbucket-status.component';
 import {StatusReportsComponent} from './status-reports/status-reports.component';
-
 import {DialogModule} from 'primeng/dialog';
 import {DialogService} from 'primeng/dynamicdialog';
 import {MessageService} from 'primeng/api';
@@ -43,9 +41,7 @@ import {DynamicDialogModule} from 'primeng/dynamicdialog';
 import {ChartModule, CalendarModule, SharedModule, MessageModule, MessagesModule} from 'primeng';
 import {CardModule} from 'primeng/card';
 import {ConfirmationService} from 'primeng/api';
-
 import {PeopleTicketComponent} from './people-ticket/people-ticket.component';
-
 import {SettingsComponent} from './settings/settings.component';
 import {AdminComponent} from './admin/admin.component';
 import {PaymentComponent} from './payment/payment.component';
@@ -57,7 +53,7 @@ import {HomeComponent} from './home/home.component';
 import {ContactusComponent} from './contactus/contactus.component';
 import {HelpComponent} from './help/help.component';
 import {OrgDetailsComponent} from './org-details/org-details.component';
-import { LinebarComponent } from './linebar/linebar.component';
+import {LinebarComponent} from './linebar/linebar.component';
 
 const routes: Routes = [
   {path: 'linebar', component: LinebarComponent},
@@ -87,10 +83,10 @@ const routes: Routes = [
   },
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
-
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
 
 @NgModule({
