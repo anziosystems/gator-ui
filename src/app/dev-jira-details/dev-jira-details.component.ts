@@ -32,14 +32,12 @@ export class DevJiraDetailsComponent implements OnInit {
   ) {
     let x = Date.now.toString();
     //  this.usageService.send ({event: 'Dev Details', info: 'Gator - Dev-pull-request-details',  LogTime: x});
-
     this.devDetails = new Map();
     this.devDetails3 = new Map();
     this.devDetails2 = [];
     this.developer = '';
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
-
       if (e instanceof NavigationEnd) {
         this.initializeData();
       }
@@ -186,6 +184,8 @@ export class DevJiraDetailsComponent implements OnInit {
                   }),
               );
               Promise.all(p).then(() => {
+                //I want this thing should be called when i collect all the issues for all the orgs
+                //it is not happening 
                 this.devDetails = this.devDetails3;
                 if (this.devDetails.size === 0 && this.Error401) {
                   console.log('***** Done *******');
