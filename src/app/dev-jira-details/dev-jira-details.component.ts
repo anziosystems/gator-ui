@@ -46,16 +46,17 @@ export class DevJiraDetailsComponent implements OnInit {
     });
 
     this.gitService.ready().then(result => {
+      this.gitService.fillJiraUserMap();
       this.gitService.onJiraEvent.subscribe(async (val: string) => {
-        this.getDeveloperDetails(val);
-        // .then(() => {
-        //   if (this.devDetails.size === 0 && this.Error401) {
-        //     this.router.navigate(['/jira-login']);
-        //   }
-        // })
-        // .finally(() => {
-        //   console.log('done');
-        // });
+        this.getDeveloperDetails(val)
+          .then(() => {
+            // if (this.devDetails.size === 0 && this.Error401) {
+            //   this.router.navigate(['/jira-login']);
+            // }
+          })
+          .finally(() => {
+            console.log('done');
+          });
       });
     });
   }
@@ -97,8 +98,8 @@ export class DevJiraDetailsComponent implements OnInit {
     console.log(`Getting Jira details for ${developer}`);
     return this.gitService.getJiraAccountId4UserName(developer).then(
       async accountId => {
-        if (accountId === undefined && this.gitService.jiraOrgList.length > 0) {
-          console.log('accountId is undefined or JiraOrgList is empty');
+        if (accountId === undefined) {
+          console.log(`Could not get ${developer} from JiraUsersMap`);
           this.bShowError = true;
           return;
         }
@@ -114,7 +115,7 @@ export class DevJiraDetailsComponent implements OnInit {
                   .GetJiraIssues(org.id, accountId, 50, false)
                   .toPromise()
                   .then((val: any) => {
-                /*
+                    /*
           JSON.parse (val)
           {expand: "schema,names", startAt: 0, maxResults: 50, total: 2, issues: Array(2)}
           JSON.parse (val).issues[0]
@@ -129,64 +130,65 @@ export class DevJiraDetailsComponent implements OnInit {
           JSON.parse (val).issues[0].fields.summary
           JSON.parse (val).issues[0].self  //url
         */
-                    if (val.code === 401 || val.code === 402 || val.code === 403) {
-                      this.Error401 = true;
-                      //But check if it got data for other org
-                      console.log(`got 401 for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
-                      // if (this.devDetails.size === 0) {
-                      //   this.router.navigate(['/jira-login']);
-                      //   return;
-                      // }
+                    //sometime server send 403 - which we are ignoring here because we get for the no of user which is different from 401
+                    //we need to capture only 401 for user to take them back to login
+                    if (val.code === 401 || val.code === 403) {
+                      if (val.code === 401) {
+                        this.Error401 = true;
+                        //But check if it got data for other org
+                        console.log(`got 401 for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
+                      } else console.log(`got 403 for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
                     } else {
+                      if (val.code === 200) this.Error401 = false; //it means we are not 401 for all the org, when the token expires all org will give 401
                       if (val) {
                         if (val.length === 0) {
                           console.log(`No data by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
-                  return;
-                }
+                          return;
+                        }
 
-                  try {
-                    if (Array.isArray(val)) {
-                      this.devDetails2 = val; //cache is sending array
+                        try {
+                          if (Array.isArray(val)) {
+                            this.devDetails2 = val; //cache is sending array
                             console.log(`Found ${this.devDetails2.length} by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
-                    } else {
+                          } else {
                             //"{"startAt":0,"maxResults":50,"total":0,"issues":[]}"
                             this.devDetails2 = JSON.parse(val).issues; //When there are 0 issues, message get format as follows
                             console.log(`Found ${this.devDetails2.length} by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
-                    }
-                  } catch (ex) {
+                          }
+                        } catch (ex) {
                           console.log('GetJiraIssues: ' + ex.message);
-                  }
+                        }
 
-                  this.devDetails2.map(v => {
-                    //https://labshare.atlassian.net/jira/people/5ca21c371b65666cbad27eb0
-                    this.userLink = `https://${org.name}.atlassian.net/jira/people/${accountId}`;
-                    v.Repo = v.id;
-                    v.pullrequesturl = `https://${org.name}.atlassian.net/browse/${v.key}`;
-                    v.key = v.key;
-                    v.title = v.fields.summary;
-                    v.created_at = v.fields.created;
-                    v.updated = v.fields.updated;
-                    v.body = v.fields.status.description;
-                    v.login = v.fields.assignee.displayName;
-                    this.userName = v.fields.assignee.displayName;
-                    v.State = v.fields.status.name;
-                    v.orgName = org.name;
+                        this.devDetails2.map(v => {
+                          //https://labshare.atlassian.net/jira/people/5ca21c371b65666cbad27eb0
+                          this.userLink = `https://${org.name}.atlassian.net/jira/people/${accountId}`;
+                          v.Repo = v.id;
+                          v.pullrequesturl = `https://${org.name}.atlassian.net/browse/${v.key}`;
+                          v.key = v.key;
+                          v.title = v.fields.summary;
+                          v.created_at = v.fields.created;
+                          v.updated = v.fields.updated;
+                          v.body = v.fields.status.description;
+                          v.login = v.fields.assignee.displayName;
+                          this.userName = v.fields.assignee.displayName;
+                          v.State = v.fields.status.name;
+                          v.orgName = org.name;
                           if (!this.devDetails3.has(v.id)) {
                             this.devDetails3.set(v.id, v);
                           } else {
                             console.log(`id clash`);
                           }
-                  });
-                } else {
-                  //if val is null it may have a 401 - token may be expired
-                }
+                        });
+                      } else {
+                        //if val is null it may have a 401 - token may be expired
+                      }
                     }
                   }),
               );
               Promise.all(p).then(() => {
                 this.devDetails = this.devDetails3;
                 if (this.devDetails.size === 0 && this.Error401) {
-                  console.log ("***** Done *******")
+                  console.log('***** Done *******');
                   this.router.navigate(['/jira-login']);
                 }
               });

@@ -1,6 +1,6 @@
 import {Injectable, Input, Inject, Optional, SkipSelf} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, of, Subject, interval} from 'rxjs';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {Router} from '@angular/router';
 import {promise} from 'protractor';
@@ -88,6 +88,7 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
+  // public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
@@ -561,22 +562,26 @@ export class GitService {
 
   //Get all the users for all the org
   async fillJiraUserMap(): Promise<boolean> {
+    let timer: any;
     await this.fillJiraOrgList();
     this.JiraUsersMap = new Map();
-    return new Promise((done, fail) => {
-      this.jiraOrgList.forEach(element => {
+    return new Promise(async (done, fail) => {
+      await this.jiraOrgList.forEach(element => {
         this.getJiraUsers(element.id, false).subscribe(result => {
           if (result.code === 401) {
             fail('401');
             return;
           }
-
+          console.log(`Found ${result.length} for ${element.name}`);
           result.forEach(e2 => {
             this.JiraUsersMap.set(e2.DisplayName.toLowerCase().trim(), e2.AccountId.trim());
           });
-          console.log(`'Jira user added:  ${this.JiraUsersMap.size}`);
-          done(true);
-          return;
+          //I hate it
+          timer = setInterval(() => {
+            done(true);
+            clearInterval(timer);
+            return;
+          }, 1000);
         });
       });
     });
@@ -619,11 +624,16 @@ export class GitService {
 
   async getJiraAccountId4UserName(name: string): Promise<any> {
     if (_.isUndefined(this.JiraUsersMap.size) || this.JiraUsersMap.size === 0) {
-      await this.fillJiraUserMap();
+      await this.fillJiraUserMap().then(() => {
+        // console.log(`${name} => checked ${this.JiraUsersMap.size} values`);
+        let x = this.JiraUsersMap.get(name.toLowerCase().trim());
+        // console.log(` x => ${x}`);
+        return x;
+      });
     } else {
+      // console.log(`'++ ${name} => checked ${this.JiraUsersMap.size} values`);
       return this.JiraUsersMap.get(name.toLowerCase().trim());
     }
-    return this.JiraUsersMap.get(name.toLowerCase().trim());
   }
 
   /*
