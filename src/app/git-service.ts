@@ -8,6 +8,7 @@ import {resolve} from 'path';
 import {reject} from 'q';
 import {typeWithParameters} from '@angular/compiler/src/render3/util';
 import {timingSafeEqual} from 'crypto';
+import * as _ from 'lodash';
 
 /*
 Jira calls must have following in the header
@@ -409,7 +410,6 @@ export class GitService {
     if (!skipOrgCheck) {
       this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
     }
-
     this.token = this.storage.get('token');
     this.tenant = this.token; //Token and tenant is same
 
@@ -559,8 +559,10 @@ export class GitService {
     }
   }
 
+  //Get all the users for all the org
   async fillJiraUserMap(): Promise<boolean> {
     await this.fillJiraOrgList();
+    this.JiraUsersMap = new Map();
     return new Promise((done, fail) => {
       this.jiraOrgList.forEach(element => {
         this.getJiraUsers(element.id, false).subscribe(result => {
@@ -568,9 +570,11 @@ export class GitService {
             fail('401');
             return;
           }
+
           result.forEach(e2 => {
-            this.JiraUsersMap.set(e2.DisplayName.trim(), e2.AccountId.trim());
+            this.JiraUsersMap.set(e2.DisplayName.toLowerCase().trim(), e2.AccountId.trim());
           });
+          console.log(`'Jira user added:  ${this.JiraUsersMap.size}`);
           done(true);
           return;
         });
@@ -588,7 +592,7 @@ export class GitService {
 
   fillJiraOrgList(): Promise<boolean> {
     this.jiraOrgList = this.sessionStorage.get(this.JIRA_ORG_LIST);
-    if (this.jiraOrgList) return;
+    if (!_.isEmpty(this.jiraOrgList)) return;
     return new Promise((done, fail) => {
       if (!this.jiraOrgList) this.jiraOrgList = [];
       if (this.jiraOrgList.length === 0) {
@@ -614,12 +618,12 @@ export class GitService {
   }
 
   async getJiraAccountId4UserName(name: string): Promise<any> {
-    if (this.JiraUsersMap.size === 0) {
+    if (_.isUndefined(this.JiraUsersMap.size) || this.JiraUsersMap.size === 0) {
       await this.fillJiraUserMap();
     } else {
-      return this.JiraUsersMap.get(name);
+      return this.JiraUsersMap.get(name.toLowerCase().trim());
     }
-    return this.JiraUsersMap.get(name);
+    return this.JiraUsersMap.get(name.toLowerCase().trim());
   }
 
   /*
