@@ -313,7 +313,10 @@ export class StatusReportsComponent implements OnInit {
   }
 
   addReviewer() {
-    this.getReviewer(this.textReviewer).then(r => (this.textReviewer = r));
+
+    this.getReviewer(this.textReviewer).then(r => {
+       this.textReviewer = r;
+    });
   }
 
   getReviewer(listReviewers: string): Promise<string> {
@@ -493,6 +496,8 @@ export class StatusReportsComponent implements OnInit {
       // } else {
       // this.alertmsgs.push({severity: 'warning', summary: 'Sorry!', detail: 'You can delete only reports which are in-progress status.'});
       // }
+    } else {
+      this.alertmsgs.push({severity: 'error', summary: 'Only reports which are in In-Progress Status can be deleted.', detail: ''});
     }
   }
 
@@ -554,7 +559,7 @@ export class StatusReportsComponent implements OnInit {
     });
     let dev = this.gitService.getLoggedInGitDev();
     //this.gitService.trigger(dev.login);
-    this.gitService.broadcastDevLoginId (dev.login);
+    this.gitService.broadcastDevLoginId(dev.login);
     this.bShowGitPR = 99;
   }
 
