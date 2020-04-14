@@ -54,6 +54,9 @@ import {ContactusComponent} from './contactus/contactus.component';
 import {HelpComponent} from './help/help.component';
 import {OrgDetailsComponent} from './org-details/org-details.component';
 import {LinebarComponent} from './linebar/linebar.component';
+import {TfsLoginComponent} from './tfs-login/tfs-login.component';
+import {TfsStatusComponent} from './tfs-status/tfs-status.component';
+import {TfscallbackComponent} from './tfscallback/tfscallback.component';
 
 const routes: Routes = [
   {path: 'linebar', component: LinebarComponent},
@@ -66,10 +69,12 @@ const routes: Routes = [
   {path: 'bitbucketlogin', component: BitbucketLoginComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'jiraCallback', component: JiraCallBackComponent},
+  {path: 'tfsCallback', component: TfscallbackComponent},
   {path: 'bitbucketCallback', component: BitbucketCallBackComponent},
   {path: 'StatusReport', component: StatusReportsComponent},
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
+  {path: 'tfsStatus', component: TfsStatusComponent},
   {path: 'icReport', component: IcReportComponent},
   {path: 'orgChart', component: OrgChartComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
@@ -84,6 +89,7 @@ const routes: Routes = [
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'jira-login', component: JiraLoginInComponent},
+  {path: 'tfs-login', component: TfsLoginComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: '**', redirectTo: 'home', pathMatch: 'full'},
@@ -125,6 +131,9 @@ const routes: Routes = [
     HelpComponent,
     OrgDetailsComponent,
     LinebarComponent,
+    TfsLoginComponent,
+    TfsStatusComponent,
+    TfscallbackComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [
