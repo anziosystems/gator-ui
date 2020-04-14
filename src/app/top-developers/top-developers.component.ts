@@ -44,7 +44,7 @@ export class TopDevelopersComponent implements OnInit {
   OrgDevelopers: any[];
   bCallingFromInit: boolean = false;
   selectedDev: string;
-  items = [{label: 'Send Kudoes'}, {label: 'Monthly Status Reports'}, {label: 'Survery'}];
+  items = [{label: 'Send Kudoes'}];
 
   constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router) {
     this.developers = [];
@@ -134,7 +134,7 @@ export class TopDevelopersComponent implements OnInit {
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.setCurrentDev(developer);
     //this.gitService.trigger(developer.login);
-    this.gitService.broadcastDevLoginId (developer.login);
+    this.gitService.broadcastDevLoginId(developer.login);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     //This to add developer in the status report component
     if (!this.bCallingFromInit) {
@@ -198,7 +198,7 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   rightClick(e: any, context: string, dev: DevDetails) {
-    alert(dev.login + ' ' + context);
+    alert("Coming Soon!!" ); // dev.login + ' ' + context);
   }
 
   ngOnInit() {
