@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JiraStatusComponent } from './jira-status.component';
+import { LsauthComponent } from './lsauth.component';
 
-describe('JiraStatusComponent', () => {
-  let component: JiraStatusComponent;
-  let fixture: ComponentFixture<JiraStatusComponent>;
+describe('LsauthComponent', () => {
+  let component: LsauthComponent;
+  let fixture: ComponentFixture<LsauthComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JiraStatusComponent ]
+      declarations: [ LsauthComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JiraStatusComponent);
+    fixture = TestBed.createComponent(LsauthComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

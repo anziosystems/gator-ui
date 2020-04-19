@@ -183,7 +183,7 @@ export class DevJiraDetailsComponent implements OnInit {
                     }
                   }),
               );
-              Promise.all(p).then(() => {
+              await Promise.all(p).then(() => {
                 //I want this thing should be called when i collect all the issues for all the orgs
                 //it is not happening 
                 this.devDetails = this.devDetails3;

@@ -39,6 +39,8 @@
     "@angular/router": "^9.1.0-rc.2",
     "@fullcalendar/core": "^4.4.0",
     "@ng-bootstrap/ng-bootstrap": "^6.0.2",
+    "ag-grid-angular": "^23.0.3",
+    "ag-grid-community": "^23.0.2",
     "angular2-draggable": "^2.3.2",
     "animate.css": "^3.7.2",
     "chart.js": "^2.8.0",

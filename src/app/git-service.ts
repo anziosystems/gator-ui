@@ -89,8 +89,7 @@ export class GitService {
   JiraUsersMap = new Map();
 
   // public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  //public gatorApiUrl = 'http://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -146,7 +145,7 @@ export class GitService {
   }
 
   //This current dev is about which dev is clicked on TopDev and other places. If you want to know the current logged in user then call
-  //getGitLoggedInUSerDetails
+  //getLoggedInUSerDetails
 
   getCurrentDev(): DevDetails {
     if (!this.currentDev) {
@@ -492,8 +491,8 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getGitLoggedInUSerDetails(bustTheCache: boolean = false): Observable<any> {
-    const q = `getGitLoggedInUSerDetails?bustTheCache=${bustTheCache}`;
+  getLoggedInUSerDetails(bustTheCache: boolean = false): Observable<any> {
+    const q = `getLoggedInUSerDetails?bustTheCache=${bustTheCache}`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }

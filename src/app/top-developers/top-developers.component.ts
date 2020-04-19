@@ -4,6 +4,8 @@ import {GitService, DevDetails} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
+import {DialogModule} from 'primeng/dialog';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 import * as _ from 'lodash';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
@@ -45,6 +47,8 @@ export class TopDevelopersComponent implements OnInit {
   bCallingFromInit: boolean = false;
   selectedDev: string;
   items = [{label: 'Send Kudoes'}];
+  display: boolean = false;
+  kudoesText: string = 'Please type here your kudoes ...';
 
   constructor(private gitService: GitService, @Inject(LOCAL_STORAGE) private storage: WebStorageService, private router: Router) {
     this.developers = [];
@@ -198,7 +202,16 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   rightClick(e: any, context: string, dev: DevDetails) {
-    alert("Coming Soon!!" ); // dev.login + ' ' + context);
+    this.kudoesText = `Please type here kudoes for ${dev.name}`;
+    this.display = true;
+  }
+
+  kudoesYes() {
+    this.display = true;
+  }
+
+  kudoesNo() {
+    this.display = true;
   }
 
   ngOnInit() {

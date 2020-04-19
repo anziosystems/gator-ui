@@ -129,7 +129,8 @@
             Manager's Comment
           </div>
           <div id="content-container2" class="ql-snow" style="background-color: honeydew; height: 20vh;  margin: 5px; color: black; font-size: x-large;">
-            <div style="height:80%">
+            <!-- This below wrapping of height removed the bottom bar from the quill editor -->
+            <div style="height:80%"> 
               <quill-editor [readOnly]="quillManagerDisable" id="quill-editor2" [(ngModel)]="managerComment"></quill-editor>
             </div>
           </div>

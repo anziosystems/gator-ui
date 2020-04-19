@@ -1,3 +1,11 @@
+<p-dialog header="Kudoes" [(visible)]="display" [style]="{width: '50vw', height: '400px'}" model="true">
+  <textarea pInputTextarea [(ngModel)]="kudoesText" style="height: 100%; width: 100%;"></textarea>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="kudoesYes()" label="Yes"></button>
+    <button type="button" pButton icon="pi pi-times" (click)="kudoesNo()" label="No" class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+
 <div class="flex-container">
   <div id="container" class="flex-item-header">
     Developers <br />
@@ -8,7 +16,6 @@
     </button>
     <br />
   </div>
-
   <hr style="width: 100%; color: rgb(105, 95, 95); border-style:inset; " />
   <div *ngFor="let dev of developers" [contextMenu]="basicMenu" [contextMenuSubject]="items">
     <div div class="flex-item">

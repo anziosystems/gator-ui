@@ -66,7 +66,7 @@ export class StatusComponent implements OnInit {
     }, 200); //every 200 ms
 
     //Get the Tenant details - This will be logged in User
-    this.gitService.getGitLoggedInUSerDetails(this.bGetFromGit).subscribe(r2 => {
+    this.gitService.getLoggedInUSerDetails(this.bGetFromGit).subscribe(r2 => {
       let dd = new DevDetails();
       console.log(`loginAndSetup=> ${r2.Id}`);
       dd.name = r2.DisplayName;

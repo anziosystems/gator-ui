@@ -57,8 +57,13 @@ import {LinebarComponent} from './linebar/linebar.component';
 import {TfsLoginComponent} from './tfs-login/tfs-login.component';
 import {TfsStatusComponent} from './tfs-status/tfs-status.component';
 import {TfscallbackComponent} from './tfscallback/tfscallback.component';
+import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
+import { LsauthComponent } from './lsauth/lsauth.component';
+import { LsauthCallbackComponent } from './lsauth-callback/lsauth-callback.component';
+import { LsauthStatusComponent } from './lsauth-status/lsauth-status.component';
 
 const routes: Routes = [
+  {path: 'cd', component: CandidateDetailComponent},
   {path: 'linebar', component: LinebarComponent},
   {path: 'help', component: HelpComponent},
   {path: 'od', component: OrgDetailsComponent},
@@ -66,15 +71,18 @@ const routes: Routes = [
   {path: 'contact', component: ContactusComponent},
   {path: 'about', component: AboutComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'lsauth', component: LsauthComponent},
   {path: 'bitbucketlogin', component: BitbucketLoginComponent},
   {path: 'callback', component: CallbackComponent},
   {path: 'jiraCallback', component: JiraCallBackComponent},
+  {path: 'lsauthCallback', component: LsauthCallbackComponent},
   {path: 'tfsCallback', component: TfscallbackComponent},
   {path: 'bitbucketCallback', component: BitbucketCallBackComponent},
   {path: 'StatusReport', component: StatusReportsComponent},
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'tfsStatus', component: TfsStatusComponent},
+  {path: 'lsAuthStatus', component: LsauthStatusComponent},
   {path: 'icReport', component: IcReportComponent},
   {path: 'orgChart', component: OrgChartComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
@@ -134,6 +142,10 @@ const routes: Routes = [
     TfsLoginComponent,
     TfsStatusComponent,
     TfscallbackComponent,
+    CandidateDetailComponent,
+    LsauthComponent,
+    LsauthCallbackComponent,
+    LsauthStatusComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [
