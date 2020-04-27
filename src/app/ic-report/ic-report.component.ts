@@ -34,7 +34,7 @@ export class IcReportComponent implements OnInit {
     this.textStatus = '';
     this.reviewData = [0, 0, 0];
     return new Promise((done, fail) => {
-      this.gitService.isUserAdmin(this.gitService.getCurrentOrg(), this.gitService.getLoggedInGitDev().login).subscribe(x => {
+      this.gitService.isUserAdmin(this.gitService.getCurrentGitOrg(), this.gitService.getLoggedInGitDev().login).subscribe(x => {
         if (x === 0) {
           this.textStatus = 'Sorry, only admin can see this';
           this.reviewData = [0, 0, 0];
@@ -98,7 +98,7 @@ export class IcReportComponent implements OnInit {
     this.allDates = [];
     this.totalClose = 0;
     this.totalOpen = 0;
-    this.gitService.getGraphData4XDays(this.gitService.getCurrentOrg(), login, 90).subscribe(results => {
+    this.gitService.getGraphData4XDays(this.gitService.getCurrentGitOrg(), login, 90).subscribe(results => {
       results.map(res => {
         if (res.State === 'closed') {
           this.closeCtr.push(res.Ctr);

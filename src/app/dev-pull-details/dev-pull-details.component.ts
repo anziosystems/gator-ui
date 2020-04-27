@@ -81,7 +81,7 @@ export class DevPullDetailsComponent implements OnInit {
           if (val.startsWith('repo-')) {
             this.bShowName = true;
             const arr = _.split(val, 'repo-');
-            this.gitService.getRepositoryPR(this.gitService.getCurrentOrg(), this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
+            this.gitService.getRepositoryPR(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
               this.devDetails = val;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
@@ -101,7 +101,7 @@ export class DevPullDetailsComponent implements OnInit {
 
   getDeveloperDetails(developer: string) {
     this.gitService.ready().then(result => {
-      this.gitService.getDeveloperDetail(this.gitService.getCurrentOrg(), this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
+      this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;
@@ -126,7 +126,7 @@ export class DevPullDetailsComponent implements OnInit {
   //action => opened, closed
   getActionDetails(action: string, day: number) {
     this.gitService.ready().then(result => {
-      this.gitService.getDeveloperDetail(this.gitService.getCurrentOrg(), day, 'null', action, 50).subscribe(val => {
+      this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), day, 'null', action, 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;

@@ -85,7 +85,15 @@ export class StatusComponent implements OnInit {
           if (r1.length > 0) {
             this.orgStatus = true;
             this.orgList = r1;
-            this.gitService.setCurrentOrg(this.orgList[0].Org); //setting the default
+
+            r1.forEach(r => {
+              if (r.OrgType === 'git') {
+                this.gitService.setCurrentGitOrg(r.Org);
+              }
+              if (r.OrgType === 'org') {
+                this.gitService.setCurrentOrg(r.Org);
+              }
+            });
             if (this.bGetFromGit) {
               this.successMessages.push(`Yes! Found ${r1.length} orgnization for this login`);
             }
@@ -171,7 +179,7 @@ export class StatusComponent implements OnInit {
                   elem.style.width = '100%';
                   clearTimeout(t);
                   //Just firing an extra call to prepare the cache in BE
-                  this.gitService.getGitTopDevelopers(this.gitService.getCurrentOrg(), this.NO_OF_DAYS);
+                  this.gitService.getGitTopDevelopers(this.gitService.getCurrentGitOrg(), this.NO_OF_DAYS);
                   //  this.router.navigate(['/dashboard']);  //No Need for user to click
                 },
                 error => {

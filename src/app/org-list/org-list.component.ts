@@ -25,7 +25,6 @@ export class OrgListComponent implements OnInit {
   ) {
     this.gitService.onIsLoggedInEvent.subscribe(v => {
       this.loggedIn = v;
-      
     });
   }
 
@@ -34,7 +33,7 @@ export class OrgListComponent implements OnInit {
     this.storage.remove('JiraToken');
     this.storage.remove('OrgToken');
     this.sessionStorage.remove('LOGGEDIN_USER');
-    this.sessionStorage.remove('CURRENT-ORG');
+    this.sessionStorage.remove('CURRENT-GIT-ORG');
     this.sessionStorage.remove('CURRENT-CONTEXT');
     this.sessionStorage.remove('LBC');
     this.router.navigate(['/login']);
@@ -64,7 +63,7 @@ export class OrgListComponent implements OnInit {
     this.gitService.broadcastGlobalComponentMessage('HIDE_OD');
     //Keep the current Org in session, angular apps with refresh browser will reload the gitservice and application will forget everything
     if (org) {
-      this.gitService.setCurrentOrg(org.Org);
+      this.gitService.setCurrentGitOrg(org.Org);
       this.selectedOrg = org.Org;
     }
     this.router.onSameUrlNavigation = 'reload';
@@ -91,7 +90,7 @@ export class OrgListComponent implements OnInit {
 
   ngOnInit() {
     this.orgList = [];
-    this.gitService.setCurrentOrg(this.route.snapshot.queryParamMap.get('Org'));
+    //this.gitService.setCurrentGitOrg(this.route.snapshot.queryParamMap.get('Org'));
     this.gitService.getOrgList().subscribe(result => {
       //[{"TenantId":1040817,"Org":"LabShare","LastUpdated":"2019-04-30T10:25:25.150Z","DisplayName":"LabShare","Active":true},
       //{"TenantId":1040817,"Org":"anziosystems","LastUpdated":"2019-04-30T10:25:25.220Z","DisplayName":"Anzio Systems","Active":true},
@@ -102,7 +101,14 @@ export class OrgListComponent implements OnInit {
       //{"Org":"LabShare","DisplayName":"LabShare","OrgType":"git       "}]
       this.orgList = result;
       this.sessionStorage.set('ORG-LIST', result);
- 
+      result.forEach(r => {
+        if (r.OrgType === 'git') {
+          this.gitService.setCurrentGitOrg(r.Org);
+        }
+        if (r.OrgType === 'org') {
+          this.gitService.setCurrentOrg(r.Org);
+        }
+      });
     });
   }
 }

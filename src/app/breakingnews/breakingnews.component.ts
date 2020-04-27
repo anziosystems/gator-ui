@@ -30,7 +30,7 @@ export class BreakingnewsComponent implements OnInit {
   getData(): Promise<boolean> {
     return new Promise((done, fail) => {
       this.gitService.ready().then(result => {
-        this.gitService.getDeveloperDetail(this.gitService.getCurrentOrg(), 7, null, null, 50).subscribe(val => {
+        this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), 7, null, null, 50).subscribe(val => {
           this.devDetails = val;
           this.devDetails.map(v => {
             let s = v.pullrequesturl;

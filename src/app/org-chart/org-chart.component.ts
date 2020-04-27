@@ -38,7 +38,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     private confirmationService: ConfirmationService,
   ) {
 
-    this.currentOrg = this.gitService.getCurrentOrg();
+    this.currentOrg = this.gitService.getCurrentGitOrg();
     //TODO: goto right login
     if (!this.currentOrg) {
       this.router.navigate(['/lsauth']);
@@ -76,7 +76,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
   public load() {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     // this.diagram.model = go.Model.fromJson(modelTextArea.value);
-    this.gitService.getOrgChart(this.gitService.getCurrentOrg(), true).subscribe(v => {
+    this.gitService.getOrgChart(this.gitService.getCurrentGitOrg(), true).subscribe(v => {
       this.model.nodeDataArray = JSON.parse(v[0].OrgChart).nodeDataArray;
       this.diagram.model = go.Model.fromJson(v[0].OrgChart);
     });
@@ -97,7 +97,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
-    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.gitService.getCurrentOrg(), this.diagram.model.toJson()).subscribe(x => {
+    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.gitService.getCurrentGitOrg(), this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
         this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
         return;
@@ -118,7 +118,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
 
   addDeveloper() {
     this.gitService.ready().then(result => {
-      this.gitService.getGitDev4Org(this.gitService.getCurrentOrg()).subscribe(val => {
+      this.gitService.getGitDev4Org(this.gitService.getCurrentGitOrg()).subscribe(val => {
         if (val) {
           if (val.code === 404) {
             sessionStorage.setItem('statusText', this.textStatus);

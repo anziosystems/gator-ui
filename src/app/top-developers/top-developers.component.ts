@@ -185,7 +185,7 @@ export class TopDevelopersComponent implements OnInit {
     this.developers = [];
 
     this.gitService.ready().then(result => {
-      this.gitService.getGitTopDevelopers(this.gitService.getCurrentOrg(), 30).subscribe(val => {
+      this.gitService.getGitTopDevelopers(this.gitService.getCurrentGitOrg(), 30).subscribe(val => {
         const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
         devs.map(item => {
           const arr = _.split(item, '--');

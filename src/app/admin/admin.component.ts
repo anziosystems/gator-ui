@@ -30,7 +30,7 @@ export class AdminComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) {
-    this.currentOrg = this.gitService.getCurrentOrg();
+    this.currentOrg = this.gitService.getCurrentGitOrg();
     if (!this.currentOrg) {
       this.router.navigate(['/login']);
       return;
@@ -74,7 +74,7 @@ export class AdminComponent implements OnInit {
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
-      this.currentOrg = this.gitService.getCurrentOrg();
+      this.currentOrg = this.gitService.getCurrentGitOrg();
     }
 
     this.gitService.getRole4Org(this.currentOrg).subscribe(r => {

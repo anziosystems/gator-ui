@@ -158,25 +158,25 @@ export class IcCountsComponent implements OnInit {
     this.allTimeCloseCount = 0;
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), login, 1).subscribe(val => {
+      this.gitService.getPullRequestCount(this.gitService.getCurrentGitOrg(), login, 1).subscribe(val => {
         this.assignValues(val, 1);
       });
     });
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), login, 7).subscribe(val => {
+      this.gitService.getPullRequestCount(this.gitService.getCurrentGitOrg(), login, 7).subscribe(val => {
         this.assignValues(val, 7);
       });
     });
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), login, 30).subscribe(val => {
+      this.gitService.getPullRequestCount(this.gitService.getCurrentGitOrg(), login, 30).subscribe(val => {
         this.assignValues(val, 30);
       });
     });
 
     this.gitService.ready().then(result => {
-      this.gitService.getPullRequestCount(this.gitService.getCurrentOrg(), login, 90).subscribe(val => {
+      this.gitService.getPullRequestCount(this.gitService.getCurrentGitOrg(), login, 90).subscribe(val => {
         this.assignValues(val, 90);
       });
     });

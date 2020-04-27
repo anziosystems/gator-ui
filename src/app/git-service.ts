@@ -39,6 +39,7 @@ export class CustomEvent {
   providedIn: 'root',
 })
 export class GitService {
+  private currentGitOrg: string;
   private currentOrg: string;
   private jiraCurrentOrg: string;
   private token: string;
@@ -114,6 +115,7 @@ export class GitService {
 
     //Lets refresh values out of session storage
     this.getLoggedInGitDev();
+    this.getCurrentGitOrg();
     this.getCurrentOrg();
     this.getCurrentDev();
 
@@ -195,7 +197,7 @@ export class GitService {
 
   async fillGitUserMap(): Promise<boolean> {
     return new Promise((done, fail) => {
-      this.getGitDev4Org(this.getCurrentOrg()).subscribe(result => {
+      this.getGitDev4Org(this.getCurrentGitOrg()).subscribe(result => {
         if (result.code === 401) {
           fail('401');
           return;
@@ -368,16 +370,24 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  public getCurrentOrg(): string {
-    this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
+  public getCurrentGitOrg(): string {
+    this.currentGitOrg = this.sessionStorage.get('CURRENT-GIT-ORG');
+    if (!this.currentGitOrg) {
+      this.checkOrg().then(r => {
+        return this.currentGitOrg;
+      });
+      return;
+    }
+    return this.currentGitOrg;
+  }
+
+  public async getCurrentOrg() {
+    this.currentOrg = await this.sessionStorage.get('CURRENT-ORG');
     if (!this.currentOrg) {
       this.checkOrg().then(r => {
         return this.currentOrg;
       });
-      return;
-    }
-
-    return this.currentOrg;
+    } else return this.currentOrg;
   }
 
   /*
@@ -386,17 +396,23 @@ export class GitService {
   */
   async checkOrg() {
     return new Promise((resolve, reject) => {
-      if (this.currentOrg === undefined || this.currentOrg === null) {
+      if (this.currentGitOrg === undefined || this.currentGitOrg === null || this.currentOrg === undefined || this.currentOrg === null) {
         this.getOrgList().subscribe(result => {
           if (result.code === 404) {
             console.log('CheckOrg - Unauthorize!!!');
             resolve('404');
           }
           if (result.length > 0) {
-            this.currentOrg = result[0].Org;
-            if (!this.currentOrg) {
-              this.setCurrentOrg(result[0].Org);
-            }
+            result.forEach(r => {
+              if (r.OrgType === 'git') {
+                this.currentGitOrg = r.Org;
+                this.setCurrentGitOrg(r.Org);
+              }
+              if (r.OrgType === 'org') {
+                this.currentOrg = r.Org;
+                this.setCurrentOrg(r.Org);
+              }
+            });
             resolve('200');
           } else {
             reject('error');
@@ -407,6 +423,13 @@ export class GitService {
       }
     });
   }
+  public setCurrentGitOrg(org: string) {
+    if (org) {
+      this.currentGitOrg = org;
+      this.sessionStorage.set('CURRENT-GIT-ORG', org);
+    }
+  }
+
   public setCurrentOrg(org: string) {
     if (org) {
       this.currentOrg = org;

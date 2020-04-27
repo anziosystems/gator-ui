@@ -171,9 +171,9 @@ export class OrgDetailsComponent implements OnInit {
 
     let _nodes: Map<number, Node> = new Map<number, Node>();
     let _obj;
-    this.gitService.getOrgChart(this.gitService.getCurrentOrg(), true).subscribe(v => {
+    this.gitService.getOrgChart(this.gitService.getCurrentGitOrg(), true).subscribe(v => {
       if (!v[0]) {
-        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg(), detail: ''});
+        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization: ' + this.gitService.getCurrentGitOrg(), detail: ''});
         //alert('Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg());
 
         this.router.navigate(['/orgChart']);

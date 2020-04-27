@@ -60,12 +60,13 @@ export class StatusReportsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) {
-    this.currentOrg = this.gitService.getCurrentOrg();
-
-    if (!this.currentOrg) {
-      this.router.navigate(['/lsauth']);
-      return;
-    }
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        this.router.navigate(['/lsauth']);
+        return;
+      }
+    });
 
     if (!this.gitService.getLoggedInGitDev()) {
       this.router.navigate(['/lsauth']);
@@ -77,7 +78,7 @@ export class StatusReportsComponent implements OnInit {
       this.router.navigate(['/lsauth']);
       return;
     }
-    
+
     this.textReviewer = '';
     this.textStatus = '';
     this.quillManagerDisable = true;
@@ -86,16 +87,18 @@ export class StatusReportsComponent implements OnInit {
   ngOnInit() {
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
-      this.gitService.checkOrg().then ( x => {
+      this.gitService.checkOrg().then(x => {
         if (x === '404') {
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
-      this.currentOrg = this.gitService.getCurrentOrg();
+      this.gitService.getCurrentOrg().then (r=> {
+        this.currentOrg = r;
+      });
     }
     this.status = this.IN_PROGRESS;
     this.srId = -1;
-    this.currentOrg = this.gitService.getCurrentOrg();
+    
     this.srList = [];
     this.srReviewList = [];
     let tempStatus = sessionStorage.getItem('statusText');
@@ -319,16 +322,15 @@ export class StatusReportsComponent implements OnInit {
   }
 
   addReviewer() {
-
     this.getReviewer(this.textReviewer).then(r => {
-       this.textReviewer = r;
+      this.textReviewer = r;
     });
   }
 
   getReviewer(listReviewers: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.gitService.ready().then(result => {
-        this.gitService.getGitDev4Org(this.gitService.getCurrentOrg()).subscribe(val => {
+        this.gitService.getGitDev4Org(this.gitService.getCurrentGitOrg()).subscribe(val => {
           if (val) {
             if (val.code === 404) {
               sessionStorage.setItem('statusText', this.textStatus);

@@ -60,6 +60,12 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['/lsauth']);
       return;
     }
+    this.gitService.checkOrg().then ( x => {
+      if (x === '404') {
+        this.router.navigate(['/lsauth']); //May be right login
+      }
+    });
+    
     this.gitService.triggerIsLoggedIn(true);
 
     // //Jira
