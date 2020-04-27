@@ -80,16 +80,15 @@ export class GitService {
    displayName: "Jira Outlook"
    self: "https://api.atlassian.com/ex/jira/786d2410-0054-411f-90ed-392c8cc1aad1/rest/api/3/user?accountId=5d53f3cbc6b9320d9ea5bdc2"
 
-
  */
 
   public JiraUsersList: any;
-
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
   // public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+ 
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -189,7 +188,6 @@ export class GitService {
         return null; //TODO: Force a re-login
       }
       // let buff = atob(data);
-
       this.loggedInGitDev = data;
     }
     return this.loggedInGitDev;
@@ -353,12 +351,23 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  getOrgListFromSession () {
+    const result =  this.sessionStorage.get('ORG-LIST');
+    if (!result) {
+      this.getOrgList (false, true).subscribe ( res => {
+        this.sessionStorage.set('ORG-LIST', res);
+      }) ;
+    }
+    return result;
+  }
+
   //Only status ask for Git call, everyone else go to SQL
   getOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
     this.attachToken(true);
     const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
+
 
   public getCurrentOrg(): string {
     this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
@@ -382,16 +391,16 @@ export class GitService {
         this.getOrgList().subscribe(result => {
           if (result.code === 404) {
             console.log('CheckOrg - Unauthorize!!!');
-            this.router.navigate(['/login']);
+            resolve('404');
           }
           if (result.length > 0) {
             this.currentOrg = result[0].Org;
             if (!this.currentOrg) {
               this.setCurrentOrg(result[0].Org);
             }
-            resolve();
+            resolve('200');
           } else {
-            reject();
+            reject('error');
           }
         });
       } else {

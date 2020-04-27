@@ -69,7 +69,11 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
-      this.gitService.checkOrg();
+      this.gitService.checkOrg().then ( x => {
+        if (x === '404') {
+          this.router.navigate(['/lsauth']); //May be right login
+        }
+      });
       this.currentOrg = this.gitService.getCurrentOrg();
     }
 

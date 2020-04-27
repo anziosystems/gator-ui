@@ -61,6 +61,7 @@ export class StatusReportsComponent implements OnInit {
     private confirmationService: ConfirmationService,
   ) {
     this.currentOrg = this.gitService.getCurrentOrg();
+
     if (!this.currentOrg) {
       this.router.navigate(['/login']);
       return;
@@ -76,6 +77,7 @@ export class StatusReportsComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+    
     this.textReviewer = '';
     this.textStatus = '';
     this.quillManagerDisable = true;
@@ -84,7 +86,11 @@ export class StatusReportsComponent implements OnInit {
   ngOnInit() {
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
-      this.gitService.checkOrg();
+      this.gitService.checkOrg().then ( x => {
+        if (x === '404') {
+          this.router.navigate(['/login']); //May be right login
+        }
+      });
       this.currentOrg = this.gitService.getCurrentOrg();
     }
     this.status = this.IN_PROGRESS;

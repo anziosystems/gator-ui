@@ -22,4 +22,5 @@ export class LsauthComponent implements OnInit {
   onChange(isChecked: boolean) {
     this.sessionStorage.set('LBC', isChecked);
   }
+  
 }

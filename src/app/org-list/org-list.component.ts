@@ -25,12 +25,14 @@ export class OrgListComponent implements OnInit {
   ) {
     this.gitService.onIsLoggedInEvent.subscribe(v => {
       this.loggedIn = v;
+      
     });
   }
 
   logout() {
     this.storage.remove('token');
     this.storage.remove('JiraToken');
+    this.storage.remove('OrgToken');
     this.sessionStorage.remove('LOGGEDIN_USER');
     this.sessionStorage.remove('CURRENT-ORG');
     this.sessionStorage.remove('CURRENT-CONTEXT');
@@ -91,7 +93,16 @@ export class OrgListComponent implements OnInit {
     this.orgList = [];
     this.gitService.setCurrentOrg(this.route.snapshot.queryParamMap.get('Org'));
     this.gitService.getOrgList().subscribe(result => {
+      //[{"TenantId":1040817,"Org":"LabShare","LastUpdated":"2019-04-30T10:25:25.150Z","DisplayName":"LabShare","Active":true},
+      //{"TenantId":1040817,"Org":"anziosystems","LastUpdated":"2019-04-30T10:25:25.220Z","DisplayName":"Anzio Systems","Active":true},
+      //{"TenantId":1040817,"Org":"ncats","LastUpdated":"2019-05-16T17:24:07.323Z","DisplayName":"National Center for Advancing Translational Sciences","Active":true},
+      //{"TenantId":1040817,"Org":"Rafat-Sarosh","LastUpdated":"2019-05-16T17:24:07.950Z","DisplayName":"Rafat-Sarosh","Active":true}]
+
+      //[{"Org":"axleinfo.com","DisplayName":"axleinfo.com","OrgType":"org       "},
+      //{"Org":"LabShare","DisplayName":"LabShare","OrgType":"git       "}]
       this.orgList = result;
+      this.sessionStorage.set('ORG-LIST', result);
+ 
     });
   }
 }

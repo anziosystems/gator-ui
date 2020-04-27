@@ -56,7 +56,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     let token = this.storage.get('token');
     if (!token) {
-      this.router.navigate(['/login']);
+      //TO: goto right login
+      this.router.navigate(['/lsauth']);
       return;
     }
     this.gitService.triggerIsLoggedIn(true);

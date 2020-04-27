@@ -32,6 +32,7 @@ export class OrgDetailsComponent implements OnInit {
   ngOnInit() {
     let token = this.storage.get('token');
     if (!token) {
+      //TODO: goto right login
       this.router.navigate(['/login']);
       return;
     }

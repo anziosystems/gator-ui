@@ -37,21 +37,24 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) {
+
     this.currentOrg = this.gitService.getCurrentOrg();
+    //TODO: goto right login
     if (!this.currentOrg) {
-      this.router.navigate(['/login']);
-      return;
+      this.router.navigate(['/lsauth']);
+     return;
     }
 
+    //TODO: goto right login
     if (!this.gitService.getLoggedInGitDev()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
 
     let loggedInUser = this.gitService.getLoggedInGitDev().login;
 
     if (!loggedInUser) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
 
@@ -119,7 +122,8 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
         if (val) {
           if (val.code === 404) {
             sessionStorage.setItem('statusText', this.textStatus);
-            this.router.navigate(['/login']);
+            //TODO: goto right login
+            this.router.navigate(['/lsauth']);
           }
         }
         const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
