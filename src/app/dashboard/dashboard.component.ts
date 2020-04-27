@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    let token = this.storage.get('token');
+    let token = this.storage.get('OrgToken');
     if (!token) {
       //TO: goto right login
       this.router.navigate(['/lsauth']);

@@ -88,7 +88,7 @@ export class GitService {
 
   // public gatorApiUrl = 'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
   public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
- 
+
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
   //Components listen to each other using this
@@ -351,12 +351,12 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getOrgListFromSession () {
-    const result =  this.sessionStorage.get('ORG-LIST');
+  getOrgListFromSession() {
+    const result = this.sessionStorage.get('ORG-LIST');
     if (!result) {
-      this.getOrgList (false, true).subscribe ( res => {
+      this.getOrgList(false, true).subscribe(res => {
         this.sessionStorage.set('ORG-LIST', res);
-      }) ;
+      });
     }
     return result;
   }
@@ -367,7 +367,6 @@ export class GitService {
     const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
-
 
   public getCurrentOrg(): string {
     this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
@@ -419,7 +418,7 @@ export class GitService {
     if (!skipOrgCheck) {
       this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
     }
-    this.token = this.storage.get('token');
+    this.token = this.storage.get('OrgToken');
     this.tenant = this.token; //Token and tenant is same
 
     try {

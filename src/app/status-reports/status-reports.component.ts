@@ -63,18 +63,18 @@ export class StatusReportsComponent implements OnInit {
     this.currentOrg = this.gitService.getCurrentOrg();
 
     if (!this.currentOrg) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
 
     if (!this.gitService.getLoggedInGitDev()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
 
     let loggedInUser = this.gitService.getLoggedInGitDev().login;
     if (!loggedInUser) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
     
@@ -88,7 +88,7 @@ export class StatusReportsComponent implements OnInit {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg().then ( x => {
         if (x === '404') {
-          this.router.navigate(['/login']); //May be right login
+          this.router.navigate(['/lsauth']); //May be right login
         }
       });
       this.currentOrg = this.gitService.getCurrentOrg();

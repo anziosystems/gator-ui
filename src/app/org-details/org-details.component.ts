@@ -30,10 +30,10 @@ export class OrgDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let token = this.storage.get('token');
+    let token = this.storage.get('OrgToken');
     if (!token) {
       //TODO: goto right login
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
     this.gitService.triggerIsLoggedIn(true);
