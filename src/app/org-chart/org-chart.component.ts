@@ -37,13 +37,13 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) {
-
-    this.currentOrg = this.gitService.getCurrentGitOrg();
-    //TODO: goto right login
-    if (!this.currentOrg) {
-      this.router.navigate(['/lsauth']);
-     return;
-    }
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        this.router.navigate(['/lsauth']);
+        return;
+      }
+    });
 
     //TODO: goto right login
     if (!this.gitService.getLoggedInGitDev()) {
@@ -76,7 +76,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
   public load() {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     // this.diagram.model = go.Model.fromJson(modelTextArea.value);
-    this.gitService.getOrgChart(this.gitService.getCurrentGitOrg(), true).subscribe(v => {
+    this.gitService.getOrgChart(this.currentOrg, true).subscribe(v => {
       this.model.nodeDataArray = JSON.parse(v[0].OrgChart).nodeDataArray;
       this.diagram.model = go.Model.fromJson(v[0].OrgChart);
     });
@@ -97,7 +97,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
-    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.gitService.getCurrentGitOrg(), this.diagram.model.toJson()).subscribe(x => {
+    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
         this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
         return;
@@ -118,7 +118,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
 
   addDeveloper() {
     this.gitService.ready().then(result => {
-      this.gitService.getGitDev4Org(this.gitService.getCurrentGitOrg()).subscribe(val => {
+      this.gitService.getGitDev4Org(this.currentOrg).subscribe(val => {
         if (val) {
           if (val.code === 404) {
             sessionStorage.setItem('statusText', this.textStatus);
@@ -126,11 +126,9 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
             this.router.navigate(['/lsauth']);
           }
         }
-        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
+        const devs = val.map(item => item.UserDisplayName).filter((value, index, self) => self.indexOf(value) === index);
         const developerNames = devs.map(item => {
-          const arr = _.split(item, '--');
-          if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
-          return arr[0] + '  --  ' + arr[1];
+          return item;
         });
 
         this.dialogService
@@ -155,8 +153,8 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.textReviewer !== '') {
       let arrSelected = this.textReviewer.split(',');
       arrSelected.forEach(e => {
-        let person = e.split('--');
-        this.arrPeople.push({name: person[0], userName: person[1]});
+        //  let person = e.split('--');
+        this.arrPeople.push({name: e, userName: e});
       });
 
       let i = this.model.nodeDataArray.length;

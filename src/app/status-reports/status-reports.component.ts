@@ -338,11 +338,12 @@ export class StatusReportsComponent implements OnInit {
               reject();
             }
           }
-          const devs = val.map(item => item.Name + '--' + item.login + '--' + item.AvatarUrl).filter((value, index, self) => self.indexOf(value) === index);
+          const devs = val.map(item => item.UserDisplayName).filter((value, index, self) => self.indexOf(value) === index);
           const developerNames = devs.map(item => {
-            const arr = _.split(item, '--');
-            if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
-            return arr[0] + '  --  ' + arr[1];
+            // const arr = _.split(item, '--');
+            // if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
+            // return arr[0] + '  --  ' + arr[1];
+            return item;
           });
 
           this.dialogService

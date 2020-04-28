@@ -30,20 +30,22 @@ export class AdminComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
   ) {
-    this.currentOrg = this.gitService.getCurrentGitOrg();
-    if (!this.currentOrg) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        this.router.navigate(['/lsauth']);
+        return;
+      }
+    });
 
     if (!this.gitService.getLoggedInGitDev()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
 
     this.loggedInUser = this.gitService.getLoggedInGitDev().login;
     if (!this.loggedInUser) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/lsauth']);
       return;
     }
   }
@@ -53,7 +55,8 @@ export class AdminComponent implements OnInit {
       return value !== u;
     });
     this.allUsers.push(u);
-    this.deleteUserRole(u.login);
+    if (u.login) this.deleteUserRole(u.login);
+    else this.deleteUserRole(u.Email);
   }
 
   moveUser2Admin(u: any) {
@@ -63,25 +66,24 @@ export class AdminComponent implements OnInit {
     });
     //Add to admin list
     this.userRoles.push(u);
-    this.save(u.login);
+    this.save(u.Email);
   }
 
   ngOnInit() {
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
-      this.gitService.checkOrg().then ( x => {
+      this.gitService.checkOrg().then(x => {
         if (x === '404') {
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
-      this.currentOrg = this.gitService.getCurrentGitOrg();
     }
-
-    this.gitService.getRole4Org(this.currentOrg).subscribe(r => {
-      this.userRoles = [];
-      let r2 = r.map(x => {
-        this.gitService.getGitDisplayName4Login(x.login).then(z => {
-          x.Name = z;
+    this.gitService.getCurrentOrg().then(z => {
+      this.currentOrg = z;
+      this.gitService.getRole4Org(this.currentOrg).subscribe(r => {
+        this.userRoles = [];
+        let r2 = r.map(x => {
+          x.Name = x.UserName;
           this.userRoles.push(x);
         });
       });
