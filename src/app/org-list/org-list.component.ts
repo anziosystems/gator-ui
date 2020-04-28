@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Output, Inject} from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, Inject, ɵReflectionCapabilities} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {GitService} from '../git-service';
 import {Route} from '@angular/compiler/src/core';
@@ -25,6 +25,12 @@ export class OrgListComponent implements OnInit {
   ) {
     this.gitService.onIsLoggedInEvent.subscribe(v => {
       this.loggedIn = v;
+    });
+
+    this.gitService.onGlobalComponentMessage.subscribe(message => {
+      if (message === 'RE-FILL') {
+        this.refill();
+      }
     });
   }
 
@@ -89,6 +95,10 @@ export class OrgListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.refill();
+  }
+
+  refill() {
     this.orgList = [];
     //this.gitService.setCurrentGitOrg(this.route.snapshot.queryParamMap.get('Org'));
     this.gitService.getOrgList().subscribe(result => {

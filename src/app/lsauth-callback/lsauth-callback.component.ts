@@ -20,32 +20,8 @@ export class LsauthCallbackComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       const OrgToken = params['OrgToken'];
       if (OrgToken) {
-        this.gitService.setJiraToken(OrgToken);
         this.storage.set('OrgToken', OrgToken);
-
-        this.gitService.getLoggedInUSerDetails(false).subscribe(r2 => {
-          let dd = new DevDetails();
-          dd.name = r2.DisplayName;
-          dd.login = r2.UserName;
-          dd.image = r2.Photo;
-          dd.id = r2.Id;
-          dd.profileUrl = r2.profileUrl;
-          // let buff = btoa(JSON.stringify(dd));
-          this.gitService.setLoggedInGitDev(dd);
-        });
-
-        this.gitService.getOrgList().subscribe(result => {
-          this.sessionStorage.set('ORG-LIST', result);
-          result.forEach(r => {
-            if (r.OrgType === 'git') {
-              this.gitService.setCurrentGitOrg(r.Org);
-            }
-            if (r.OrgType === 'org') {
-              this.gitService.setCurrentOrg(r.Org);
-            }
-          });
-        });
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/lsAuthStatus']);
       }
     });
   }

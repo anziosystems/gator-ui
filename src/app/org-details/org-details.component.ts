@@ -18,6 +18,7 @@ export class OrgDetailsComponent implements OnInit {
   selectedPerson: TreeNode;
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
+  currentOrg : string;
   alertmsgs = [];
   constructor(
     private gitService: GitService,
@@ -27,9 +28,27 @@ export class OrgDetailsComponent implements OnInit {
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
 
     private router: Router,
-  ) {}
+  ) {
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        this.router.navigate(['/lsauth']);
+        return;
+      }
+    });
+
+  }
 
   ngOnInit() {
+
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        this.router.navigate(['/lsauth']);
+        return;
+      }
+    });
+
     let token = this.storage.get('OrgToken');
     if (!token) {
       //TODO: goto right login
@@ -171,9 +190,9 @@ export class OrgDetailsComponent implements OnInit {
 
     let _nodes: Map<number, Node> = new Map<number, Node>();
     let _obj;
-    this.gitService.getOrgChart(this.gitService.getCurrentGitOrg(), true).subscribe(v => {
+    this.gitService.getOrgChart(this.currentOrg, true).subscribe(v => {
       if (!v[0]) {
-        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization: ' + this.gitService.getCurrentGitOrg(), detail: ''});
+        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization:'+  this.currentOrg  , detail: ''});
         //alert('Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg());
 
         this.router.navigate(['/orgChart']);

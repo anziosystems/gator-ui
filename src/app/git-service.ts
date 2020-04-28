@@ -204,12 +204,12 @@ export class GitService {
         }
         result.forEach(e2 => {
           let dd = new DevDetails();
-          dd.name = e2.Name;
-          dd.login = e2.Login;
+          dd.name = e2.UserDisplayName;
+          dd.login = e2.UserName;
           dd.avatarUrl = e2.AvatarUrl;
-          dd.email = e2.email;
-          dd.tenantId = e2.TenantId;
-          this.gitUsersMap.set(e2.login.trim(), dd);
+          dd.email = e2.Email;
+          // dd.tenantId = e2.TenantId;
+          this.gitUsersMap.set(e2.Email.trim(), dd);
         });
         done(true);
         return;
