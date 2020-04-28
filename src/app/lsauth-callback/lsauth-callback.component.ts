@@ -10,16 +10,19 @@ import {timer} from 'rxjs';
   styleUrls: ['./lsauth-callback.component.less'],
 })
 export class LsauthCallbackComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute, 
-    private gitService: GitService, private router: Router, 
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private gitService: GitService,
+    private router: Router,
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
-    @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,) {
+    @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
+  ) {
     this.activatedRoute.queryParams.subscribe(params => {
       const OrgToken = params['OrgToken'];
       if (OrgToken) {
         this.gitService.setJiraToken(OrgToken);
         this.storage.set('OrgToken', OrgToken);
-        
+
         this.gitService.getLoggedInUSerDetails(false).subscribe(r2 => {
           let dd = new DevDetails();
           dd.name = r2.DisplayName;
@@ -41,8 +44,8 @@ export class LsauthCallbackComponent implements OnInit {
               this.gitService.setCurrentOrg(r.Org);
             }
           });
-          this.router.navigate(['/dashboard']);
         });
+        this.router.navigate(['/dashboard']);
       }
     });
   }
