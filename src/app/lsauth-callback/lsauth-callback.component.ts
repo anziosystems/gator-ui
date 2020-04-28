@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
-import {LOCAL_STORAGE, WebStorageService} from 'ngx-webstorage-service';
+import {LOCAL_STORAGE, WebStorageService, SESSION_STORAGE} from 'ngx-webstorage-service';
 import {timer} from 'rxjs';
 
 @Component({
@@ -10,7 +10,10 @@ import {timer} from 'rxjs';
   styleUrls: ['./lsauth-callback.component.less'],
 })
 export class LsauthCallbackComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute, private gitService: GitService, private router: Router, @Inject(LOCAL_STORAGE) private storage: WebStorageService) {
+  constructor(private activatedRoute: ActivatedRoute, 
+    private gitService: GitService, private router: Router, 
+    @Inject(LOCAL_STORAGE) private storage: WebStorageService,
+    @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,) {
     this.activatedRoute.queryParams.subscribe(params => {
       const OrgToken = params['OrgToken'];
       if (OrgToken) {
@@ -28,7 +31,18 @@ export class LsauthCallbackComponent implements OnInit {
           this.gitService.setLoggedInGitDev(dd);
         });
 
-        this.router.navigate(['/dashboard']);
+        this.gitService.getOrgList().subscribe(result => {
+          this.sessionStorage.set('ORG-LIST', result);
+          result.forEach(r => {
+            if (r.OrgType === 'git') {
+              this.gitService.setCurrentGitOrg(r.Org);
+            }
+            if (r.OrgType === 'org') {
+              this.gitService.setCurrentOrg(r.Org);
+            }
+          });
+          this.router.navigate(['/dashboard']);
+        });
       }
     });
   }
