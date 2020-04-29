@@ -20,6 +20,11 @@ req.headers['jiraAuthorization'];  //This is JiraTenant Id
 
 export class DevDetails {
   public name: string;
+  public UserName: string;
+  public DisplayName: string;
+  public GitUserName: string;
+  public JiraUserName: string;
+  public TfsUserName: string;
   public image: string;
   public login: string;
   public id: number;
@@ -175,6 +180,11 @@ export class GitService {
         this.loggedInGitDev.login = v.login;
         this.loggedInGitDev.id = v.id;
         this.loggedInGitDev.profileUrl = v.profileUrl;
+        this.loggedInGitDev.GitUserName = v.GitUserName;
+        this.loggedInGitDev.JiraUserName = v.JiraUserName;
+        this.loggedInGitDev.TfsUserName = v.TfsUserName;
+        this.loggedInGitDev.UserName = v.UserName;
+        this.loggedInGitDev.DisplayName = v.DisplayName;
         this.sessionStorage.set('LOGGEDIN_USER', v);
       }
     }
@@ -202,14 +212,20 @@ export class GitService {
           fail('401');
           return;
         }
-        result.forEach(e2 => {
+        result.forEach(r2 => {
           let dd = new DevDetails();
-          dd.name = e2.UserDisplayName;
-          dd.login = e2.UserName;
-          dd.avatarUrl = e2.AvatarUrl;
-          dd.email = e2.Email;
+          dd.name = r2.DisplayName;
+          dd.UserName = r2.UserName;
+          dd.DisplayName = r2.DisplayName ;
+          dd.login = r2.UserName;
+          dd.image = r2.Photo;
+          dd.id = r2.Id;
+          dd.profileUrl = r2.profileUrl;
+          dd.GitUserName = r2.GitUserName;
+          dd.JiraUserName = r2.JiraUserName;
+          dd.TfsUserName = r2.TfsUserName;
           // dd.tenantId = e2.TenantId;
-          this.gitUsersMap.set(e2.Email.trim(), dd);
+          this.gitUsersMap.set(r2.Email.trim(), dd);
         });
         done(true);
         return;

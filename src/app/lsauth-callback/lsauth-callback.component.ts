@@ -34,10 +34,15 @@ export class LsauthCallbackComponent implements OnInit {
     this.gitService.getLoggedInUSerDetails(false).subscribe(r2 => {
       let dd = new DevDetails();
       dd.name = r2.DisplayName;
+      dd.UserName = r2.UserName;
+      dd.DisplayName = r2.DisplayName ;
       dd.login = r2.UserName;
       dd.image = r2.Photo;
       dd.id = r2.Id;
       dd.profileUrl = r2.profileUrl;
+      dd.GitUserName = r2.GitUserName;
+      dd.JiraUserName = r2.JiraUserName;
+      dd.TfsUserName = r2.TfsUserName;
       this.gitService.setLoggedInGitDev(dd);
       this.gitService.getOrgList().subscribe(result => {
         this.sessionStorage.set('ORG-LIST', result);
