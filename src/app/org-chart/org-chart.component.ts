@@ -64,7 +64,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
       class: 'go.TreeModel',
       nodeDataArray: [
         //                {"key":1, "name":"CEO Name", "title":"CEO"},
-        {key: 1, name: 'CTO Name'},
+        {key: 1, name: 'Engineering'},
       ],
     };
   }

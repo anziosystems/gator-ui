@@ -35,14 +35,16 @@ export class OrgListComponent implements OnInit {
   }
 
   logout() {
-    this.storage.remove('token');
     this.storage.remove('JiraToken');
     this.storage.remove('OrgToken');
     this.sessionStorage.remove('LOGGEDIN_USER');
+    this.sessionStorage.remove('CURRENT-DEV');
+    this.sessionStorage.remove('ORG-LIST');
     this.sessionStorage.remove('CURRENT-GIT-ORG');
+    this.sessionStorage.remove('CURRENT-ORG');
     this.sessionStorage.remove('CURRENT-CONTEXT');
     this.sessionStorage.remove('LBC');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/lsauth']);
   }
 
   gotoStatusReports() {
