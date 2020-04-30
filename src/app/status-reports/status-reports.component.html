@@ -93,7 +93,11 @@
         <p></p>
         <div style="font-size: large; margin-bottom: 10px;     margin-left: 7px;">
           <p></p>
-          Status Report for organization: {{ currentOrg }}
+          <!-- Status Report for organization: {{ currentOrg }} -->
+          Select your Git Org
+          <select style="color:black" (change)="gitOrgSelection($event.target.value)">
+            <option *ngFor="let org of gitOrgs" [ngValue]="org" style="color:black">{{ org }}</option>
+          </select>
         </div>
 
         <div>
@@ -130,7 +134,7 @@
           </div>
           <div id="content-container2" class="ql-snow" style="background-color: honeydew; height: 20vh;  margin: 5px; color: black; font-size: x-large;">
             <!-- This below wrapping of height removed the bottom bar from the quill editor -->
-            <div style="height:80%"> 
+            <div style="height:80%">
               <quill-editor [readOnly]="quillManagerDisable" id="quill-editor2" [(ngModel)]="managerComment"></quill-editor>
             </div>
           </div>

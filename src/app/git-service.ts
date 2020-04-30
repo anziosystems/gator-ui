@@ -178,6 +178,7 @@ export class GitService {
         this.loggedInGitDev.name = v.name;
         this.loggedInGitDev.image = v.image;
         this.loggedInGitDev.login = v.login;
+        this.loggedInGitDev.OrgDisplayName = v.OrgDisplayName;
         this.loggedInGitDev.id = v.id;
         this.loggedInGitDev.profileUrl = v.profileUrl;
         this.loggedInGitDev.GitUserName = v.GitUserName;
@@ -191,6 +192,18 @@ export class GitService {
   }
 
   //Gets Current loggedIn User
+  /*
+      DisplayName: "Rafat Sarosh"
+      GitUserName: null
+      JiraUserName: null
+      TfsUserName: null
+      UserName: "rafat.sarosh@axleinfo.com"
+      id: 8584
+      image: ""
+      login: "rafat.sarosh@axleinfo.com"
+      name: "Rafat Sarosh"
+
+  */
   public getLoggedInGitDev(): DevDetails {
     if (!this.loggedInGitDev.hasOwnProperty('name')) {
       //it is an empty object
@@ -216,7 +229,7 @@ export class GitService {
           let dd = new DevDetails();
           dd.name = r2.DisplayName;
           dd.UserName = r2.UserName;
-          dd.DisplayName = r2.DisplayName ;
+          dd.DisplayName = r2.DisplayName;
           dd.login = r2.UserName;
           dd.image = r2.Photo;
           dd.id = r2.Id;
@@ -369,14 +382,16 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getOrgListFromSession() {
+  async getOrgListFromSession() {
     const result = this.sessionStorage.get('ORG-LIST');
     if (!result) {
       this.getOrgList(false, true).subscribe(res => {
         this.sessionStorage.set('ORG-LIST', res);
+        return res;
       });
+    } else {
+      return result;
     }
-    return result;
   }
 
   //Only status ask for Git call, everyone else go to SQL

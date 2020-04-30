@@ -33,9 +33,10 @@ export class LsauthCallbackComponent implements OnInit {
   go() {
     this.gitService.getLoggedInUSerDetails(false).subscribe(r2 => {
       let dd = new DevDetails();
-      dd.name = r2.DisplayName;
+      dd.name = r2.UserDisplayName;
       dd.UserName = r2.UserName;
-      dd.DisplayName = r2.DisplayName ;
+      dd.DisplayName = r2.UserDisplayName ;
+      dd.OrgDisplayName = r2.OrgDisplayName;
       dd.login = r2.UserName;
       dd.image = r2.Photo;
       dd.id = r2.Id;

@@ -25,6 +25,7 @@ export class StatusReportsComponent implements OnInit {
   bShowJira: number = -1;
   currentOrg: string;
   eventSub: any;
+  gitOrgs: string[];
   srId: number = -1; //Has to be -1 to be a insert else it will be update
   manager: string;
   managerComment: string;
@@ -92,13 +93,23 @@ export class StatusReportsComponent implements OnInit {
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
-      this.gitService.getCurrentOrg().then (r=> {
+      this.gitService.getCurrentOrg().then(r => {
         this.currentOrg = r;
       });
     }
+
+    this.gitOrgs = [];
+    this.gitService.getOrgListFromSession().then(r => {
+      r.forEach(e => {
+        if (e.OrgType === 'git') {
+          this.gitOrgs.push(e.Org);
+        }
+      });
+    });
+
     this.status = this.IN_PROGRESS;
     this.srId = -1;
-    
+
     this.srList = [];
     this.srReviewList = [];
     let tempStatus = sessionStorage.getItem('statusText');
@@ -338,12 +349,11 @@ export class StatusReportsComponent implements OnInit {
               reject();
             }
           }
-          const devs = val.map(item => item.UserDisplayName).filter((value, index, self) => self.indexOf(value) === index);
+          const devs = val.map(item => item.UserDisplayName + '--' + item.UserName).filter((value, index, self) => self.indexOf(value) === index);
           const developerNames = devs.map(item => {
-            // const arr = _.split(item, '--');
-            // if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
-            // return arr[0] + '  --  ' + arr[1];
-            return item;
+            const arr = _.split(item, '--');
+            if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
+            return arr[0] + '  --  ' + arr[1];
           });
 
           this.dialogService
@@ -372,7 +382,7 @@ export class StatusReportsComponent implements OnInit {
       destination: 'JIRA',
       message: 'true',
     });
-    this.gitService.triggerJira(this.gitService.getLoggedInGitDev().login);
+    this.gitService.triggerJira(this.gitService.getLoggedInGitDev().JiraUserName);
     this.bShowJira = 99;
   }
 
@@ -559,6 +569,10 @@ export class StatusReportsComponent implements OnInit {
       });
   }
 
+  gitOrgSelection(value) {
+    this.gitService.setCurrentGitOrg(value);
+  }
+
   addGitPR() {
     this.gitService.setCurrentContext('GIT');
     this.gitService.triggerCustomEvent({
@@ -568,7 +582,7 @@ export class StatusReportsComponent implements OnInit {
     });
     let dev = this.gitService.getLoggedInGitDev();
     //this.gitService.trigger(dev.login);
-    this.gitService.broadcastDevLoginId(dev.login);
+    this.gitService.broadcastDevLoginId(dev.GitUserName);
     this.bShowGitPR = 99;
   }
 

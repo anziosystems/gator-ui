@@ -68,14 +68,14 @@ export class LsauthStatusComponent implements OnInit {
     this.gitService.getLoggedInUSerDetails(false).subscribe(r2 => {
       this.successMessages.push(`Getting user details ...`);
       let dd = new DevDetails();
-      dd.name = r2.DisplayName;
+      dd.name = r2.UserDisplayName;
       dd.login = r2.UserName;
       dd.image = r2.Photo;
       dd.id = r2.Id;
       dd.profileUrl = r2.profileUrl;
       // let buff = btoa(JSON.stringify(dd));
       this.gitService.setLoggedInGitDev(dd);
-      this.successMessages.push(`Found ${r2.DisplayName}`);
+      this.successMessages.push(`Found ${r2.UserDisplayName}`);
       this.gitService.getOrgList().subscribe(result => {
         this.sessionStorage.set('ORG-LIST', result);
         if (result.length > 0) {
