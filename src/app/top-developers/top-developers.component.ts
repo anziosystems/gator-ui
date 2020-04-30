@@ -47,6 +47,7 @@ export class TopDevelopersComponent implements OnInit {
   OrgDevelopers: any[];
   bCallingFromInit: boolean = false;
   selectedDev: string;
+  gitOrg: string;
   //items = [{label: 'Send Kudos'}, {label: 'Start a Watch'}];
   items = [
     {name: 'John', otherProperty: 'Foo'},
@@ -64,10 +65,12 @@ export class TopDevelopersComponent implements OnInit {
       }
     });
 
+  
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
         this.initializeData();
+        this.gitOrg =  this.gitService.getCurrentGitOrg();
       }
     });
   }
