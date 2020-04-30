@@ -10,6 +10,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import * as _ from 'lodash';
 import {animate, state, style, transition, trigger, stagger, query, keyframes} from '@angular/animations';
 import {ContextMenuComponent} from 'ngx-contextmenu';
+import {SortIcon} from 'primeng';
 
 @Component({
   selector: 'app-top-developers',
@@ -46,7 +47,11 @@ export class TopDevelopersComponent implements OnInit {
   OrgDevelopers: any[];
   bCallingFromInit: boolean = false;
   selectedDev: string;
-  items = [{label: 'Send Kudoes'}];
+  //items = [{label: 'Send Kudos'}, {label: 'Start a Watch'}];
+  items = [
+    {name: 'John', otherProperty: 'Foo'},
+    {name: 'Joe', otherProperty: 'Bar'},
+  ];
   display: boolean = false;
   kudoesText: string = 'Please type here your kudoes ...';
 
@@ -193,6 +198,8 @@ export class TopDevelopersComponent implements OnInit {
           d.image = arr[2];
           d.name = arr[0];
           d.login = arr[1];
+          if (d.login === 'TummuriLohitha' || d.login === 'dquispe') d.bWatch = true;
+          if (d.login === 'caok2709' || d.login === 'AlexF4Dev') d.bKudos = true;
           this.developers.push(d);
         });
         this.OrgDevelopers = this.developers;
@@ -201,9 +208,23 @@ export class TopDevelopersComponent implements OnInit {
     });
   }
 
+  showWatch(dev: DevDetails) {
+    alert(`Someone is watching your PR. Right click to subscribe to anyone's PR`);
+  }
+
+  showKudos(dev: DevDetails) {
+    alert('Feature coming soon!');
+  }
+
   rightClick(e: any, context: string, dev: DevDetails) {
-    this.kudoesText = `Please type here kudoes for ${dev.name}`;
-    this.display = true;
+    dev = e.item;
+    if (context === 'Kudos') {
+      this.kudoesText = `Please type here kudoes for ${dev.name}`;
+      this.display = true;
+    }
+    if (context === 'Watch') {
+      alert(`Coming Soon. - Watch ${dev.name} PR. You will get an alert`);
+    }
   }
 
   kudoesYes() {

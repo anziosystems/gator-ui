@@ -23,6 +23,7 @@ export class DevDetails {
   public UserName: string;
   public DisplayName: string;
   public GitUserName: string;
+  public OrgDisplayName: string;
   public JiraUserName: string;
   public TfsUserName: string;
   public image: string;
@@ -32,6 +33,8 @@ export class DevDetails {
   public avatarUrl: string;
   public email: string;
   public tenantId: number;
+  public bWatch: boolean;
+  public bKudos:boolean;
 }
 
 export class CustomEvent {
