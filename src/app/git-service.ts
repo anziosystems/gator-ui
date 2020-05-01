@@ -402,6 +402,10 @@ export class GitService {
     const result = this.sessionStorage.get('ORG-LIST');
     if (!result) {
       this.getOrgList(false, true).subscribe(res => {
+        if (res.code === 404){
+          console.log (`[E] getOrgListFromSession got 404`)
+          return null;
+        }
         this.sessionStorage.set('ORG-LIST', res);
         return res;
       });
@@ -443,12 +447,18 @@ export class GitService {
   */
   async checkOrg() {
     return new Promise((resolve, reject) => {
-      if (this.currentGitOrg === undefined || this.currentGitOrg === null || this.currentOrg === undefined || this.currentOrg === null) {
+      if (this.currentGitOrg === undefined || this.currentGitOrg === null 
+          || this.currentOrg === undefined || this.currentOrg === null) {
+        console.log('[I] CheckOrg - getOrgList is called.');
         this.getOrgList().subscribe(result => {
           if (result.code === 404) {
-            console.log('CheckOrg - Unauthorize!!!');
-            resolve('404');
+            console.log('[E] CheckOrg - Unauthorize!!!');
+            resolve(404);
+            return;
+          } else {
+            console.log (`[S] Got orgs`);
           }
+          this.sessionStorage.set('ORG-LIST', result);
           if (result.length > 0) {
             result.forEach(r => {
               if (r.OrgType === 'git') {
@@ -460,13 +470,13 @@ export class GitService {
                 this.setCurrentOrg(r.Org);
               }
             });
-            resolve('200');
+            resolve(200);
           } else {
-            reject('error');
+            reject(404);
           }
         });
       } else {
-        resolve();
+        resolve(200);
       }
     });
   }
@@ -474,7 +484,7 @@ export class GitService {
     if (org) {
       this.currentGitOrg = org;
       this.sessionStorage.set('CURRENT-GIT-ORG', org);
-      this.broadecastGitOrgChanged (org);
+      this.broadecastGitOrgChanged(org);
     }
   }
 
@@ -492,6 +502,7 @@ export class GitService {
     this.token = this.storage.get('OrgToken');
     try {
       if (this.token) {
+        // console.log(`[S] Token Found!`);
         this.httpOptions = {
           headers: new HttpHeaders({
             'X-GitHub-Delivery': 'xxx',
@@ -502,6 +513,8 @@ export class GitService {
             Authorization: this.token,
           }),
         };
+      } else {
+        console.log('[E] NO TOKEN FOUND');
       }
     } catch (ex) {
       console.log(ex);

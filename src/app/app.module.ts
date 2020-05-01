@@ -60,7 +60,7 @@ import {TfscallbackComponent} from './tfscallback/tfscallback.component';
 import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
 import { LsauthComponent } from './lsauth/lsauth.component';
 import { LsauthCallbackComponent } from './lsauth-callback/lsauth-callback.component';
-import { LsauthStatusComponent } from './lsauth-status/lsauth-status.component';
+ 
 
 const routes: Routes = [
   {path: 'cd', component: CandidateDetailComponent},
@@ -82,7 +82,7 @@ const routes: Routes = [
   {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'tfsStatus', component: TfsStatusComponent},
-  {path: 'lsAuthStatus', component: LsauthStatusComponent},
+ 
   {path: 'icReport', component: IcReportComponent},
   {path: 'orgChart', component: OrgChartComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
@@ -145,7 +145,7 @@ const routes: Routes = [
     CandidateDetailComponent,
     LsauthComponent,
     LsauthCallbackComponent,
-    LsauthStatusComponent,
+ 
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

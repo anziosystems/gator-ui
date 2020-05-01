@@ -21,9 +21,12 @@ export class LsauthCallbackComponent implements OnInit {
       const OrgToken = params['OrgToken'];
       if (OrgToken) {
         this.storage.set('OrgToken', OrgToken);
-        //this.router.navigate(['/lsAuthStatus']);
+        console.log ("[S] Token is set");
+        //ignoring 404 of checkOrg here, as the first call is getting 404 but then this is called again in 
+        //Org-List by the RE-FILL-ORG-LIST Broadcast
+        this.gitService.checkOrg();
         this.go();
-        this.router.navigate(['/dashboard']);
+       
       }
     });
   }
@@ -35,7 +38,7 @@ export class LsauthCallbackComponent implements OnInit {
       let dd = new DevDetails();
       dd.name = r2.UserDisplayName;
       dd.UserName = r2.UserName;
-      dd.DisplayName = r2.UserDisplayName ;
+      dd.DisplayName = r2.UserDisplayName;
       dd.OrgDisplayName = r2.OrgDisplayName;
       dd.GitLogin = r2.UserName;
       dd.image = r2.Photo;
@@ -45,21 +48,9 @@ export class LsauthCallbackComponent implements OnInit {
       dd.JiraUserName = r2.JiraUserName;
       dd.TfsUserName = r2.TfsUserName;
       this.gitService.setLoggedInGitDev(dd);
-      this.gitService.getOrgList().subscribe(result => {
-        this.sessionStorage.set('ORG-LIST', result);
-        result.forEach(r => {
-          if (r.OrgType === 'git') {
-            this.gitService.setCurrentGitOrg(r.Org);
-          }
-          if (r.OrgType === 'org') {
-            this.gitService.setCurrentOrg(r.Org);
-          }
-        });
-        this.gitService.broadcastGlobalComponentMessage('RE-FILL');
-        return true;
-      });
+      this.gitService.broadcastGlobalComponentMessage('RE-FILL-ORG-LIST');
+      this.router.navigate(['/dashboard']);
+      return true;
     });
   }
-
-
 }

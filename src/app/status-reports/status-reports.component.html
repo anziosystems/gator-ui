@@ -95,7 +95,7 @@
           <p></p>
           <!-- Status Report for organization: {{ currentOrg }} -->
           Select your Git Org
-          <select style="color:black" (change)="gitOrgSelection($event.target.value)">
+          <select style="color:black" (change)="gitOrgSelection($event.target.value)" >
             <option *ngFor="let org of gitOrgs" [ngValue]="org" style="color:black">{{ org }}</option>
           </select>
         </div>

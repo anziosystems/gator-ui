@@ -74,14 +74,14 @@ export class TopDevelopersComponent implements OnInit {
       }
     });
 
-    this.gitService.onGitOrgChanged.subscribe (x => {
+    this.gitService.onGitOrgChanged.subscribe(x => {
       this.gitOrg = x;
-    })
+    });
 
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg().then(x => {
-        if (x === '404') {
+        if (x === 404) {
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
@@ -249,7 +249,7 @@ export class TopDevelopersComponent implements OnInit {
       if (!this.currentOrg) {
         //org is empty, we must go back to dash board and let them choose the org
         this.gitService.checkOrg().then(x => {
-          if (x === '404') {
+          if (x === 404) {
             this.router.navigate(['/lsauth']); //May be right login
           }
         });
@@ -273,7 +273,7 @@ export class TopDevelopersComponent implements OnInit {
       if (!this.currentOrg) {
         //org is empty, we must go back to dash board and let them choose the org
         this.gitService.checkOrg().then(x => {
-          if (x === '404') {
+          if (x === 404) {
             this.router.navigate(['/lsauth']); //May be right login
           }
         });
@@ -295,7 +295,7 @@ export class TopDevelopersComponent implements OnInit {
     alert(`Someone is watching your PR. Right click to subscribe to anyone's PR`);
   }
 
-  displayKudos:boolean;
+  displayKudos: boolean;
   kudos: string;
   showKudos(dev: DevDetails) {
     this.gitService.getKudos4User(dev.email).subscribe(x => {
@@ -309,7 +309,7 @@ export class TopDevelopersComponent implements OnInit {
     });
   }
 
-  closeKudos (){
+  closeKudos() {
     this.displayKudos = false;
   }
   rightClick(e: any, context: string, dev: DevDetails) {

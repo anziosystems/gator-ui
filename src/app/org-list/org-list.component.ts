@@ -28,7 +28,7 @@ export class OrgListComponent implements OnInit {
     });
 
     this.gitService.onGlobalComponentMessage.subscribe(message => {
-      if (message === 'RE-FILL') {
+      if (message === 'RE-FILL-ORG-LIST') {
         this.refill();
       }
     });
@@ -111,8 +111,16 @@ export class OrgListComponent implements OnInit {
 
       //[{"Org":"axleinfo.com","DisplayName":"axleinfo.com","OrgType":"org       "},
       //{"Org":"LabShare","DisplayName":"LabShare","OrgType":"git       "}]
+      if (result.code === 404) {
+        console.log('[E] org-list.component getOrgList - Unauthorize!!!');
+        return;
+      } else {
+        console.log('[S] org-list.component-refill  getOrgList - Success');
+      }
       this.orgList = result;
+      console.log (`[I] setting up ORG=LIST ${result}`);
       this.sessionStorage.set('ORG-LIST', result);
+
       result.forEach(r => {
         if (r.OrgType === 'git') {
           this.gitService.setCurrentGitOrg(r.Org);

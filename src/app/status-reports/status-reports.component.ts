@@ -85,11 +85,12 @@ export class StatusReportsComponent implements OnInit {
     this.quillManagerDisable = true;
   }
 
+  currentGitOrg: string;
   ngOnInit() {
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg().then(x => {
-        if (x === '404') {
+        if (x === 404) {
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
@@ -99,13 +100,18 @@ export class StatusReportsComponent implements OnInit {
     }
 
     this.gitOrgs = [];
+    this.gitOrgs.push(' ');
     this.gitService.getOrgListFromSession().then(r => {
-      r.forEach(e => {
-        if (e.OrgType === 'git') {
-          this.gitOrgs.push(e.Org);
-        }
-      });
+      if (r) {
+        r.forEach(e => {
+          if (e.OrgType === 'git') {
+            this.gitOrgs.push(e.Org);
+          }
+        });
+      }
     });
+
+    this.currentGitOrg = this.gitService.getCurrentGitOrg();
 
     this.status = this.IN_PROGRESS;
     this.srId = -1;
@@ -570,7 +576,10 @@ export class StatusReportsComponent implements OnInit {
   }
 
   gitOrgSelection(value) {
-    this.gitService.setCurrentGitOrg(value);
+    if (value.trim().length > 0) {
+      this.gitService.setCurrentGitOrg(value);
+      this.currentGitOrg = value;
+    }
   }
 
   addGitPR() {
