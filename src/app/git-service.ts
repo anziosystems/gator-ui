@@ -34,7 +34,7 @@ export class DevDetails {
   public email: string;
   public tenantId: number;
   public bWatch: boolean;
-  public bKudos:boolean;
+  public bKudos: boolean;
 }
 
 export class CustomEvent {
@@ -416,7 +416,7 @@ export class GitService {
   }
 
   public async getCurrentOrg() {
-    this.currentOrg = await this.sessionStorage.get('CURRENT-ORG');
+    this.currentOrg = this.sessionStorage.get('CURRENT-ORG');
     if (!this.currentOrg) {
       this.checkOrg().then(r => {
         return this.currentOrg;
@@ -546,6 +546,51 @@ export class GitService {
     this.attachToken();
     const q = `GitDev4Org?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  getWatcher(org: string, gitOrg: string): Observable<any> {
+    this.attachToken();
+    const q = `GetWatcher?org=${org}&gitorg=${gitOrg}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  getKudos(org: string, gitOrg: string): Observable<any> {
+    this.attachToken();
+    const q = `GetKudos?org=${org}&gitorg=${gitOrg}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  getKudos4User(target: string): Observable<any> {
+    this.attachToken();
+    const q = `GetKudos4User?target=${target}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  setWatcher(watcher: string, target: string, org: string, gitOrg: string): Observable<any> {
+    const q = `SetWatcher`;
+    this.attachToken();
+    let body: any = {
+      watcher: watcher,
+      target: target,
+      org: org,
+      gitorg: gitOrg,
+    };
+    // body = encodeURIComponent(JSON.stringify (body));
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
+  }
+
+  setKudos(sender: string, target: string, org: string, gitOrg: string, kudos: string): Observable<any> {
+    const q = `SetKudos`;
+    this.attachToken();
+    let body: any = {
+      sender: sender,
+      target: target,
+      org: org,
+      gitorg: gitOrg,
+      kudos: kudos,
+    };
+    // body = encodeURIComponent(JSON.stringify (body));
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
 
   //Gets detail pull request

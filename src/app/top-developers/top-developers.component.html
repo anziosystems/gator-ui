@@ -8,7 +8,7 @@
 
 <div class="flex-container">
   <div id="container" class="flex-item-header">
-    Developers [{{gitOrg}}]<br />
+    Developers [{{ gitOrg }}]<br />
     <input type="text" #box (keyup)="filterDev(box.value)" style="color: black" />
     <!-- <button (click)="showOD()" class="menu2-button" style="width:45px; height: 28px; background-color: transparent; ">
       <img src="../../assets/org-grey.png" class="gator-logo" style="width:40px; height: 28px; " />
@@ -28,7 +28,7 @@
         />
 
         <div (click)="GetData(dev)" style="margin-top:8px; cursor: pointer;" [ngStyle]="getMyStyle(dev)" [contextMenu]="basicMenu" [contextMenuSubject]="dev">
-          {{ dev.name }}
+          {{ dev.DisplayName }}
           <!-- <ul>
             <li *ngFor="let item of items" [contextMenu]="basicMenu" [contextMenuSubject]="item">Right Click: {{item?.name}}</li>
         </ul> -->

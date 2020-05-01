@@ -48,6 +48,7 @@ export class TopDevelopersComponent implements OnInit {
   bCallingFromInit: boolean = false;
   selectedDev: string;
   gitOrg: string;
+  currentOrg: string;
   //items = [{label: 'Send Kudos'}, {label: 'Start a Watch'}];
   items = [
     {name: 'John', otherProperty: 'Foo'},
@@ -65,14 +66,25 @@ export class TopDevelopersComponent implements OnInit {
       }
     });
 
-  
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
+        this.gitOrg = this.gitService.getCurrentGitOrg();
         this.initializeData();
-        this.gitOrg =  this.gitService.getCurrentGitOrg();
       }
     });
+
+    if (!this.currentOrg) {
+      //org is empty, we must go back to dash board and let them choose the org
+      this.gitService.checkOrg().then(x => {
+        if (x === '404') {
+          this.router.navigate(['/lsauth']); //May be right login
+        }
+      });
+      this.gitService.getCurrentOrg().then(r => {
+        this.currentOrg = r;
+      });
+    }
   }
 
   @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
@@ -193,21 +205,85 @@ export class TopDevelopersComponent implements OnInit {
     this.developers = [];
 
     this.gitService.ready().then(result => {
-      this.gitService.getGitTopDevelopers(this.gitService.getCurrentGitOrg(), 30).subscribe(val => {
-        const devs = val.map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url).filter((value, index, self) => self.indexOf(value) === index);
+      this.gitOrg = this.gitService.getCurrentGitOrg();
+      this.gitService.getGitTopDevelopers(this.gitOrg, 30).subscribe(val => {
+        //       gitName, gitId, AvatatUrl, userId (name@mail.com), DisplayName
+        const devs = val
+          .map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url + '--' + item.UserName + '--' + item.DisplayName)
+          .filter((value, index, self) => self.indexOf(value) === index);
         devs.map(item => {
           const arr = _.split(item, '--');
           let d = new DevDetails();
           d.image = arr[2];
           d.name = arr[0];
           d.login = arr[1];
-          if (d.login === 'TummuriLohitha' || d.login === 'dquispe') d.bWatch = true;
-          if (d.login === 'caok2709' || d.login === 'AlexF4Dev') d.bKudos = true;
+          d.email = arr[3];
+          if (arr[4] === 'null') {
+            d.DisplayName = d.name; //gitName
+          } else {
+            d.DisplayName = arr[4];
+          }
+          // if (d.login === 'TummuriLohitha' || d.login === 'dquispe') d.bWatch = true;
+          // if (d.login === 'caok2709' || d.login === 'AlexF4Dev') d.bKudos = true;
           this.developers.push(d);
         });
         this.OrgDevelopers = this.developers;
         //      this.GetData(this.OrgDevelopers[0]);
       });
+
+      let timer = setInterval(() => {
+        this.updateDevListForWatch();
+        this.updateDevList4Kudos();
+        clearTimeout(timer);
+      }, 1000);
+    });
+  }
+
+  updateDevListForWatch() {
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        //org is empty, we must go back to dash board and let them choose the org
+        this.gitService.checkOrg().then(x => {
+          if (x === '404') {
+            this.router.navigate(['/lsauth']); //May be right login
+          }
+        });
+      } else {
+        this.gitService.getWatcher(this.currentOrg, this.gitOrg).subscribe(x => {
+          x.forEach(val => {
+            this.OrgDevelopers.map(d => {
+              if (d.email === val.Target) {
+                d.bWatch = true;
+              }
+            });
+          });
+        });
+      }
+    });
+  }
+
+  updateDevList4Kudos() {
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      if (!this.currentOrg) {
+        //org is empty, we must go back to dash board and let them choose the org
+        this.gitService.checkOrg().then(x => {
+          if (x === '404') {
+            this.router.navigate(['/lsauth']); //May be right login
+          }
+        });
+      } else {
+        this.gitService.getKudos(this.currentOrg, this.gitOrg).subscribe(x => {
+          x.forEach(val => {
+            this.OrgDevelopers.map(d => {
+              if (d.email === val.Target) {
+                d.bKudos = true;
+              }
+            });
+          });
+        });
+      }
     });
   }
 
@@ -216,30 +292,59 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   showKudos(dev: DevDetails) {
-    alert('Feature coming soon!');
+    this.gitService.getKudos4User(dev.email).subscribe(x => {
+      let kudos: string = '';
+      x.forEach(r => {
+        kudos = kudos + `${r.Kudos} - ${r.Sender} \n`;
+      });
+      alert(kudos);
+    });
   }
 
   rightClick(e: any, context: string, dev: DevDetails) {
     dev = e.item;
+    let d = this.gitService.getLoggedInGitDev();
+    this.gitOrg = this.gitService.getCurrentGitOrg();
+    if (dev.email === 'null') {
+      alert(`A watch cannot be set on ${dev.name} because his has not connected his git id with his org id. Please let your admin know`);
+      return;
+    }
+    if (d.login === dev.email) {
+      alert(`You think you are too smart!`);
+      return;
+    }
+
     if (context === 'Kudos') {
+      this.sender = d.login;
+      this.target = dev.email;
       this.kudoesText = `Please type here kudoes for ${dev.name}`;
       this.display = true;
     }
     if (context === 'Watch') {
-      alert(`Coming Soon. - Watch ${dev.name} PR. You will get an alert`);
+      this.gitService.setWatcher(d.login, dev.email, this.currentOrg, this.gitOrg).subscribe(x => {
+        alert(`Watch is set on ${dev.name}, you will get an email alert on ${d.login}`);
+      });
     }
   }
 
+  sender: string;
+  target: string;
+
   kudoesYes() {
-    this.display = true;
+    this.gitService.setKudos(this.sender, this.target, this.currentOrg, this.gitOrg, this.kudoesText).subscribe(x => {
+      alert(`Thanks! Your kudos is sent to ${this.target}`);
+    });
+    this.display = false;
   }
 
   kudoesNo() {
-    this.display = true;
+    this.display = false;
   }
 
   ngOnInit() {
     let bCallingFromInit = true;
-    // this.GetData(this.OrgDevelopers[0]);
+    this.initializeData();
+
+    //clearTimeout(timer);
   }
 }
