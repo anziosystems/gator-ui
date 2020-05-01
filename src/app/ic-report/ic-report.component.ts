@@ -18,14 +18,18 @@ export class IcReportComponent implements OnInit {
   NEEDIMPROVEMENT: number = 1;
   EXCEED: number = 7;
   chart = [];
+  currentOrg: string;
   constructor(private gitService: GitService) {}
 
   ngOnInit() {
-    this.gitService.onDevLoginIdChanged.subscribe((val: string) => {
-      this.getReports(val).then(() => {
-        this.getReviewData(val);
+    this.gitService.getCurrentOrg().then(r => {
+      this.currentOrg = r;
+      this.gitService.onDevLoginIdChanged.subscribe(val => {
+        this.getReports(val.email).then(() => {
+          this.getReviewData(val.GitLogin);
+        });
+        this.getGraphData(val.GitLogin);
       });
-      this.getGraphData(val);
     });
   }
 
@@ -34,7 +38,7 @@ export class IcReportComponent implements OnInit {
     this.textStatus = '';
     this.reviewData = [0, 0, 0];
     return new Promise((done, fail) => {
-      this.gitService.isUserAdmin(this.gitService.getCurrentGitOrg(), this.gitService.getLoggedInGitDev().login).subscribe(x => {
+      this.gitService.isUserAdmin(this.currentOrg, this.gitService.getLoggedInGitDev().GitLogin).subscribe(x => {
         if (x === 0) {
           this.textStatus = 'Sorry, only admin can see this';
           this.reviewData = [0, 0, 0];

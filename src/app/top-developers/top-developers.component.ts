@@ -74,6 +74,10 @@ export class TopDevelopersComponent implements OnInit {
       }
     });
 
+    this.gitService.onGitOrgChanged.subscribe (x => {
+      this.gitOrg = x;
+    })
+
     if (!this.currentOrg) {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg().then(x => {
@@ -103,7 +107,7 @@ export class TopDevelopersComponent implements OnInit {
   }
   GetData(dev: DevDetails) {
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
-    this.selectedDev = dev.login;
+    this.selectedDev = dev.GitLogin;
     if (this.gitService.getCurrentContext() === 'JIRA') {
       this.jiraData(dev);
     } else {
@@ -113,7 +117,7 @@ export class TopDevelopersComponent implements OnInit {
 
   getBGStyle(val: DevDetails) {
     let clr = 'white';
-    if (this.selectedDev === val.login) {
+    if (this.selectedDev === val.GitLogin) {
       if (this.gitService.getCurrentContext() === 'JIRA') {
         clr = 'rgb(86, 125, 143)';
       } else {
@@ -139,7 +143,7 @@ export class TopDevelopersComponent implements OnInit {
       clr = 'rgb(170, 125, 105)';
     }
 
-    if (this.selectedDev === val.login) {
+    if (this.selectedDev === val.GitLogin) {
       return {
         color: clr,
       };
@@ -158,14 +162,14 @@ export class TopDevelopersComponent implements OnInit {
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.setCurrentDev(developer);
     //this.gitService.trigger(developer.login);
-    this.gitService.broadcastDevLoginId(developer.login);
+    this.gitService.broadcastDevLoginId(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     //This to add developer in the status report component
     if (!this.bCallingFromInit) {
       this.gitService.triggerCustomEvent({
         source: 'TOP-DEVELOPER',
         destination: 'STATUS-REPORT',
-        message: developer.login,
+        message: developer.GitLogin,
       });
     }
   }
@@ -216,7 +220,7 @@ export class TopDevelopersComponent implements OnInit {
           let d = new DevDetails();
           d.image = arr[2];
           d.name = arr[0];
-          d.login = arr[1];
+          d.GitLogin = arr[1];
           d.email = arr[3];
           if (arr[4] === 'null') {
             d.DisplayName = d.name; //gitName
@@ -291,16 +295,23 @@ export class TopDevelopersComponent implements OnInit {
     alert(`Someone is watching your PR. Right click to subscribe to anyone's PR`);
   }
 
+  displayKudos:boolean;
+  kudos: string;
   showKudos(dev: DevDetails) {
     this.gitService.getKudos4User(dev.email).subscribe(x => {
       let kudos: string = '';
       x.forEach(r => {
         kudos = kudos + `${r.Kudos} - ${r.Sender} \n`;
       });
-      alert(kudos);
+      this.displayKudos = true;
+      this.kudos = kudos;
+      //alert(kudos);
     });
   }
 
+  closeKudos (){
+    this.displayKudos = false;
+  }
   rightClick(e: any, context: string, dev: DevDetails) {
     dev = e.item;
     let d = this.gitService.getLoggedInGitDev();
@@ -309,20 +320,20 @@ export class TopDevelopersComponent implements OnInit {
       alert(`A watch cannot be set on ${dev.name} because his has not connected his git id with his org id. Please let your admin know`);
       return;
     }
-    if (d.login === dev.email) {
+    if (d.GitLogin === dev.email) {
       alert(`You think you are too smart!`);
       return;
     }
 
     if (context === 'Kudos') {
-      this.sender = d.login;
+      this.sender = d.GitLogin;
       this.target = dev.email;
       this.kudoesText = `Please type here kudoes for ${dev.name}`;
       this.display = true;
     }
     if (context === 'Watch') {
-      this.gitService.setWatcher(d.login, dev.email, this.currentOrg, this.gitOrg).subscribe(x => {
-        alert(`Watch is set on ${dev.name}, you will get an email alert on ${d.login}`);
+      this.gitService.setWatcher(d.GitLogin, dev.email, this.currentOrg, this.gitOrg).subscribe(x => {
+        alert(`Watch is set on ${dev.name}, you will get an email alert on ${d.GitLogin}`);
       });
     }
   }

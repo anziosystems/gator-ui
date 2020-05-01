@@ -29,7 +29,7 @@ export class PullRequestCountComponent implements OnInit {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
-        this.initializeData();
+        this.GetData();
       }
     });
   }
@@ -97,7 +97,7 @@ export class PullRequestCountComponent implements OnInit {
     }
   }
 
-  initializeData() {
+  GetData() {
     this.todayCount = 0;
     this.todayCloseCount = 0;
     this.weekCount = 0;
@@ -125,6 +125,9 @@ export class PullRequestCountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeData();
+    this.gitService.onDevLoginIdChanged.subscribe(val => {
+      this.login = val.GitLogin;
+      this.GetData();
+    });
   }
 }

@@ -12,7 +12,7 @@ export class BreakingnewsComponent implements OnInit {
   breakingNews: string;
   timer;
   ctr = 0;
-  devDetails: any[];
+  bkNewsDetails: any[];
   login;
   repo;
   desc;
@@ -31,8 +31,8 @@ export class BreakingnewsComponent implements OnInit {
     return new Promise((done, fail) => {
       this.gitService.ready().then(result => {
         this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), 7, null, null, 50).subscribe(val => {
-          this.devDetails = val;
-          this.devDetails.map(v => {
+          this.bkNewsDetails = val;
+          this.bkNewsDetails.map(v => {
             let s = v.pullrequesturl;
             s = s.replace('https://api.github.com/repos', 'https://github.com');
             s = s.replace('pulls', 'pull');
@@ -52,21 +52,22 @@ export class BreakingnewsComponent implements OnInit {
     this.getData().then(() => {
       this.timer = setInterval(() => {
         this.ctr = this.ctr + 1;
-        if (!this.devDetails) return;
-        if (this.ctr > this.devDetails.length - 1) {
+        if (!this.bkNewsDetails) return;
+        if (this.ctr > this.bkNewsDetails.length - 1) {
           this.ctr = 0;
           this.getData();
         }
-        this.login = this.devDetails[this.ctr].Login;
-        this.gitService.getGitDisplayName4Login(this.login).then(r => {
-          this.login = r;
-          this.repo = this.devDetails[this.ctr].Repo;
-          this.desc = this.devDetails[this.ctr].title;
-          this.pullReqUrl = this.devDetails[this.ctr].pullrequesturl;
+        let x = this.bkNewsDetails[this.ctr];
+        this.login = x.Login;
+        // this.gitService.getGitDisplayName4GitId(this.login).then(r => {
+         // this.login = r;
+          this.repo = this.bkNewsDetails[this.ctr].Repo;
+          this.desc = this.bkNewsDetails[this.ctr].title;
+          this.pullReqUrl = this.bkNewsDetails[this.ctr].pullrequesturl;
           this.breakingNews = `${this.desc} - ${this.login} - ${this.repo}`;
           this.breakingNews = this.breakingNews.trim();
           this.cd.detectChanges();
-        });
+        // });
       }, 8000);
     });
   }

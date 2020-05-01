@@ -84,7 +84,7 @@ export class OrgDetailsComponent implements OnInit {
 
   nodeSelect(obj) {
     let d = new DevDetails();
-    d.login = obj.node.data;
+    d.GitLogin = obj.node.data;
     d.name = obj.node.label;
     this.GetData(d);
   }
@@ -97,7 +97,7 @@ export class OrgDetailsComponent implements OnInit {
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     //this.gitService.trigger(this.gitService.getCurrentDev().login);
-    this.gitService.broadcastDevLoginId (this.gitService.getCurrentDev().login);
+    this.gitService.broadcastDevLoginId (this.gitService.getCurrentDev());
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 
@@ -126,7 +126,7 @@ export class OrgDetailsComponent implements OnInit {
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.setCurrentDev(developer);
     //this.gitService.trigger(developer.login);
-    this.gitService.broadcastDevLoginId (developer.login);
+    this.gitService.broadcastDevLoginId (developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     this.isShowDetail = true;
   }
@@ -149,7 +149,7 @@ export class OrgDetailsComponent implements OnInit {
   selectedDev: string;
   GetData(dev: DevDetails) {
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
-    this.selectedDev = dev.login;
+    this.selectedDev = dev.GitLogin;
     if (this.gitService.getCurrentContext() === 'JIRA') {
       this.jiraData(dev);
     } else {

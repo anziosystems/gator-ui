@@ -41,6 +41,11 @@ export class IcCountsComponent implements OnInit {
     this.allTimeOpenCount = 0;
     this.allTimeCloseCount = 0;
 
+    //Keep this in constuctor
+    this.gitService.onDevLoginIdChanged.subscribe(val => {
+      this.getPRCount(val.GitLogin);
+    });
+
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {
@@ -132,13 +137,6 @@ export class IcCountsComponent implements OnInit {
     this.allTimeCloseCount = 0;
     this.NintyOpenCount = 0;
     this.NintyCloseCount = 0;
-    //Assign the right value for login
-
-    this.gitService.onDevLoginIdChanged.subscribe((val: string) => {
-      this.getPRCount(val);
-    });
-
-
   }
 
   getPRCount(login: string) {

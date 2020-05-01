@@ -43,7 +43,7 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    this.loggedInUser = this.gitService.getLoggedInGitDev().login;
+    this.loggedInUser = this.gitService.getLoggedInGitDev().GitLogin;
     if (!this.loggedInUser) {
       this.router.navigate(['/lsauth']);
       return;

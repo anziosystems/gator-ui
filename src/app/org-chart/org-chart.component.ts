@@ -51,7 +51,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
       return;
     }
 
-    let loggedInUser = this.gitService.getLoggedInGitDev().login;
+    let loggedInUser = this.gitService.getLoggedInGitDev().GitLogin;
 
     if (!loggedInUser) {
       this.router.navigate(['/lsauth']);
@@ -97,7 +97,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
-    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().login, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
+    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().GitLogin, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
         this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
         return;

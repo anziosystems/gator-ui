@@ -108,7 +108,7 @@ export class DashboardComponent implements OnInit {
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     //this.gitService.trigger(this.gitService.getCurrentDev().login);
-    this.gitService.broadcastDevLoginId (this.gitService.getCurrentDev().login);
+    this.gitService.broadcastDevLoginId (this.gitService.getCurrentDev());
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 

@@ -69,7 +69,7 @@ export class LsauthStatusComponent implements OnInit {
       this.successMessages.push(`Getting user details ...`);
       let dd = new DevDetails();
       dd.name = r2.UserDisplayName;
-      dd.login = r2.UserName;
+      dd.GitLogin = r2.UserName;
       dd.image = r2.Photo;
       dd.id = r2.Id;
       dd.profileUrl = r2.profileUrl;

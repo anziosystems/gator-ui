@@ -21,11 +21,15 @@ export class DevPullDetailsComponent implements OnInit {
   bShowName = false;
   DEFAULT_DAYS = 100;
   bShowAddButton: boolean = false;
+  gitOrg: string;
 
   constructor(
     private gitService: GitService,
     private router: Router, // private usageService: UsageService
   ) {
+    this.gitService.onGitOrgChanged.subscribe(x => {
+      this.gitOrg = x;
+    });
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 
@@ -63,9 +67,9 @@ export class DevPullDetailsComponent implements OnInit {
     this.developer = '';
     this.bShowName = false;
     this.gitService.ready().then(result => {
-      this.gitService.onDevLoginIdChanged.subscribe((val: string) => { 
+      this.gitService.onDevLoginIdChanged.subscribe(val => {
         this.bShowName = false;
-        this.getDeveloperDetails(val);
+        this.getDeveloperDetails(val.GitLogin);
       });
 
       this.gitService.onMyEvent.subscribe((val: string) => {
@@ -81,7 +85,7 @@ export class DevPullDetailsComponent implements OnInit {
           if (val.startsWith('repo-')) {
             this.bShowName = true;
             const arr = _.split(val, 'repo-');
-            this.gitService.getRepositoryPR(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
+            this.gitService.getRepositoryPR(this.gitOrg, this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
               this.devDetails = val;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
@@ -101,7 +105,7 @@ export class DevPullDetailsComponent implements OnInit {
 
   getDeveloperDetails(developer: string) {
     this.gitService.ready().then(result => {
-      this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
+      this.gitService.getDeveloperDetail(this.gitOrg, this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;

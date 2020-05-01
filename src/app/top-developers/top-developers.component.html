@@ -1,8 +1,15 @@
-<p-dialog header="Kudoes" [(visible)]="display" [style]="{width: '50vw', height: '400px'}" model="true">
-  <textarea pInputTextarea [(ngModel)]="kudoesText" style="height: 100%; width: 100%;"></textarea>
+<p-dialog header="Kudos" [(visible)]="display" [style]="{width: '50vw', height: '400px'}" model="true">
+  <textarea pInputTextarea [(ngModel)]="kudoesText" style="height: 100%;  min-height: 350px; width: 100%;"></textarea>
   <p-footer>
     <button type="button" pButton icon="pi pi-check" (click)="kudoesYes()" label="Yes"></button>
     <button type="button" pButton icon="pi pi-times" (click)="kudoesNo()" label="No" class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+<p-dialog header="Kudos" [(visible)]="displayKudos" [style]="{width: '50vw', height: '400px'}" model="true">
+  <textarea pInputTextarea [(ngModel)]="kudos" style="height: 90%; min-height: 350px; width: 100%;"></textarea>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="closeKudos()" label="OK"></button>
+    <!-- <button type="button" pButton icon="pi pi-times" (click)="kudoesNo()" label="No" class="ui-button-secondary"></button> -->
   </p-footer>
 </p-dialog>
 

@@ -70,7 +70,7 @@ export class StatusComponent implements OnInit {
       let dd = new DevDetails();
       console.log(`loginAndSetup=> ${r2.Id}`);
       dd.name = r2.DisplayName;
-      dd.login = r2.UserName;
+      dd.GitLogin = r2.UserName;
       dd.image = r2.Photo;
       dd.id = r2.Id;
       dd.profileUrl = r2.profileUrl;
