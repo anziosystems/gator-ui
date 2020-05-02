@@ -347,7 +347,7 @@ export class StatusReportsComponent implements OnInit {
   getReviewer(listReviewers: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.gitService.ready().then(result => {
-        this.gitService.getGitDev4Org(this.currentOrg).subscribe(val => {
+        this.gitService.getDev4Org(this.currentOrg).subscribe(val => {
           if (val) {
             if (val.code === 404) {
               sessionStorage.setItem('statusText', this.textStatus);

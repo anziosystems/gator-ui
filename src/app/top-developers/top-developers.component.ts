@@ -44,7 +44,7 @@ export class TopDevelopersComponent implements OnInit {
   navigationSubscription: any;
   backgroundColor: string = '#26262fcc';
   filterQuery: string;
-  OrgDevelopers: any[];
+  OrgDevelopers: DevDetails[];
   bCallingFromInit: boolean = false;
   selectedDev: string;
   gitOrg: string;
@@ -210,31 +210,23 @@ export class TopDevelopersComponent implements OnInit {
 
     this.gitService.ready().then(result => {
       this.gitOrg = this.gitService.getCurrentGitOrg();
-      this.gitService.getGitTopDevelopers(this.gitOrg, 30).subscribe(val => {
-        //       gitName, gitId, AvatatUrl, userId (name@mail.com), DisplayName
-        const devs = val
-          .map(item => item.Name + '--' + item.login + '--' + item.Avatar_Url + '--' + item.UserName + '--' + item.DisplayName)
-          .filter((value, index, self) => self.indexOf(value) === index);
-        devs.map(item => {
-          const arr = _.split(item, '--');
-          let d = new DevDetails();
-          d.image = arr[2];
-          d.name = arr[0];
-          d.GitLogin = arr[1];
-          d.email = arr[3];
-          if (arr[4] === 'null') {
-            d.DisplayName = d.name; //gitName
-          } else {
-            d.DisplayName = arr[4];
-          }
-          // if (d.login === 'TummuriLohitha' || d.login === 'dquispe') d.bWatch = true;
-          // if (d.login === 'caok2709' || d.login === 'AlexF4Dev') d.bKudos = true;
-          this.developers.push(d);
+      this.gitService.getGitTopDevelopers(this.gitOrg, 30).subscribe(r => {
+        r.forEach(r2 => {
+          let dd = new DevDetails();
+          dd.name = r2.UserDisplayName;
+          dd.UserName = r2.UserName;
+          dd.DisplayName = r2.UserDisplayName;
+          dd.Login = r2.Email;
+          dd.image = r2.Avatar_Url;
+          dd.id = r2.Id;
+          dd.profileUrl = r2.Avatar_Url;
+          dd.GitLogin = r2.GitUserName;
+          dd.JiraUserName = r2.JiraUserName;
+          dd.TfsUserName = r2.TfsUserName;
+          this.developers.push(dd);
         });
-        this.OrgDevelopers = this.developers;
-        //      this.GetData(this.OrgDevelopers[0]);
       });
-
+      this.OrgDevelopers = this.developers;
       let timer = setInterval(() => {
         this.updateDevListForWatch();
         this.updateDevList4Kudos();

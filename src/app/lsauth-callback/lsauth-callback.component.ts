@@ -40,11 +40,12 @@ export class LsauthCallbackComponent implements OnInit {
       dd.UserName = r2.UserName;
       dd.DisplayName = r2.UserDisplayName;
       dd.OrgDisplayName = r2.OrgDisplayName;
-      dd.GitLogin = r2.UserName;
+      dd.GitLogin = r2.GitUserName;
+      dd.Login = r2.UserName;
       dd.image = r2.Photo;
       dd.id = r2.Id;
       dd.profileUrl = r2.profileUrl;
-      dd.Login = r2.GitUserName;
+    
       dd.JiraUserName = r2.JiraUserName;
       dd.TfsUserName = r2.TfsUserName;
       this.gitService.setLoggedInGitDev(dd);

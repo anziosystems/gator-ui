@@ -51,7 +51,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
       return;
     }
 
-    let loggedInUser = this.gitService.getLoggedInGitDev().GitLogin;
+    let loggedInUser = this.gitService.getLoggedInGitDev().Login;
 
     if (!loggedInUser) {
       this.router.navigate(['/lsauth']);
@@ -118,7 +118,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
 
   addDeveloper() {
     this.gitService.ready().then(result => {
-      this.gitService.getGitDev4Org(this.currentOrg).subscribe(val => {
+      this.gitService.getDev4Org(this.currentOrg).subscribe(val => {
         if (val) {
           if (val.code === 404) {
             sessionStorage.setItem('statusText', this.textStatus);
@@ -126,9 +126,12 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
             this.router.navigate(['/lsauth']);
           }
         }
-        const devs = val.map(item => item.UserDisplayName).filter((value, index, self) => self.indexOf(value) === index);
+
+        const devs = val.map(item => item.UserDisplayName + '--' + item.Email).filter((value, index, self) => self.indexOf(value) === index);
         const developerNames = devs.map(item => {
-          return item;
+          const arr = _.split(item, '--');
+          if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
+          return arr[0] + '  --  ' + arr[1];
         });
 
         this.dialogService
@@ -153,8 +156,8 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.textReviewer !== '') {
       let arrSelected = this.textReviewer.split(',');
       arrSelected.forEach(e => {
-        //  let person = e.split('--');
-        this.arrPeople.push({name: e, userName: e});
+        let person = e.split('--');
+        this.arrPeople.push({name:person[0], userName: person[1]});
       });
 
       let i = this.model.nodeDataArray.length;

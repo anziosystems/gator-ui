@@ -57,8 +57,8 @@ export class GitService {
   private loggedInGitDev: DevDetails;
   private currentDev: DevDetails;
   private currentContext: string; //JIRA/GIT
-  // private gitUsersMapOrgEmail = new Map<string, DevDetails>();
-  // private gitUsersMapGitId = new Map<string, DevDetails>();
+  private gitUsersMapOrgEmail = new Map<string, DevDetails>();
+  private gitUsersMapGitId = new Map<string, DevDetails>();
   public httpOptions: any;
   public httpJirapOptions: any;
   public query: string;
@@ -148,7 +148,7 @@ export class GitService {
 
   setCurrentDev(dev: DevDetails) {
     if (dev) {
-      if (dev.name) {
+      if (dev.Login) {
         this.currentDev = dev;
         this.sessionStorage.set('CURRENT-DEV', dev);
       }
@@ -223,70 +223,73 @@ export class GitService {
     return this.loggedInGitDev;
   }
 
-  // //No Caller
-  // async fillGitUserMap(): Promise<boolean> {
-  //   return new Promise((done, fail) => {
-  //     this.getGitDev4Org(this.getCurrentGitOrg()).subscribe(result => {
-  //       if (result.code === 401) {
-  //         fail('401');
-  //         return;
-  //       }
-  //       result.forEach(r2 => {
-  //         let dd = new DevDetails();
-  //         dd.name = r2.DisplayName;
-  //         dd.UserName = r2.UserName;
-  //         dd.DisplayName = r2.DisplayName;
-  //         dd.login = r2.UserName;
-  //         dd.image = r2.Photo;
-  //         dd.id = r2.Id;
-  //         dd.profileUrl = r2.profileUrl;
-  //         dd.GitUserName = r2.GitUserName;
-  //         dd.JiraUserName = r2.JiraUserName;
-  //         dd.TfsUserName = r2.TfsUserName;
-  //         // dd.tenantId = e2.TenantId;
-  //         this.gitUsersMapOrgEmail.set(r2.Email.trim(), dd);
-  //         this.gitUsersMapGitId.set(r2.UserName, dd);
-  //       });
-  //       done(true);
-  //       return;
-  //     });
-  //   });
-  // }
+  async fillUserMap4CurrentOrg(): Promise<boolean> {
+    return new Promise((done, fail) => {
+      let co = this.sessionStorage.get ('CURRENT-ORG')
+      this.getDev4Org(co).subscribe(result => {
+        if (result.code === 401) {
+          fail('401');
+          return;
+        }
+        if (this.gitUsersMapOrgEmail.size === 0) {
+          result.forEach(r2 => {
+            let dd = new DevDetails();
+            dd.name = r2.UserDisplayName;
+            dd.UserName = r2.UserName;
+            dd.DisplayName = r2.UserDisplayName;
+            dd.Login = r2.Email;
+            dd.image = r2.Photo;
+            dd.id = r2.Id;
+            dd.profileUrl = r2.profileUrl;
+            dd.GitLogin = r2.GitUserName;
+            dd.JiraUserName = r2.JiraUserName;
+            dd.TfsUserName = r2.TfsUserName;
+            // dd.tenantId = e2.TenantId;
+            this.gitUsersMapOrgEmail.set(r2.Email.trim(), dd);
+            this.gitUsersMapGitId.set(r2.UserName, dd);
+          });
+        }
+        done(true);
+        return;
+      });
+    });
+  }
 
-  // //No Caller
-  // getGitDisplayName4GitId(login: string): Promise<string> {
-  //   return new Promise((done, fail) => {
-  //     try {
-  //       if (this.gitUsersMapGitId.size === 0) {
-  //         this.fillGitUserMap().then(x => {
-  //           let v = this.gitUsersMapGitId.get(login);
-  //           done(v.name);
-  //         });
-  //       } else {
-  //         done(this.gitUsersMapGitId.get(login).name);
-  //       }
-  //     } catch (ex) {
-  //       fail(ex);
-  //     }
-  //   });
-  // }
+ 
+  getDevDetails4GitId(login: string): Promise<DevDetails> {
+    return new Promise((done, fail) => {
+      try {
+        if (this.gitUsersMapGitId.size === 0) {
+          this.fillUserMap4CurrentOrg().then(x => {
+            let v = this.gitUsersMapGitId.get(login);
+            done(v);
+          });
+        } else {
+          done(this.gitUsersMapGitId.get(login));
+        }
+      } catch (ex) {
+        fail(ex);
+      }
+    });
+  }
 
-  // //No Caller
-  // getGitDevDetails4Login(login: string): Promise<DevDetails> {
-  //   return new Promise((done, fail) => {
-  //     try {
-  //       if (this.gitUsersMapOrgEmail.size === 0) {
-  //         this.fillGitUserMap().then(x => {
-  //           done(this.gitUsersMapOrgEmail.get(login));
-  //         });
-  //       } else {
-  //         done(this.gitUsersMapOrgEmail.get(login));
-  //       }
-  //     } catch (ex) {
-  //       fail(ex);
-  //     }
-  //   });
-  // }
+  getDevDetails4Login(login: string): Promise<DevDetails> {
+    return new Promise((done, fail) => {
+      try {
+        if (this.gitUsersMapOrgEmail.size === 0) {
+          this.fillUserMap4CurrentOrg().then(x => {
+            let y = this.gitUsersMapOrgEmail.get(login);
+            done(y);
+          });
+        } else {
+          let x = this.gitUsersMapOrgEmail.get(login);
+          done(x);
+        }
+      } catch (ex) {
+        fail(ex);
+      }
+    });
+  }
 
   //return the event as observable so others can subscribe to it
   public get onIsLoggedInEvent(): Observable<boolean> {
@@ -340,7 +343,7 @@ export class GitService {
   }
 
   public broadecastGitOrgChanged(value: string) {
-     this._onGitOrg.next(value);
+    this._onGitOrg.next(value);
   }
 
   public broadcastDevLoginId(value: DevDetails) {
@@ -402,8 +405,8 @@ export class GitService {
     const result = this.sessionStorage.get('ORG-LIST');
     if (!result) {
       this.getOrgList(false, true).subscribe(res => {
-        if (res.code === 404){
-          console.log (`[E] getOrgListFromSession got 404`)
+        if (res.code === 404) {
+          console.log(`[E] getOrgListFromSession got 404`);
           return null;
         }
         this.sessionStorage.set('ORG-LIST', res);
@@ -447,8 +450,7 @@ export class GitService {
   */
   async checkOrg() {
     return new Promise((resolve, reject) => {
-      if (this.currentGitOrg === undefined || this.currentGitOrg === null 
-          || this.currentOrg === undefined || this.currentOrg === null) {
+      if (this.currentGitOrg === undefined || this.currentGitOrg === null || this.currentOrg === undefined || this.currentOrg === null) {
         console.log('[I] CheckOrg - getOrgList is called.');
         this.getOrgList().subscribe(result => {
           if (result.code === 404) {
@@ -456,7 +458,7 @@ export class GitService {
             resolve(404);
             return;
           } else {
-            console.log (`[S] Got orgs`);
+            console.log(`[S] Got orgs`);
           }
           this.sessionStorage.set('ORG-LIST', result);
           if (result.length > 0) {
@@ -561,15 +563,19 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+//Login,Name, Avatar_Url,UserName,UserDisplayName,Email, GitUserName,JiraUserName,TfsUserName
   getGitTopDevelopers(org: string, day: number): Observable<any> {
     this.attachToken();
     const q = `TopDevForLastXDays?org=${org}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  getGitDev4Org(org: string): Observable<any> {
+  //Id, Email, UserName (is unique hence it is email too), UserOrg.Org, UserOrg.DisplayName as OrgDisplayName, 
+  //Users.DisplayName AS UserDisplayName, UserOrg.Active, UserOrg.OrgType,
+  //dbo.Users.JiraUserName, dbo.Users.GitUserName, dbo.Users.TfsUserName
+  getDev4Org(org: string): Observable<any> {
     this.attachToken();
-    const q = `GitDev4Org?org=${org}`;
+    const q = `GetDev4Org?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 

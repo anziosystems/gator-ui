@@ -89,7 +89,7 @@ export class AdminComponent implements OnInit {
       });
     });
 
-    this.gitService.getGitDev4Org(this.currentOrg).subscribe(r => {
+    this.gitService.getDev4Org(this.currentOrg).subscribe(r => {
       this.allUsers = [];
       this.allUsers = r;
     });

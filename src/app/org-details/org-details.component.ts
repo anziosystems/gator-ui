@@ -18,7 +18,7 @@ export class OrgDetailsComponent implements OnInit {
   selectedPerson: TreeNode;
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
-  currentOrg : string;
+  currentOrg: string;
   alertmsgs = [];
   constructor(
     private gitService: GitService,
@@ -37,10 +37,14 @@ export class OrgDetailsComponent implements OnInit {
       }
     });
 
+    //Just a fire so it is getting filled - THIS WILL NEVER BE FIRED Till you do somethng with the promise
+
+    this.gitService.fillUserMap4CurrentOrg().then(x => {
+      console.log('[I] FillGitUserMap is filled.');
+    });
   }
 
   ngOnInit() {
-
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       if (!this.currentOrg) {
@@ -55,6 +59,7 @@ export class OrgDetailsComponent implements OnInit {
       this.router.navigate(['/lsauth']);
       return;
     }
+   
     this.gitService.triggerIsLoggedIn(true);
 
     this.gitService.onGlobalComponentMessage.subscribe((val: string) => {
@@ -76,6 +81,7 @@ export class OrgDetailsComponent implements OnInit {
       if (val === 'SHOW_OD') {
         this.process();
       }
+
       // if (val === 'HIDE_OD') {
       //   this.isShowOD = false;
       // }
@@ -84,9 +90,11 @@ export class OrgDetailsComponent implements OnInit {
 
   nodeSelect(obj) {
     let d = new DevDetails();
-    d.GitLogin = obj.node.data;
+    d.Login = obj.node.data;
     d.name = obj.node.label;
-    this.GetData(d);
+    this.gitService.getDevDetails4Login(d.Login).then(x => {
+      this.GetData(x);
+    });
   }
 
   gitData2() {
@@ -97,7 +105,7 @@ export class OrgDetailsComponent implements OnInit {
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     //this.gitService.trigger(this.gitService.getCurrentDev().login);
-    this.gitService.broadcastDevLoginId (this.gitService.getCurrentDev());
+    this.gitService.broadcastDevLoginId(this.gitService.getCurrentDev());
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 
@@ -119,14 +127,12 @@ export class OrgDetailsComponent implements OnInit {
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
   gitData(developer: DevDetails) {
-    const date = new Date();
-
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     this.gitService.setCurrentDev(developer);
     //this.gitService.trigger(developer.login);
-    this.gitService.broadcastDevLoginId (developer);
+    this.gitService.broadcastDevLoginId(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     this.isShowDetail = true;
   }
@@ -146,10 +152,10 @@ export class OrgDetailsComponent implements OnInit {
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
 
-  selectedDev: string;
+  //selectedDev: string;
   GetData(dev: DevDetails) {
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
-    this.selectedDev = dev.GitLogin;
+    // this.selectedDev = dev.GitLogin;
     if (this.gitService.getCurrentContext() === 'JIRA') {
       this.jiraData(dev);
     } else {
@@ -192,7 +198,7 @@ export class OrgDetailsComponent implements OnInit {
     let _obj;
     this.gitService.getOrgChart(this.currentOrg, true).subscribe(v => {
       if (!v[0]) {
-        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization:'+  this.currentOrg  , detail: ''});
+        this.alertmsgs.push({severity: 'error', summary: 'Create the Org chart first for the orgnization:' + this.currentOrg, detail: ''});
         //alert('Create the Org chart first for the orgnization: ' + this.gitService.getCurrentOrg());
 
         this.router.navigate(['/orgChart']);

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GitService} from '../git-service';
+import {GitService, DevDetails} from '../git-service';
 import {WeekDay} from '@angular/common';
 import {Chart} from 'chart.js';
 import {preserveWhitespacesDefault} from '@angular/compiler';
@@ -25,26 +25,27 @@ export class IcReportComponent implements OnInit {
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       this.gitService.onDevLoginIdChanged.subscribe(val => {
-        this.getReports(val.email).then(() => {
-          this.getReviewData(val.GitLogin);
+        this.getReports(val).then(() => {
+          this.getReviewData(val);
         });
-        this.getGraphData(val.GitLogin);
+        this.getGraphData(val);
       });
     });
   }
 
   textStatus: string;
-  async getReports(login: string): Promise<any> {
+  async getReports(dev: DevDetails): Promise<any> {
     this.textStatus = '';
     this.reviewData = [0, 0, 0];
     return new Promise((done, fail) => {
-      this.gitService.isUserAdmin(this.currentOrg, this.gitService.getLoggedInGitDev().GitLogin).subscribe(x => {
+      let loggedUser = this.gitService.getLoggedInGitDev().Login;
+      this.gitService.isUserAdmin(this.currentOrg, loggedUser).subscribe(x => {
         if (x === 0) {
           this.textStatus = 'Sorry, only admin can see this';
           this.reviewData = [0, 0, 0];
         } else {
           //Get all the reports for the user
-          this.gitService.getSR4User(login, false).subscribe(async val => {
+          this.gitService.getSR4User(dev.Login, false).subscribe(async val => {
             await Promise.all(
               val.map(item => {
                 let status = '';
@@ -96,13 +97,13 @@ export class IcReportComponent implements OnInit {
   reportsId: [number] = [0];
   totalClose = 0;
   totalOpen = 0;
-  getGraphData(login: string) {
+  getGraphData(dev: DevDetails) {
     this.closeCtr = [];
     this.openCtr = [];
     this.allDates = [];
     this.totalClose = 0;
     this.totalOpen = 0;
-    this.gitService.getGraphData4XDays(this.gitService.getCurrentGitOrg(), login, 90).subscribe(results => {
+    this.gitService.getGraphData4XDays(this.gitService.getCurrentGitOrg(), dev.GitLogin, 90).subscribe(results => {
       results.map(res => {
         if (res.State === 'closed') {
           this.closeCtr.push(res.Ctr);
@@ -162,7 +163,7 @@ export class IcReportComponent implements OnInit {
     });
   }
 
-  getReviewData(login: string) {
+  getReviewData(dev: DevDetails) {
     this.closeCtr = [];
     this.openCtr = [];
     this.allDates = [];
