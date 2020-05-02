@@ -290,7 +290,7 @@ export class TopDevelopersComponent implements OnInit {
   displayKudos: boolean;
   kudos: string;
   showKudos(dev: DevDetails) {
-    this.gitService.getKudos4User(dev.email).subscribe(x => {
+    this.gitService.getKudos4User(dev.Login).subscribe(x => {
       let kudos: string = '';
       x.forEach(r => {
         kudos = kudos + `${r.Kudos} - ${r.Sender} \n`;
