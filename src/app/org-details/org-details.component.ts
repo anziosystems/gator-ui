@@ -79,19 +79,13 @@ export class OrgDetailsComponent implements OnInit {
         this.isShowDetail = false;
       }
       if (val === 'SHOW_OD') {
-        this.gitService
-          .getOrgTree()
-          .then(x => {
+        this.gitService.getCurrentOrg().then(x => {
+          let p = this.gitService.getCurrentDev();
+          this.gitService.getOrgTree(x, p.Login, false).subscribe(x => {
             this.data = x;
-          })
-          .catch(x => {
-            console.log(x);
           });
+        });
       }
-
-      // if (val === 'HIDE_OD') {
-      //   this.isShowOD = false;
-      // }
     });
   }
 
