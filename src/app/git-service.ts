@@ -96,8 +96,8 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-  //public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
 
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
@@ -225,7 +225,7 @@ export class GitService {
 
   async fillUserMap4CurrentOrg(): Promise<boolean> {
     return new Promise((done, fail) => {
-      let co = this.sessionStorage.get ('CURRENT-ORG')
+      let co = this.sessionStorage.get('CURRENT-ORG');
       this.getDev4Org(co).subscribe(result => {
         if (result.code === 401) {
           fail('401');
@@ -255,7 +255,6 @@ export class GitService {
     });
   }
 
- 
   getDevDetails4GitId(login: string): Promise<DevDetails> {
     return new Promise((done, fail) => {
       try {
@@ -563,14 +562,14 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-//Login,Name, Avatar_Url,UserName,UserDisplayName,Email, GitUserName,JiraUserName,TfsUserName
+  //Login,Name, Avatar_Url,UserName,UserDisplayName,Email, GitUserName,JiraUserName,TfsUserName
   getGitTopDevelopers(org: string, day: number): Observable<any> {
     this.attachToken();
     const q = `TopDevForLastXDays?org=${org}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  //Id, Email, UserName (is unique hence it is email too), UserOrg.Org, UserOrg.DisplayName as OrgDisplayName, 
+  //Id, Email, UserName (is unique hence it is email too), UserOrg.Org, UserOrg.DisplayName as OrgDisplayName,
   //Users.DisplayName AS UserDisplayName, UserOrg.Active, UserOrg.OrgType,
   //dbo.Users.JiraUserName, dbo.Users.GitUserName, dbo.Users.TfsUserName
   getDev4Org(org: string): Observable<any> {
