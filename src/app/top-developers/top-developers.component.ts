@@ -248,8 +248,8 @@ export class TopDevelopersComponent implements OnInit {
       } else {
         this.gitService.getWatcher(this.currentOrg, this.gitOrg).subscribe(x => {
           x.forEach(val => {
-            this.OrgDevelopers.map(d => {
-              if (d.email === val.Target) {
+            this.developers.map(d => {
+              if (d.Login === val.Target) {
                 d.bWatch = true;
               }
             });
@@ -272,8 +272,8 @@ export class TopDevelopersComponent implements OnInit {
       } else {
         this.gitService.getKudos(this.currentOrg, this.gitOrg).subscribe(x => {
           x.forEach(val => {
-            this.OrgDevelopers.map(d => {
-              if (d.email === val.Target) {
+            this.developers.map(d => {
+              if (d.Login === val.Target) {
                 d.bKudos = true;
               }
             });
