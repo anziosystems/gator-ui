@@ -74,7 +74,7 @@ export class StatusReportsComponent implements OnInit {
       return;
     }
 
-    let loggedInUser = this.gitService.getLoggedInGitDev().GitLogin;
+    let loggedInUser = this.gitService.getLoggedInGitDev().Login;
     if (!loggedInUser) {
       this.router.navigate(['/lsauth']);
       return;
@@ -179,7 +179,7 @@ export class StatusReportsComponent implements OnInit {
     this.managerComment = '';
     this.managerStatus = this.ACHIEVED;
     this.quillDisable = false;
-    this.author = this.gitService.getLoggedInGitDev().GitLogin;
+    this.author = this.gitService.getLoggedInGitDev().Login;
     this.bInReview = false;
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
@@ -242,7 +242,7 @@ export class StatusReportsComponent implements OnInit {
     this.srList = [];
     this.srReviewList = [];
     this.quillDisable = false;
-    this.gitService.getSR4User(this.gitService.getLoggedInGitDev().GitLogin, true).subscribe(val => {
+    this.gitService.getSR4User(this.gitService.getLoggedInGitDev().Login, true).subscribe(val => {
       val.map(item => {
         //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
         switch (item.Status) {
@@ -277,7 +277,7 @@ export class StatusReportsComponent implements OnInit {
     //review reports
     this.gitService
       .GetSR4User4Review(
-        this.gitService.getLoggedInGitDev().GitLogin,
+        this.gitService.getLoggedInGitDev().Login,
         status, //inreview
         userFilter ? userFilter.toString() : null,
         dateFilter ? dateFilter : null,
@@ -429,7 +429,7 @@ export class StatusReportsComponent implements OnInit {
       if (!this.author) {
         //dont just blindly update the autor, some time reviewer is looking at the In_Progress reports
         //to, as he is mentioned in the reviewer field.
-        this.author = this.gitService.getLoggedInGitDev().GitLogin;
+        this.author = this.gitService.getLoggedInGitDev().Login;
       }
     }
 
@@ -455,7 +455,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   submit() {
-    if (this.author === this.gitService.getLoggedInGitDev().GitLogin) {
+    if (this.author === this.gitService.getLoggedInGitDev().Login) {
       if (this.status === this.IN_REVIEW) {
         this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'This report is already submitted'});
         return;
