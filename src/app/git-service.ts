@@ -9,6 +9,7 @@ import {reject} from 'q';
 import {typeWithParameters} from '@angular/compiler/src/render3/util';
 import {timingSafeEqual} from 'crypto';
 import * as _ from 'lodash';
+import {FindValueOperator} from 'rxjs/internal/operators/find';
 
 /*
 Jira calls must have following in the header
@@ -17,7 +18,24 @@ req.headers['jiraOrg'];  //AccessibleResources Id
 req.headers['jiraAuthorization'];  //This is JiraTenant Id
 
 */
+export class Node {
+  parent: any;
+  child: any[];
+  constructor() {
+    this.child = new Array<any>();
+  }
+}
 
+export class TNode {
+  label: string;
+  data: string;
+  expandedIcon: string;
+  collapsedIcon: string;
+  children: TNode[];
+  constructor() {
+    this.children = new Array<TNode>();
+  }
+}
 export class DevDetails {
   public name: string;
   public UserName: string;
@@ -894,5 +912,112 @@ export class GitService {
       role: role,
     };
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
+  }
+
+  //Gets Org Tree for Current Org.
+  //reds maps data and parses it in a tree for UI
+  async getOrgTree(): Promise<TNode[]> {
+    /*
+    { key: 1, name: "Eng Management" }
+    { key: 2, name: "Rafat Sarosh", userid: 'rsarosh' , parent: 1 }
+  */
+    let _nodes: Map<number, Node> = new Map<number, Node>();
+    let _obj;
+    return new Promise((done, fail) => {
+      try {
+        this.getCurrentOrg().then(currentOrg => {
+          this.getOrgChart(currentOrg, true).subscribe(v => {
+            if (!v[0]) {
+              fail(`No Data for ${this.currentOrg}`); //  this.router.navigate(['/orgChart']);
+            }
+            _obj = JSON.parse(v[0].OrgChart);
+            _obj.nodeDataArray.forEach(x => {
+              if (x.key === 1) {
+                let _n = new Node();
+                _n.parent = x;
+                _nodes.set(x.key, _n);
+                return;
+              }
+
+              if (x.parent) {
+                let n = _nodes.get(x.parent);
+                if (!n) {
+                  //parent not found, make a new node
+                  let _n = new Node();
+                  _n.parent = getElementfromNodeDataArray(x.parent);
+                  _n.child.push(x);
+                  _nodes.set(x.parent, _n);
+                } else {
+                  //parent found, let set the child
+                  n.child.push(x);
+                }
+              }
+            });
+            let Data: TNode[] = [];
+            _nodes.forEach(x => {
+              let data = new TNode();
+              data.label = x.parent.name;
+              data.data = x.parent.userid;
+              data.expandedIcon = 'pi';
+              data.collapsedIcon = 'pi';
+              for (let y of x.child) {
+                let c = new TNode();
+                c.label = y.name;
+                c.data = y.userid;
+                c.expandedIcon = 'pi ';
+                c.collapsedIcon = 'pi ';
+                data.children.push(c);
+              }
+              Data.push(data);
+            });
+
+            for (let z of Data) {
+              if (z.children) {
+                let cCtr = 0;
+                for (let c of z.children) {
+                  let n = IsChildrenExistAsNode(c.label);
+                  if (n) {
+                    z.children[cCtr] = n;
+                  }
+                  cCtr = cCtr + 1;
+                }
+              }
+            }
+            /*
+          0: TNode
+            children: Array(3)
+              0: TNode
+                  children: (5) [TNode, TNode, TNode, TNode, TNode]
+              collapsedIcon: "pi"
+              data: "rafat.sarosh@axleinfo.com"
+              expandedIcon: "pi"
+              label: "Rafat Sarosh"
+              __proto__: Object
+        1: TNode {children: Array(1), label: "Nathan Hotaling", data: "Nathan.Hotaling@labshare.org", expandedIcon: "pi", collapsedIcon: "pi"}
+        2: TNode {children: Array(3), label: "Reid Simon", data: "reid.simon@axleinfo.com", expandedIcon: "pi", collapsedIcon: "pi"}
+        */
+            done(Data);
+
+            function IsChildrenExistAsNode(lbl: string): TNode {
+              for (let n of Data) {
+                if (n.label === lbl) {
+                  Data = Data.filter(obj => obj !== n);
+                  return n;
+                }
+              }
+            }
+
+            function getElementfromNodeDataArray(key: number) {
+              for (let o of _obj.nodeDataArray) {
+                if (o.key === key) return o;
+              }
+              return null;
+            }
+          });
+        });
+      } catch (ex) {
+        fail(ex);
+      }
+    });
   }
 }
