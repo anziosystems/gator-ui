@@ -22,6 +22,7 @@ export class IcReportComponent implements OnInit {
   constructor(private gitService: GitService) {}
 
   ngOnInit() {
+    //this.textStatus = 'Checking permission ...';
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       this.gitService.onDevLoginIdChanged.subscribe(val => {
@@ -46,6 +47,10 @@ export class IcReportComponent implements OnInit {
         } else {
           //Get all the reports for the user
           this.gitService.getSR4User(dev.Login, false).subscribe(async val => {
+            if (!val) {
+              this.textStatus = 'No Data Found!!!';
+            }
+
             await Promise.all(
               val.map(item => {
                 let status = '';
@@ -74,7 +79,7 @@ export class IcReportComponent implements OnInit {
                     this.textStatus +
                     item.StatusDetails +
                     '<p style="color: red"' +
-                    "<br> ---------------------- Manager's Comment ----------------------------" +
+                    "<br><br> ---------------------- Manager's Comment ----------------------------" +
                     '<br>' +
                     item.ManagerComment +
                     '<br>' +
@@ -83,7 +88,10 @@ export class IcReportComponent implements OnInit {
                     '<br>Reviewer: ' +
                     item.Reviewer +
                     '<br>' +
-                    '___________________________________________________ </p> <br>';
+                    'Date: ' +
+                    item.ReportDate.substring(0, 10) +
+                    ' <br>' +
+                    '___________________________________________________ </p> <br><br>';
               }),
             ).then(res => {
               done(true);
