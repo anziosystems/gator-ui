@@ -40,65 +40,65 @@ export class IcReportComponent implements OnInit {
     this.reviewData = [0, 0, 0];
     return new Promise((done, fail) => {
       let loggedUser = this.gitService.getLoggedInGitDev().Login;
-      this.gitService.isUserAdmin(this.currentOrg, loggedUser).subscribe(x => {
-        if (x === 0) {
-          this.textStatus = 'Sorry, only admin can see this';
-          this.reviewData = [0, 0, 0];
-        } else {
-          //Get all the reports for the user
-          this.gitService.getSR4User(dev.Login, false).subscribe(async val => {
-            if (!val) {
-              this.textStatus = 'No Data Found!!!';
-            }
-
-            await Promise.all(
-              val.map(item => {
-                let status = '';
-                if (item.ManagerStatus) {
-                  if (item.ManagerStatus === this.ACHIEVED) {
-                    this.reviewData[1] += 1;
-                    status = 'Achieved';
-                  }
-                  if (item.ManagerStatus === this.NEEDIMPROVEMENT) {
-                    this.reviewData[2] += 1;
-                    status = 'Need Improvement';
-                  }
-                  if (item.ManagerStatus === this.EXCEED) {
-                    this.reviewData[0] += 1; //Just increment by one there is no need to increment it by 7
-                    status = 'Exceeded';
-                  }
-                } else {
-                  this.reviewData[1] += 1;
-                  status = 'Achieved';
-                }
-                if (!item.ManagerComment) {
-                  item.ManagerComment = 'No Comments';
-                }
-                if (item)
-                  this.textStatus =
-                    this.textStatus +
-                    item.StatusDetails +
-                    '<p style="color: red"' +
-                    "<br><br> ---------------------- Manager's Comment ----------------------------" +
-                    '<br>' +
-                    item.ManagerComment +
-                    '<br>' +
-                    'Rating: ' +
-                    status +
-                    '<br>Reviewer: ' +
-                    item.Reviewer +
-                    '<br>' +
-                    'Date: ' +
-                    item.ReportDate.substring(0, 10) +
-                    ' <br>' +
-                    '___________________________________________________ </p> <br><br>';
-              }),
-            ).then(res => {
-              done(true);
-            });
-          });
+      // this.gitService.isUserAdmin(this.currentOrg, loggedUser).subscribe(x => {
+      //   if (x === 0) {
+      //     this.textStatus = 'Sorry, only admin can see this';
+      //     this.reviewData = [0, 0, 0];
+      //   } else {
+      //Get all the reports for the user
+      this.gitService.getSR4User(dev.Login, false).subscribe(async val => {
+        if (!val) {
+          this.textStatus = 'No Data Found!!!';
         }
+
+        await Promise.all(
+          val.map(item => {
+            let status = '';
+            if (item.ManagerStatus) {
+              if (item.ManagerStatus === this.ACHIEVED) {
+                this.reviewData[1] += 1;
+                status = 'Achieved';
+              }
+              if (item.ManagerStatus === this.NEEDIMPROVEMENT) {
+                this.reviewData[2] += 1;
+                status = 'Need Improvement';
+              }
+              if (item.ManagerStatus === this.EXCEED) {
+                this.reviewData[0] += 1; //Just increment by one there is no need to increment it by 7
+                status = 'Exceeded';
+              }
+            } else {
+              this.reviewData[1] += 1;
+              status = 'Achieved';
+            }
+            if (!item.ManagerComment) {
+              item.ManagerComment = 'No Comments';
+            }
+            if (item)
+              this.textStatus =
+                this.textStatus +
+                item.StatusDetails +
+                '<p style="color: red"' +
+                "<br><br> ---------------------- Manager's Comment ----------------------------" +
+                '<br>' +
+                item.ManagerComment +
+                '<br>' +
+                'Rating: ' +
+                status +
+                '<br>Reviewer: ' +
+                item.Reviewer +
+                '<br>' +
+                'Date: ' +
+                item.ReportDate.substring(0, 10) +
+                ' <br>' +
+                '___________________________________________________ </p> <br><br>';
+          }),
+        ).then(res => {
+          done(true);
+        });
       });
+      // }
+      // });
     });
   }
 

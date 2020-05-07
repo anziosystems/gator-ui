@@ -56,11 +56,12 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     let token = this.storage.get('OrgToken');
     if (!token) {
-      //TO: goto right login
+      console.log (`From dashboard, did not found OrgToken, heading to LsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
     this.gitService.checkOrg().then ( x => {
+      console.log (`From dashboard, did not found Org, heading to LsAuth`);
       if (x === '404') {
         this.router.navigate(['/lsauth']); //May be right login
       }
