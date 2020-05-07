@@ -82,6 +82,7 @@ export class TopDevelopersComponent implements OnInit {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg().then(x => {
         if (x === 404) {
+          console.log (`From TopDeveloperComponent ..heading to lsauth because checkorg is 404`)
           this.router.navigate(['/lsauth']); //May be right login
         }
       });

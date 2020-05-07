@@ -65,6 +65,7 @@ export class CustomEvent {
   providedIn: 'root',
 })
 export class GitService {
+  public tenantMap = new Map();
   private currentGitOrg: string;
   private currentOrg: string;
   private jiraCurrentOrg: string;
@@ -146,6 +147,9 @@ export class GitService {
     this.getCurrentGitOrg();
     this.getCurrentOrg();
     this.getCurrentDev();
+
+    this.tenantMap.set('anzio', 'anzio');
+    this.tenantMap.set('axleinfo', 'axleinfo');
 
     console.log(' ****** gitService Constructor is running =>' + new Date());
   }

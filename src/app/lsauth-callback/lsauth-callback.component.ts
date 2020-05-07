@@ -50,6 +50,7 @@ export class LsauthCallbackComponent implements OnInit {
       dd.TfsUserName = r2.TfsUserName;
       this.gitService.setLoggedInGitDev(dd);
       this.gitService.broadcastGlobalComponentMessage('RE-FILL-ORG-LIST');
+      
       this.router.navigate(['/dashboard']);
       return true;
     });

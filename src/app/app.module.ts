@@ -9,13 +9,13 @@ import {TopDevelopersComponent} from './top-developers/top-developers.component'
 import {DevPullDetailsComponent} from './dev-pull-details/dev-pull-details.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CallbackComponent} from './callback/callback.component';
-import {LoginComponent} from './login/login.component';
+// import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
 import {environment} from '../environments/environment';
 import {GitService, DevDetails} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'ngx-webstorage-service';
-import {StatusComponent} from './status/status.component';
+// import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {QuillModule} from 'ngx-quill';
@@ -57,10 +57,10 @@ import {LinebarComponent} from './linebar/linebar.component';
 import {TfsLoginComponent} from './tfs-login/tfs-login.component';
 import {TfsStatusComponent} from './tfs-status/tfs-status.component';
 import {TfscallbackComponent} from './tfscallback/tfscallback.component';
-import { CandidateDetailComponent } from './candidate-detail/candidate-detail.component';
-import { LsauthComponent } from './lsauth/lsauth.component';
-import { LsauthCallbackComponent } from './lsauth-callback/lsauth-callback.component';
- 
+import {CandidateDetailComponent} from './candidate-detail/candidate-detail.component';
+import {LsauthComponent} from './lsauth/lsauth.component';
+import {LsauthCallbackComponent} from './lsauth-callback/lsauth-callback.component';
+import {TenantqComponent} from './tenantq/tenantq.component';
 
 const routes: Routes = [
   {path: 'cd', component: CandidateDetailComponent},
@@ -70,7 +70,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'contact', component: ContactusComponent},
   {path: 'about', component: AboutComponent},
-  {path: 'login', component: LoginComponent},
+  {path: 'tenantq', component: TenantqComponent},
   {path: 'lsauth', component: LsauthComponent},
   {path: 'bitbucketlogin', component: BitbucketLoginComponent},
   {path: 'callback', component: CallbackComponent},
@@ -79,10 +79,10 @@ const routes: Routes = [
   {path: 'tfsCallback', component: TfscallbackComponent},
   {path: 'bitbucketCallback', component: BitbucketCallBackComponent},
   {path: 'StatusReport', component: StatusReportsComponent},
-  {path: 'status', component: StatusComponent},
+  // {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'tfsStatus', component: TfsStatusComponent},
- 
+
   {path: 'icReport', component: IcReportComponent},
   {path: 'orgChart', component: OrgChartComponent},
   {path: 'bitbucketStatus', component: BitbucketStatusComponent},
@@ -94,11 +94,13 @@ const routes: Routes = [
       {path: 'payment', component: PaymentComponent},
     ],
   },
+  //auth/lsauth
   {path: 'orglist', component: OrgListComponent},
   {path: 'hook-error', component: HookErrorComponent},
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'tfs-login', component: TfsLoginComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
+   {path: ':tenant', component: LsauthComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
@@ -110,10 +112,10 @@ const routes: Routes = [
     TopRepositoryComponent,
     TopDevelopersComponent,
     DevPullDetailsComponent,
-    LoginComponent,
+    // LoginComponent,
     DashboardComponent,
     CallbackComponent,
-    StatusComponent,
+    // StatusComponent,
     OrgListComponent,
     HookErrorComponent,
     TweetsComponent,
@@ -145,7 +147,7 @@ const routes: Routes = [
     CandidateDetailComponent,
     LsauthComponent,
     LsauthCallbackComponent,
- 
+    TenantqComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [
