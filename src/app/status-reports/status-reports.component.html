@@ -95,7 +95,7 @@
           <p></p>
           <!-- Status Report for organization: {{ currentOrg }} -->
           Select your Git Org
-          <select style="color:black" (change)="gitOrgSelection($event.target.value)" >
+          <select style="color:black" (change)="gitOrgSelection($event.target.value)">
             <option *ngFor="let org of gitOrgs" [ngValue]="org" style="color:black">{{ org }}</option>
           </select>
         </div>
@@ -139,30 +139,34 @@
             </div>
           </div>
         </div>
-        <div class="flex-row-container" style="float: right; margin-top: 10px; font-size: large; font-weight: normal;">
+        <div class="flex-row-container" style="float: right; margin-top: 30px; font-size: large; font-weight: normal;">
           <div>
             <input id="Exceeded" style=" height: 20px; width: 20px;" type="radio" value="Exceeded" name="Exceeded" [checked]="bExceed" (click)="exceed()" />
-            <label style="margin-left: 5px;font-size: large; font-weight: normal; margin-top: -5px; vertical-align: middle; " for="Exceeded">Exceeded</label>
+            <label style="color: #668466;margin-left: 5px;font-size: large; font-weight: normal; margin-top: -5px; vertical-align: middle; " for="Exceeded">Exceeded</label>
           </div>
           <div style="margin-left: 20px;">
-            <input id="Acieved" style=" height: 20px; width: 20px;" type="radio" value="Acieved" name="Acieved" [checked]="bAchieved" (click)="achieved()" />
-            <label style="margin-left: 5px;font-size: large; font-weight: normal;vertical-align: middle;  " for="Acieved">Achieved</label>
+            <input id="Acieved" style="height: 20px; width: 20px;" type="radio" value="Acieved" name="Acieved" [checked]="bAchieved" (click)="achieved()" />
+            <label style=" color: #ad976d;margin-left: 5px;font-size: large; font-weight: normal; margin-top: -5px; vertical-align: middle;  " for="Acieved">Achieved</label>
           </div>
           <div style="margin-left: 20px;">
             <input id="NeedImrpovement" style=" height: 20px; width: 20px;" type="radio" value="NeedImrpovement" name="NeedImprovement" [checked]="bNeed" (click)="need()" />
-            <label style="margin-left: 5px;font-size: large; font-weight: normal;vertical-align: middle;" for="NeedImrpovement">Need Improvement</label>
+            <label style=" color: #a76c56; margin-left: 5px;font-size: large; font-weight: normal; margin-top: -5px; vertical-align: middle;" for="NeedImrpovement"
+              >Need Improvement</label
+            >
           </div>
         </div>
         <p></p>
         <div style="flex-direction: row;">
           <input
             name="txtReviewer"
-            style="height:90%;width:70%; margin-left: 7px; padding-left: 3px; color:black"
+            style="height:90%;width:70%;border:0px; margin-left: 7px; padding-left: 3px; color:rgb(61, 58, 58); background-color:rgb(221, 217, 217)"
             title="Please use Add Reviewers button to add the correct reviewers. DON'T TYPE."
             [(ngModel)]="textReviewer"
             disabled="true"
           />
-          <button class="buttons-style" *ngIf="!bClosedReport" style="margin-left: 7px;vertical-align: top; margin-top: 0px;" (click)="addReviewer()">+ Reviewers</button>
+          <button class="buttons-style" *ngIf="!bClosedReport" style="margin-left: 7px;height: 36px; vertical-align: top; margin-top: 0px;" (click)="addReviewer()">
+            + Reviewers
+          </button>
         </div>
       </div>
     </div>
