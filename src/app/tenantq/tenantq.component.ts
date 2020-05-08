@@ -21,6 +21,7 @@ export class TenantqComponent implements OnInit {
   }
 
   Go() {
+    this.tenantName = this.tenantName.toLowerCase();
     if (this.gitService.tenantMap.has(this.tenantName)) {
       const authURL = `${this.gitService.gatorApiUrl}/auth/lsauth/${this.tenantName}?callbackUrl=${location.origin}/lsauthCallback`;
       window.location.href = authURL;
