@@ -61,6 +61,7 @@ import {CandidateDetailComponent} from './candidate-detail/candidate-detail.comp
 import {LsauthComponent} from './lsauth/lsauth.component';
 import {LsauthCallbackComponent} from './lsauth-callback/lsauth-callback.component';
 import {TenantqComponent} from './tenantq/tenantq.component';
+import { ConnectIdsComponent } from './connect-ids/connect-ids.component';
 
 const routes: Routes = [
   {path: 'cd', component: CandidateDetailComponent},
@@ -91,6 +92,7 @@ const routes: Routes = [
     component: SettingsComponent,
     children: [
       {path: 'admin', component: AdminComponent},
+      {path: 'connentIds', component: ConnectIdsComponent},
       {path: 'payment', component: PaymentComponent},
     ],
   },
@@ -148,6 +150,7 @@ const routes: Routes = [
     LsauthComponent,
     LsauthCallbackComponent,
     TenantqComponent,
+    ConnectIdsComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

@@ -2,18 +2,14 @@
 
 .admin-style {
   background-color: @main-background-color;
-
   height: 90vh;
   padding-top: 10px;
   padding-left: 50px;
-  width: calc (100vw - ( @leftNavWidth + 50px));
 }
 
 .listbox {
-  min-height: 300px;
-  min-width: 400px;
-  max-height: 300px;
-  max-width: 400px;
+  height: 300px;
+  width: 400px;
   overflow-y: scroll;
   border-style: solid;
   border-width: 1px;
@@ -38,9 +34,9 @@
   flex-direction: row;
   padding-bottom: 1px auto;
   flex: 1;
+  font-family: Robotto, Georgia, 'Times New Roman', Times, serif;
+  
   float: left;
-  width: calc (100vw - @leftNavWidth);
-  height: 50%;
 }
 
 .col-container {
@@ -49,5 +45,5 @@
   padding-bottom: 1px auto;
   padding-top: 50px;
   flex: 1;
-  line-height: 1;
+
 }

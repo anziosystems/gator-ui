@@ -12,15 +12,19 @@ import {ConfirmationService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.less'],
+  selector: 'app-connect-ids',
+  templateUrl: './connect-ids.component.html',
+  styleUrls: ['./connect-ids.component.less'],
 })
-export class AdminComponent implements OnInit {
+export class ConnectIdsComponent implements OnInit {
   currentOrg: string;
   loggedInUser: string;
   userRoles: any[];
   allUsers: any[];
+  gitUserName: string;
+  jiraUserName: string;
+  tfsUserName: string;
+  user: any;
   constructor(
     private gitService: GitService,
     private router: Router,
@@ -50,23 +54,14 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  moveAdmin2User(u: any) {
-    this.userRoles = this.userRoles.filter(function(value, index, arr) {
-      return value !== u;
+  getUserids(user: any) {
+    let u = this.allUsers.filter(function(value, index, arr) {
+      return value.Email === user.Email;
     });
-    this.allUsers.push(u);
-    if (u.login) this.deleteUserRole(u.login);
-    else this.deleteUserRole(u.Email);
-  }
-
-  moveUser2Admin(u: any) {
-    //remove from allUsers
-    this.allUsers = this.allUsers.filter(function(value, index, arr) {
-      return value !== u;
-    });
-    //Add to admin list
-    this.userRoles.push(u);
-    this.save(u.Email);
+    this.user = u[0];
+    this.tfsUserName = this.user.TfsUserName;
+    this.gitUserName = this.user.GitUserName;
+    this.jiraUserName = this.user.JiraUserName;
   }
 
   ngOnInit() {
@@ -80,7 +75,7 @@ export class AdminComponent implements OnInit {
     }
     this.gitService.getCurrentOrg().then(z => {
       this.currentOrg = z;
-      this.gitService.getRole4Org(this.currentOrg).subscribe(r => {
+      this.gitService.getUser4Org(this.currentOrg).subscribe(r => {
         this.userRoles = [];
         let r2 = r.map(x => {
           x.Name = x.UserName;
@@ -89,33 +84,20 @@ export class AdminComponent implements OnInit {
       });
     });
 
-    this.gitService.getUser4Org(this.currentOrg).subscribe(r => {
+    this.gitService.getDev4Org(this.currentOrg).subscribe(r => {
       this.allUsers = [];
       this.allUsers = r;
     });
   }
 
   alertmsgs = [];
-  save(login: string) {
-    this.gitService.saveUserRole(login, this.currentOrg, 'Admin').subscribe(x => {
-      if (x) {
-        if (x.code === 401) {
-          this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
-          return;
-        }
-      } else {
-        this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
-      }
-    });
-  }
+  save() {
+    this.user.TfsUserName = this.tfsUserName;
+    this.user.GitUserName = this.gitUserName;
+    this.user.JiraUserName = this.jiraUserName;
 
-  deleteUserRole(login: string) {
-    this.gitService.deleteUserRole(login, this.currentOrg, 'Admin').subscribe(x => {
-      if (x.code === 401) {
-        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
-      } else {
-        this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
-      }
+    this.gitService.updateUserConnectIds(this.user).subscribe(x => {
+      this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
     });
   }
 }

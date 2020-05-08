@@ -66,6 +66,7 @@ export class CustomEvent {
 })
 export class GitService {
   public tenantMap = new Map();
+
   private currentGitOrg: string;
   private currentOrg: string;
   private jiraCurrentOrg: string;
@@ -150,6 +151,7 @@ export class GitService {
 
     this.tenantMap.set('anzio', 'anzio');
     this.tenantMap.set('axleinfo', 'axleinfo');
+    this.tenantMap.set('labshare', 'labshare');
 
     console.log(' ****** gitService Constructor is running =>' + new Date());
   }
@@ -600,6 +602,13 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  
+  getUser4Org(org: string): Observable<any> {
+    this.attachToken();
+    const q = `GetUser4Org?org=${org}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
   getWatcher(org: string, gitOrg: string): Observable<any> {
     this.attachToken();
     const q = `GetWatcher?org=${org}&gitorg=${gitOrg}`;
@@ -903,6 +912,16 @@ export class GitService {
       org: org,
       userId: userIds,
       role: role,
+    };
+    return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
+  }
+
+  updateUserConnectIds (user: any): Observable<any> {
+    const q = `updateUserConnectIds`;
+    this.attachToken();
+    let body: any = {
+      user: user,
+      
     };
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }

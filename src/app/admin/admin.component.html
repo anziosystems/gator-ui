@@ -18,21 +18,21 @@ color:rgb(187, 201, 207)"
           (dblclick)="moveUser2Admin(ur)"
           title="Double click to move the user to admnin role"
         >
-          {{ ur.Email }}
+          {{ ur.UserDisplayName }}
         </div>
       </div>
       <!-- <div class="col-container">
       <button class="buttons-style">></button>
       <button class="buttons-style"><</button>
     </div> -->
-      <div class="listbox" style="margin-left: 30px; margin-right: 90vw;">
+      <div class="listbox" style="margin-left: 30px; margin-right: 90px;">
         <div
           *ngFor="let ur of userRoles; let i = index"
           (dblclick)="moveAdmin2User(ur)"
           style="margin-bottom: 5px; color:rgb(187, 201, 207)"
           title="Double click to move the user out of admnin"
         >
-          {{ ur.Email }}
+          {{ ur.UserDisplayName }}
         </div>
       </div>
     </div>
