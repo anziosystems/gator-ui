@@ -116,8 +116,8 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-  // public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
 
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
@@ -602,7 +602,6 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  
   getUser4Org(org: string): Observable<any> {
     this.attachToken();
     const q = `GetUser4Org?org=${org}`;
@@ -916,12 +915,11 @@ export class GitService {
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
 
-  updateUserConnectIds (user: any): Observable<any> {
+  updateUserConnectIds(user: any): Observable<any> {
     const q = `updateUserConnectIds`;
     this.attachToken();
     let body: any = {
       user: user,
-      
     };
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
