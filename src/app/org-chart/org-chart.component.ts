@@ -40,6 +40,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       if (!this.currentOrg) {
+        console.log (`[E] No currentOrg found, org-chart heading to lsAuth`);
         this.router.navigate(['/lsauth']);
         return;
       }
@@ -47,6 +48,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
 
     //TODO: goto right login
     if (!this.gitService.getLoggedInGitDev()) {
+      console.log (`[E] No LoggedInUser found, org-chart heading to lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
@@ -54,6 +56,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let loggedInUser = this.gitService.getLoggedInGitDev().Login;
 
     if (!loggedInUser) {
+      console.log (`[E] No LoggedInUser.Login found, org-chart heading to lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }

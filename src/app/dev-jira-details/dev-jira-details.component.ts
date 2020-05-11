@@ -147,11 +147,11 @@ export class DevJiraDetailsComponent implements OnInit {
                         try {
                           if (Array.isArray(val)) {
                             this.devDetails2 = val; //cache is sending array
-                            console.log(`Found ${this.devDetails2.length} by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
+                          //  console.log(`Found ${this.devDetails2.length} by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
                           } else {
                             //"{"startAt":0,"maxResults":50,"total":0,"issues":[]}"
                             this.devDetails2 = JSON.parse(val).issues; //When there are 0 issues, message get format as follows
-                            console.log(`Found ${this.devDetails2.length} by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
+                            //console.log(`Found ${this.devDetails2.length} by GetJiraIssues. for dev: ${developer} org: ${org.name} and AccountId: ${accountId}`);
                           }
                         } catch (ex) {
                           console.log('GetJiraIssues: ' + ex.message);

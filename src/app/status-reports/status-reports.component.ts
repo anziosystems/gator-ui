@@ -64,18 +64,21 @@ export class StatusReportsComponent implements OnInit {
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       if (!this.currentOrg) {
+        console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
         this.router.navigate(['/lsauth']);
         return;
       }
     });
 
     if (!this.gitService.getLoggedInGitDev()) {
+      console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
 
     let loggedInUser = this.gitService.getLoggedInGitDev().Login;
     if (!loggedInUser) {
+      console.log (`[E] No LoggedInUser.Login found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
