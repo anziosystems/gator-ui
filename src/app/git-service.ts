@@ -203,7 +203,7 @@ export class GitService {
 
   public setLoggedInGitDev(v: DevDetails) {
     if (v) {
-      if (v.GitLogin) {
+      // if (v.GitLogin) {
         this.loggedInGitDev = new DevDetails();
         this.loggedInGitDev.name = v.name;
         this.loggedInGitDev.image = v.image;
@@ -217,7 +217,7 @@ export class GitService {
         this.loggedInGitDev.UserName = v.UserName;
         this.loggedInGitDev.DisplayName = v.DisplayName;
         this.sessionStorage.set('LOGGEDIN_USER', v);
-      }
+      // }
     }
   }
 
