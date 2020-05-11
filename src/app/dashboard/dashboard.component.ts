@@ -61,8 +61,8 @@ export class DashboardComponent implements OnInit {
       return;
     }
     this.gitService.checkOrg().then ( x => {
-      console.log (`From dashboard, did not found Org, heading to LsAuth`);
       if (x === '404') {
+        console.log (`From dashboard, did not found Org, heading to LsAuth`);
         this.router.navigate(['/lsauth']); //May be right login
       }
     });

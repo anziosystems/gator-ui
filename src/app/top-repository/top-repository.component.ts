@@ -44,7 +44,7 @@ export class TopRepositoryComponent implements OnInit {
 
   data(repo: string) {
     this.selectedRepo = repo;
-    this.gitService.trigger('repo-' + repo);
+    this.gitService.broadcastStringValue('repo-' + repo);
     const date = new Date();
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
     this.gitService.broadcastGlobalComponentMessage('REPO_CLICKED');

@@ -64,7 +64,7 @@ export class IcCountsComponent implements OnInit {
   }
 
   data(action: string, day: number) {
-    this.gitService.trigger(action + '+' + day.toString());
+    this.gitService.broadcastStringValue(action + '+' + day.toString());
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 

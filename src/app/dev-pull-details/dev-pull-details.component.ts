@@ -21,15 +21,19 @@ export class DevPullDetailsComponent implements OnInit {
   bShowName = false;
   DEFAULT_DAYS = 100;
   bShowAddButton: boolean = false;
-  gitOrg: string;
+  //gitOrg: string;
 
   constructor(
     private gitService: GitService,
     private router: Router, // private usageService: UsageService
   ) {
-    this.gitService.onGitOrgChanged.subscribe(x => {
-      this.gitOrg = x;
-    });
+    // this.gitService.onGitOrgChanged.subscribe(x => {
+    //   if (!x) {
+    //     console.log (`[E] gitOrg is undefined. - onGitOrgChanged`);
+    //     return;
+    //   }
+    //   this.gitOrg = x;
+    // });
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
 
@@ -56,7 +60,7 @@ export class DevPullDetailsComponent implements OnInit {
   initializeData() {
     this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
       if (val.source === 'STATUS-REPORT' && val.destination === 'TOP-DEVELOPER') {
-        this.bShowAddButton = true;
+        this.bShowAddButton = true; //+ sign is shown next to Git Details. This funcitonality is used in Status report component
       }
     });
 
@@ -72,7 +76,7 @@ export class DevPullDetailsComponent implements OnInit {
         this.getDeveloperDetails(val.GitLogin);
       });
 
-      this.gitService.onMyEvent.subscribe((val: string) => {
+      this.gitService.onStringEvent.subscribe((val: string) => {
         if (val === undefined) {
           console.log('subscription event returned undefined. Exiting');
           return;
@@ -85,7 +89,7 @@ export class DevPullDetailsComponent implements OnInit {
           if (val.startsWith('repo-')) {
             this.bShowName = true;
             const arr = _.split(val, 'repo-');
-            this.gitService.getRepositoryPR(this.gitOrg, this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
+            this.gitService.getRepositoryPR(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
               this.devDetails = val;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
@@ -104,8 +108,12 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   getDeveloperDetails(developer: string) {
+    // if (!this.gitOrg) {
+    //   console.log (`[E] gitOrg is undefined. - getDeveloperDetails`);
+    //   return;
+    // }
     this.gitService.ready().then(result => {
-      this.gitService.getDeveloperDetail(this.gitOrg, this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
+      this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;
         this.devDetails.map(v => {
           let s = v.pullrequesturl;
@@ -121,7 +129,7 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   addGitPR(dev: any) {
-    this.gitService.triggerCustomEvent({
+    this.gitService.broadcastCustomEvent({
       source: 'GIT',
       destination: 'STATUS-REPORT',
       message: `${dev.title}  Created at: ${dev.created_at}  Link: ${dev.pullrequesturl}`,

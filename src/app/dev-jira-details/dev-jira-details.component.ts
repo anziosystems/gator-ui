@@ -77,7 +77,7 @@ export class DevJiraDetailsComponent implements OnInit {
 
   //addJiraDetails
   addJiraDetails(dev: any) {
-    this.gitService.triggerCustomEvent({
+    this.gitService.broadcastCustomEvent({
       source: 'JIRA',
       destination: 'STATUS-REPORT',
       message: `${dev.title}  Created at: ${dev.created_at}  Link: ${dev.pullrequesturl}`,

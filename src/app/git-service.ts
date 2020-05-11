@@ -123,7 +123,7 @@ export class GitService {
 
   //Components listen to each other using this
   private _onCustomEvent = new Subject<CustomEvent>();
-  private _onMyEvent = new Subject<string>();
+  private _onStringEvent = new Subject<string>();
   private _onDevNameEvent = new Subject<DevDetails>();
   private _onJiraEvent = new Subject<string>();
   private _onComponentMessage = new Subject<string>();
@@ -149,6 +149,7 @@ export class GitService {
     this.getCurrentOrg();
     this.getCurrentDev();
 
+    //keep all lowercase
     this.tenantMap.set('anzio', 'anzio');
     this.tenantMap.set('axleinfo', 'axleinfo');
     this.tenantMap.set('labshare', 'labshare');
@@ -319,8 +320,8 @@ export class GitService {
     return this._isLoggedIn.asObservable();
   }
 
-  public get onMyEvent(): Observable<string> {
-    return this._onMyEvent.asObservable();
+  public get onStringEvent(): Observable<string> {
+    return this._onStringEvent.asObservable();
   }
 
   public get onDevLoginIdChanged(): Observable<DevDetails> {
@@ -357,8 +358,8 @@ export class GitService {
     someitime      => 'repo-' + repo
   */
   //Note: Move some events to broadcastDevLoginId
-  public trigger(value: string) {
-    this._onMyEvent.next(value);
+  public broadcastStringValue(value: string) {
+    this._onStringEvent.next(value);
   }
 
   public get onGitOrgChanged(): Observable<string> {
@@ -366,6 +367,10 @@ export class GitService {
   }
 
   public broadecastGitOrgChanged(value: string) {
+    if (!value) {
+      console.log (`[E] Was about to broadcast an undefined GitOrg - broadcastGitOrgChanged`);
+      return;
+    }
     this._onGitOrg.next(value);
   }
 
@@ -373,7 +378,7 @@ export class GitService {
     this._onDevNameEvent.next(value);
   }
 
-  public triggerCustomEvent(value: CustomEvent) {
+  public broadcastCustomEvent(value: CustomEvent) {
     this._onCustomEvent.next(value);
   }
 

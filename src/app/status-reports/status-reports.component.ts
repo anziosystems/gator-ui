@@ -383,7 +383,7 @@ export class StatusReportsComponent implements OnInit {
 
   addJiraTickets() {
     this.gitService.setCurrentContext('JIRA');
-    this.gitService.triggerCustomEvent({
+    this.gitService.broadcastCustomEvent({
       source: 'STATUS-REPORT',
       destination: 'JIRA',
       message: 'true',
@@ -584,7 +584,7 @@ export class StatusReportsComponent implements OnInit {
 
   addGitPR() {
     this.gitService.setCurrentContext('GIT');
-    this.gitService.triggerCustomEvent({
+    this.gitService.broadcastCustomEvent({
       source: 'STATUS-REPORT',
       destination: 'TOP-DEVELOPER',
       message: 'true',

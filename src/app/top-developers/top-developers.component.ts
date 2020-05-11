@@ -45,7 +45,7 @@ export class TopDevelopersComponent implements OnInit {
   backgroundColor: string = '#26262fcc';
   filterQuery: string;
   OrgDevelopers: DevDetails[];
-  bCallingFromInit: boolean = false;
+  bShowGitDetails: boolean = false;
   selectedDev: string;
   gitOrg: string;
   currentOrg: string;
@@ -165,9 +165,11 @@ export class TopDevelopersComponent implements OnInit {
     //this.gitService.trigger(developer.login);
     this.gitService.broadcastDevLoginId(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
-    //This to add developer in the status report component
-    if (!this.bCallingFromInit) {
-      this.gitService.triggerCustomEvent({
+
+    //This to add developer Git details in the status report component
+    if (!this.bShowGitDetails) {
+      //This event specially targetted to status report module
+      this.gitService.broadcastCustomEvent({
         source: 'TOP-DEVELOPER',
         destination: 'STATUS-REPORT',
         message: developer.GitLogin,
