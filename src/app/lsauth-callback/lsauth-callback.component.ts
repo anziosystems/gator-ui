@@ -46,7 +46,6 @@ export class LsauthCallbackComponent implements OnInit {
       dd.image = r2.Photo;
       dd.id = r2.Id;
       dd.profileUrl = r2.profileUrl;
-    
       dd.JiraUserName = r2.JiraUserName;
       dd.TfsUserName = r2.TfsUserName;
       this.gitService.setLoggedInGitDev(dd);

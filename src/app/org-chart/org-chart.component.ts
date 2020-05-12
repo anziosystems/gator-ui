@@ -40,7 +40,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       if (!this.currentOrg) {
-        console.log (`[E] No currentOrg found, org-chart heading to lsAuth`);
+        console.log(`[E] No currentOrg found, org-chart heading to lsAuth`);
         this.router.navigate(['/lsauth']);
         return;
       }
@@ -48,7 +48,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
 
     //TODO: goto right login
     if (!this.gitService.getLoggedInGitDev()) {
-      console.log (`[E] No LoggedInUser found, org-chart heading to lsAuth`);
+      console.log(`[E] No LoggedInUser found, org-chart heading to lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
@@ -56,7 +56,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let loggedInUser = this.gitService.getLoggedInGitDev().Login;
 
     if (!loggedInUser) {
-      console.log (`[E] No LoggedInUser.Login found, org-chart heading to lsAuth`);
+      console.log(`[E] No LoggedInUser.Login found, org-chart heading to lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
@@ -100,7 +100,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
-    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().GitLogin, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
+    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().UserName, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
         this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
         return;
@@ -160,7 +160,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
       let arrSelected = this.textReviewer.split(',');
       arrSelected.forEach(e => {
         let person = e.split('--');
-        this.arrPeople.push({name:person[0], userName: person[1]});
+        this.arrPeople.push({name: person[0], userName: person[1]});
       });
 
       let i = this.model.nodeDataArray.length;
