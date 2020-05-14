@@ -23,22 +23,22 @@
   </div>
 
   <div *ngIf="!bShowError">
-    <a href="{{ userLink }}" target="_blank" style="text-decoration: none;">
+    <a href="{{ UserLink }}" target="_blank" style="text-decoration: none;">
       <div div class="flex-item" style=" color:rgb(86, 125, 143)">{{ userName }}</div>
     </a>
-    <div *ngFor="let dev of devDetails.values(); let i = index" style="margin-bottom:13px">
+    <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
       <!-- <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div> -->
 
-      <div style="font-size: large; color:#9c678f;">{{ dev.orgName }} - {{ dev.key }} - {{ dev.State }}: {{ dev.Repo }}</div>
+      <div style="font-size: large; color:#9c678f;">{{ dev.OrgName }} - {{ dev.Key }} - {{ dev.Status }}</div>
 
       <div style="display: flex;flex-direction: row;">
         <div style="font-size: large; color: white ">
-          <a href="{{ dev.pullrequesturl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.title }}</a>
+          <a href="{{ dev.PullRequestUrl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.Title }}</a>
         </div>
       </div>
-      <div style="font-size: large; color: gainsboro">{{ dev.body | slice: 1:400 }}</div>
+      <div style="font-size: large; color: gainsboro">{{ dev.Summary | slice: 1:400 }}</div>
 
-      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.created_at | date }} Updated: {{ dev.updated | date }}</div>
+      <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.CreatedDate | date }} Updated: {{ dev.UpdatedDate | date }}</div>
       <!-- <div style="font-size: large; color: rgb(143, 173, 182)">Updated: {{ dev.updated | date }}</div> -->
       <div *ngIf="bShowAddButton">
         <button (click)="addJiraDetails(dev)" style="background-color:transparent; border: none; padding-left: 0px;color: tomato;" title="Add details to status report">+</button>

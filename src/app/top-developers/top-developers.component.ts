@@ -82,7 +82,7 @@ export class TopDevelopersComponent implements OnInit {
       //org is empty, we must go back to dash board and let them choose the org
       this.gitService.checkOrg().then(x => {
         if (x === 404) {
-          console.log (`From TopDeveloperComponent ..heading to lsauth because checkorg is 404`)
+          console.log(`From TopDeveloperComponent ..heading to lsauth because checkorg is 404`);
           this.router.navigate(['/lsauth']); //May be right login
         }
       });
@@ -107,6 +107,7 @@ export class TopDevelopersComponent implements OnInit {
     this.gitService.broadcastGlobalComponentMessage('SHOW_OD');
   }
   GetData(dev: DevDetails) {
+    this.gitService.setCurrentDev(dev);
     if (this.gitService.getCurrentContext() === 'undefined') this.gitService.setCurrentContext('GIT');
     this.selectedDev = dev.GitLogin;
     if (this.gitService.getCurrentContext() === 'JIRA') {
@@ -161,7 +162,7 @@ export class TopDevelopersComponent implements OnInit {
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
-    this.gitService.setCurrentDev(developer);
+  //  this.gitService.setCurrentDev(developer);
     //this.gitService.trigger(developer.login);
     this.gitService.broadcastDevLoginId(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
@@ -178,21 +179,8 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   jiraData(developer: DevDetails) {
-    this.gitService.setCurrentDev(developer);
-    const date = new Date();
 
-    // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
-    //
-    if (!this.storage.get('JiraToken')) {
-      this.router.navigate(['/jira-login']);
-      return;
-    }
-    // else {
-    //   //Delete this else clause
-    //   this.router.navigate(['/jiraStatus']);
-
-    // }
-    this.gitService.triggerJira(developer.name);
+    this.gitService.broadcastJiraDevName(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
 

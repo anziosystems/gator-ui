@@ -125,7 +125,7 @@ export class GitService {
   private _onCustomEvent = new Subject<CustomEvent>();
   private _onStringEvent = new Subject<string>();
   private _onDevNameEvent = new Subject<DevDetails>();
-  private _onJiraEvent = new Subject<string>();
+  private _onJiraEvent = new Subject<DevDetails>();
   private _onComponentMessage = new Subject<string>();
   private _isLoggedIn = new Subject<boolean>();
   private _onGitOrg = new Subject<string>();
@@ -204,19 +204,19 @@ export class GitService {
   public setLoggedInGitDev(v: DevDetails) {
     if (v) {
       // if (v.GitLogin) {
-        this.loggedInGitDev = new DevDetails();
-        this.loggedInGitDev.name = v.name;
-        this.loggedInGitDev.image = v.image;
-        this.loggedInGitDev.GitLogin = v.GitLogin;
-        this.loggedInGitDev.OrgDisplayName = v.OrgDisplayName;
-        this.loggedInGitDev.id = v.id;
-        this.loggedInGitDev.profileUrl = v.profileUrl;
-        this.loggedInGitDev.Login = v.Login;
-        this.loggedInGitDev.JiraUserName = v.JiraUserName;
-        this.loggedInGitDev.TfsUserName = v.TfsUserName;
-        this.loggedInGitDev.UserName = v.UserName;
-        this.loggedInGitDev.DisplayName = v.DisplayName;
-        this.sessionStorage.set('LOGGEDIN_USER', v);
+      this.loggedInGitDev = new DevDetails();
+      this.loggedInGitDev.name = v.name;
+      this.loggedInGitDev.image = v.image;
+      this.loggedInGitDev.GitLogin = v.GitLogin;
+      this.loggedInGitDev.OrgDisplayName = v.OrgDisplayName;
+      this.loggedInGitDev.id = v.id;
+      this.loggedInGitDev.profileUrl = v.profileUrl;
+      this.loggedInGitDev.Login = v.Login;
+      this.loggedInGitDev.JiraUserName = v.JiraUserName;
+      this.loggedInGitDev.TfsUserName = v.TfsUserName;
+      this.loggedInGitDev.UserName = v.UserName;
+      this.loggedInGitDev.DisplayName = v.DisplayName;
+      this.sessionStorage.set('LOGGEDIN_USER', v);
       // }
     }
   }
@@ -332,7 +332,7 @@ export class GitService {
     return this._onCustomEvent.asObservable();
   }
 
-  public get onJiraEvent(): Observable<string> {
+  public get onJiraEvent(): Observable<DevDetails> {
     return this._onJiraEvent.asObservable();
   }
 
@@ -368,7 +368,7 @@ export class GitService {
 
   public broadecastGitOrgChanged(value: string) {
     if (!value) {
-      console.log (`[E] Was about to broadcast an undefined GitOrg - broadcastGitOrgChanged`);
+      console.log(`[E] Was about to broadcast an undefined GitOrg - broadcastGitOrgChanged`);
       return;
     }
     this._onGitOrg.next(value);
@@ -382,7 +382,7 @@ export class GitService {
     this._onCustomEvent.next(value);
   }
 
-  public triggerJira(value: string) {
+  public broadcastJiraDevName(value: DevDetails) {
     this._onJiraEvent.next(value);
   }
 
@@ -746,7 +746,7 @@ export class GitService {
             fail('401');
             return;
           }
-          console.log(`Found ${result.length} for ${element.name}`);
+          // console.log(`Found ${result.length} for ${element.name}`);
           result.forEach(e2 => {
             this.JiraUsersMap.set(e2.DisplayName.toLowerCase().trim(), e2.AccountId.trim());
           });
@@ -837,6 +837,13 @@ export class GitService {
     const q = `GetJiraIssues?org=${org}&userid=${userid}&pageSize=${pageSize}`;
     this.attachJiraToken();
     return this.http.get(this.gitApiUrl + q, this.httpJirapOptions);
+  }
+
+  //Tenent goes in header
+  GetJiraData(org: string, userid: string, pageSize: number = 40, bustTheCache: boolean = false): Observable<any> {
+    const q = `GetJiraData?org=${org}&userid=${userid}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
+    this.attachToken(true);
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   getJiraOrgs(bustTheCache: boolean = false): Observable<any> {

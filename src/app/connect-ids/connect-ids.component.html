@@ -20,9 +20,15 @@
         </div>
       </div>
       <div class="col-continer" style="margin-left: 50px;">
-        <div style="margin-bottom: 30px;"><label style="width: 60px;color:rgb(187, 201, 207)"> Git Id: </label> <input style="color:black" type="text" [(ngModel)]="gitUserName" /></div>
-        <div style="margin-bottom: 30px;"><label style="width: 60px;color:rgb(187, 201, 207)"> Jira Id: </label> <input style="color:black" type="text" [(ngModel)]="jiraUserName" /></div>
-        <div style="margin-bottom: 30px;"><label style="width: 60px;color:rgb(187, 201, 207)"> TFS Id: </label> <input style="color:black" type="text" [(ngModel)]="tfsUserName" /></div>
+        <div style="margin-bottom: 30px;">
+          <label style="width: 200px;color:rgb(187, 201, 207)"> Git User Name: </label> <input style="color:black" type="text" [(ngModel)]="gitUserName" />
+        </div>
+        <div style="margin-bottom: 30px;">
+          <label style="width: 200px;color:rgb(187, 201, 207)"> Jira User Name: </label> <input style="color:black" type="text" [(ngModel)]="jiraUserName" />
+        </div>
+        <div style="margin-bottom: 30px;">
+          <label style="width: 200px;color:rgb(187, 201, 207)"> TFS User Name: </label> <input style="color:black" type="text" [(ngModel)]="tfsUserName" />
+        </div>
         <div style="margin-bottom: 30px;">
           <button class="buttons-style" style="width: 90px; height: 50px; background-color: plum; " (click)="save()">Save</button>
         </div>

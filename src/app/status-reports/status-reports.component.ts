@@ -391,7 +391,7 @@ export class StatusReportsComponent implements OnInit {
       destination: 'JIRA',
       message: 'true',
     });
-    this.gitService.triggerJira(this.gitService.getLoggedInGitDev().JiraUserName);
+    this.gitService.broadcastJiraDevName(this.gitService.getLoggedInGitDev());
     this.bShowJira = 99;
   }
 

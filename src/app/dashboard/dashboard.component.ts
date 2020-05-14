@@ -117,17 +117,10 @@ export class DashboardComponent implements OnInit {
     const date = new Date();
     this.gitService.setCurrentContext('JIRA');
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
-    //
-    if (!this.storage.get('JiraToken')) {
-      this.router.navigate(['/jira-login']);
-      return;
-    }
-    // else {
-    //   //Delete this else clause
-    //   this.router.navigate(['/jiraStatus']);
+ 
 
     // }
-    this.gitService.triggerJira(this.gitService.getCurrentDev().name);
+    this.gitService.broadcastJiraDevName(this.gitService.getCurrentDev());
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
 

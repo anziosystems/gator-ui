@@ -114,17 +114,8 @@ export class OrgDetailsComponent implements OnInit {
     const date = new Date();
     this.gitService.setCurrentContext('JIRA');
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
-    //
-    if (!this.storage.get('JiraToken')) {
-      this.router.navigate(['/jira-login']);
-      return;
-    }
-    // else {
-    //   //Delete this else clause
-    //   this.router.navigate(['/jiraStatus']);
 
-    // }
-    this.gitService.triggerJira(this.gitService.getCurrentDev().name);
+    this.gitService.broadcastJiraDevName(this.gitService.getCurrentDev());
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
   gitData(developer: DevDetails) {
@@ -144,12 +135,12 @@ export class OrgDetailsComponent implements OnInit {
 
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
     //
-    if (!this.storage.get('JiraToken')) {
-      this.router.navigate(['/jira-login']);
-      return;
-    }
+    // if (!this.storage.get('JiraToken')) {
+    //   this.router.navigate(['/jira-login']);
+    //   return;
+    // }
 
-    this.gitService.triggerJira(developer.name);
+    this.gitService.broadcastJiraDevName(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
 
