@@ -62,8 +62,10 @@ import {LsauthComponent} from './lsauth/lsauth.component';
 import {LsauthCallbackComponent} from './lsauth-callback/lsauth-callback.component';
 import {TenantqComponent} from './tenantq/tenantq.component';
 import { ConnectIdsComponent } from './connect-ids/connect-ids.component';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 const routes: Routes = [
+  {path: 'privacy', component: PrivacyComponent},
   {path: 'cd', component: CandidateDetailComponent},
   {path: 'linebar', component: LinebarComponent},
   {path: 'help', component: HelpComponent},
@@ -151,6 +153,7 @@ const routes: Routes = [
     LsauthCallbackComponent,
     TenantqComponent,
     ConnectIdsComponent,
+    PrivacyComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

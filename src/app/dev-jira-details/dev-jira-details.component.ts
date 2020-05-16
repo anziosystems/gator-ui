@@ -100,6 +100,7 @@ export class DevJiraDetailsComponent implements OnInit {
       .toPromise()
       .then((val: any) => {
         this.devDetails = val; //cache is sending array
+        this.userLink = val[0].UserLink ;
       });
   }
 
