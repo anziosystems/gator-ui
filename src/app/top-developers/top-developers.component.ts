@@ -197,7 +197,10 @@ export class TopDevelopersComponent implements OnInit {
 
   initializeData() {
     this.developers = [];
-
+    /* GitHub introduced a new AvatarURL link for new data, and thats making us bring duplicate names of dev
+    I am using this map to filter out the array of Dev names, so the UI showsa only one name
+    */
+    let map = new Map<string, string>();
     this.gitService.ready().then(result => {
       this.gitOrg = this.gitService.getCurrentGitOrg();
       this.gitService.getGitTopDevelopers(this.gitOrg, 30).subscribe(r => {
@@ -213,7 +216,11 @@ export class TopDevelopersComponent implements OnInit {
           dd.GitLogin = r2.GitUserName;
           dd.JiraUserName = r2.JiraUserName;
           dd.TfsUserName = r2.TfsUserName;
-          this.developers.push(dd);
+          let v = map.get(dd.name);
+          if (!v) {
+            map.set(dd.name, dd.name);
+            this.developers.push(dd);
+          }
         });
       });
       this.OrgDevelopers = this.developers;
@@ -296,7 +303,7 @@ export class TopDevelopersComponent implements OnInit {
   }
   rightClick(e: any, context: string, dev: DevDetails) {
     dev = e.item;
-    //notice email was empty 
+    //notice email was empty
     if (!dev.email) {
       dev.email = dev.Login;
     }
