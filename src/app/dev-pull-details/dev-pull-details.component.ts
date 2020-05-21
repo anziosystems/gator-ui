@@ -21,6 +21,7 @@ export class DevPullDetailsComponent implements OnInit {
   bShowName = false;
   DEFAULT_DAYS = 100;
   bShowAddButton: boolean = false;
+  selectedDevName: string;
   //gitOrg: string;
 
   constructor(
@@ -73,6 +74,7 @@ export class DevPullDetailsComponent implements OnInit {
     this.gitService.ready().then(result => {
       this.gitService.onDevLoginIdChanged.subscribe(val => {
         this.bShowName = false;
+        this.selectedDevName = val.DisplayName;
         this.getDeveloperDetails(val.GitLogin);
       });
 

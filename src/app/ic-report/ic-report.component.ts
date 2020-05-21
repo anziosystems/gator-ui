@@ -40,12 +40,7 @@ export class IcReportComponent implements OnInit {
     this.reviewData = [0, 0, 0];
     return new Promise((done, fail) => {
       let loggedUser = this.gitService.getLoggedInDev().Login;
-      // this.gitService.isUserAdmin(this.currentOrg, loggedUser).subscribe(x => {
-      //   if (x === 0) {
-      //     this.textStatus = 'Sorry, only admin can see this';
-      //     this.reviewData = [0, 0, 0];
-      //   } else {
-      //Get all the reports for the user
+
       this.gitService.getSR4User(dev.Login, false).subscribe(async val => {
         if (!val) {
           this.textStatus = 'No Data Found!!!';
