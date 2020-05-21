@@ -70,13 +70,13 @@ export class StatusReportsComponent implements OnInit {
       }
     });
 
-    if (!this.gitService.getLoggedInGitDev()) {
+    if (!this.gitService.getLoggedInDev()) {
       console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
 
-    let loggedInUser = this.gitService.getLoggedInGitDev().Login;
+    let loggedInUser = this.gitService.getLoggedInDev().Login;
     if (!loggedInUser) {
       console.log (`[E] No LoggedInUser.Login found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
@@ -182,7 +182,7 @@ export class StatusReportsComponent implements OnInit {
     this.managerComment = '';
     this.managerStatus = this.ACHIEVED;
     this.quillDisable = false;
-    this.author = this.gitService.getLoggedInGitDev().Login;
+    this.author = this.gitService.getLoggedInDev().Login;
     this.bInReview = false;
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
@@ -245,7 +245,7 @@ export class StatusReportsComponent implements OnInit {
     this.srList = [];
     this.srReviewList = [];
     this.quillDisable = false;
-    this.gitService.getSR4User(this.gitService.getLoggedInGitDev().Login, true).subscribe(val => {
+    this.gitService.getSR4User(this.gitService.getLoggedInDev().Login, true).subscribe(val => {
       val.map(item => {
         //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
         switch (item.Status) {
@@ -280,7 +280,7 @@ export class StatusReportsComponent implements OnInit {
     //review reports
     this.gitService
       .GetSR4User4Review(
-        this.gitService.getLoggedInGitDev().Login,
+        this.gitService.getLoggedInDev().Login,
         status, //inreview
         userFilter ? userFilter.toString() : null,
         dateFilter ? dateFilter : null,
@@ -391,7 +391,7 @@ export class StatusReportsComponent implements OnInit {
       destination: 'JIRA',
       message: 'true',
     });
-    this.gitService.broadcastJiraDevName(this.gitService.getLoggedInGitDev());
+    this.gitService.broadcastJiraDevName(this.gitService.getLoggedInDev());
     this.bShowJira = 99;
   }
 
@@ -432,7 +432,7 @@ export class StatusReportsComponent implements OnInit {
       if (!this.author) {
         //dont just blindly update the autor, some time reviewer is looking at the In_Progress reports
         //to, as he is mentioned in the reviewer field.
-        this.author = this.gitService.getLoggedInGitDev().Login;
+        this.author = this.gitService.getLoggedInDev().Login;
       }
     }
 
@@ -458,7 +458,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   submit() {
-    if (this.author === this.gitService.getLoggedInGitDev().Login) {
+    if (this.author === this.gitService.getLoggedInDev().Login) {
       if (this.status === this.IN_REVIEW) {
         this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'This report is already submitted'});
         return;
@@ -592,7 +592,7 @@ export class StatusReportsComponent implements OnInit {
       destination: 'TOP-DEVELOPER',
       message: 'true',
     });
-    let dev = this.gitService.getLoggedInGitDev();
+    let dev = this.gitService.getLoggedInDev();
     //this.gitService.trigger(dev.login);
     this.gitService.broadcastDevLoginId(dev);
     this.bShowGitPR = 99;

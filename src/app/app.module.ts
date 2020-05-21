@@ -9,13 +9,13 @@ import {TopDevelopersComponent} from './top-developers/top-developers.component'
 import {DevPullDetailsComponent} from './dev-pull-details/dev-pull-details.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CallbackComponent} from './callback/callback.component';
-// import {LoginComponent} from './login/login.component';
+import {LoginComponent} from './login/login.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {Routes, RouterModule} from '@angular/router';
 import {environment} from '../environments/environment';
 import {GitService, DevDetails} from './git-service';
 import {LOCAL_STORAGE, StorageServiceModule} from 'ngx-webstorage-service';
-// import {StatusComponent} from './status/status.component';
+import {StatusComponent} from './status/status.component';
 import {OrgListComponent} from './org-list/org-list.component';
 import {ContextMenuModule} from 'ngx-contextmenu';
 import {QuillModule} from 'ngx-quill';
@@ -44,7 +44,7 @@ import {ConfirmationService} from 'primeng/api';
 import {PeopleTicketComponent} from './people-ticket/people-ticket.component';
 import {SettingsComponent} from './settings/settings.component';
 import {AdminComponent} from './admin/admin.component';
-import {PaymentComponent} from './payment/payment.component';
+// import {PaymentComponent} from './payment/payment.component';
 import {IcReportComponent} from './ic-report/ic-report.component';
 import {IcCountsComponent} from './ic-counts/ic-counts.component';
 import {AboutComponent} from './about/about.component';
@@ -61,8 +61,10 @@ import {CandidateDetailComponent} from './candidate-detail/candidate-detail.comp
 import {LsauthComponent} from './lsauth/lsauth.component';
 import {LsauthCallbackComponent} from './lsauth-callback/lsauth-callback.component';
 import {TenantqComponent} from './tenantq/tenantq.component';
-import { ConnectIdsComponent } from './connect-ids/connect-ids.component';
-import { PrivacyComponent } from './privacy/privacy.component';
+import {ConnectIdsComponent} from './connect-ids/connect-ids.component';
+import {PrivacyComponent} from './privacy/privacy.component';
+import {SignupComponent} from './signup/signup.component';
+import {HydrateComponent} from './hydrate/hydrate.component';
 
 const routes: Routes = [
   {path: 'privacy', component: PrivacyComponent},
@@ -82,7 +84,7 @@ const routes: Routes = [
   {path: 'tfsCallback', component: TfscallbackComponent},
   {path: 'bitbucketCallback', component: BitbucketCallBackComponent},
   {path: 'StatusReport', component: StatusReportsComponent},
-  // {path: 'status', component: StatusComponent},
+  {path: 'status', component: StatusComponent},
   {path: 'jiraStatus', component: JiraStatusComponent},
   {path: 'tfsStatus', component: TfsStatusComponent},
 
@@ -95,7 +97,7 @@ const routes: Routes = [
     children: [
       {path: 'admin', component: AdminComponent},
       {path: 'connentIds', component: ConnectIdsComponent},
-      {path: 'payment', component: PaymentComponent},
+      {path: 'hydrate', component: HydrateComponent},
     ],
   },
   //auth/lsauth
@@ -104,7 +106,7 @@ const routes: Routes = [
   {path: 'jira-login', component: JiraLoginInComponent},
   {path: 'tfs-login', component: TfsLoginComponent},
   {path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'paramsOrQueryParamsChange'},
-   {path: ':tenant', component: LsauthComponent},
+  {path: ':tenant', component: LsauthComponent},
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
@@ -116,10 +118,10 @@ const routes: Routes = [
     TopRepositoryComponent,
     TopDevelopersComponent,
     DevPullDetailsComponent,
-    // LoginComponent,
+    LoginComponent,
     DashboardComponent,
     CallbackComponent,
-    // StatusComponent,
+    StatusComponent,
     OrgListComponent,
     HookErrorComponent,
     TweetsComponent,
@@ -135,7 +137,7 @@ const routes: Routes = [
     PeopleTicketComponent,
     SettingsComponent,
     AdminComponent,
-    PaymentComponent,
+    // PaymentComponent,
     IcReportComponent,
     IcCountsComponent,
     AboutComponent,
@@ -154,6 +156,8 @@ const routes: Routes = [
     TenantqComponent,
     ConnectIdsComponent,
     PrivacyComponent,
+    SignupComponent,
+    HydrateComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

@@ -47,13 +47,13 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     });
 
     //TODO: goto right login
-    if (!this.gitService.getLoggedInGitDev()) {
+    if (!this.gitService.getLoggedInDev()) {
       console.log(`[E] No LoggedInUser found, org-chart heading to lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
 
-    let loggedInUser = this.gitService.getLoggedInGitDev().Login;
+    let loggedInUser = this.gitService.getLoggedInDev().Login;
 
     if (!loggedInUser) {
       console.log(`[E] No LoggedInUser.Login found, org-chart heading to lsAuth`);
@@ -100,7 +100,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     let modelTextArea = document.getElementById('mySavedModel') as HTMLTextAreaElement;
     modelTextArea.value = this.diagram.model.toJson();
     // this.diagram.isModified = true;
-    this.gitService.saveOrgChart(this.gitService.getLoggedInGitDev().UserName, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
+    this.gitService.saveOrgChart(this.gitService.getLoggedInDev().UserName, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
         this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
         return;

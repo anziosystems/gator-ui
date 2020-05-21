@@ -48,7 +48,7 @@ export class LsauthCallbackComponent implements OnInit {
       dd.profileUrl = r2.profileUrl;
       dd.JiraUserName = r2.JiraUserName;
       dd.TfsUserName = r2.TfsUserName;
-      this.gitService.setLoggedInGitDev(dd);
+      this.gitService.setLoggedInDev(dd);
       this.gitService.broadcastGlobalComponentMessage('RE-FILL-ORG-LIST');
       
       this.router.navigate(['/dashboard']);

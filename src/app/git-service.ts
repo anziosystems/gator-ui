@@ -144,7 +144,7 @@ export class GitService {
     this.currentDev = new DevDetails();
 
     //Lets refresh values out of session storage
-    this.getLoggedInGitDev();
+    this.getLoggedInDev();
     this.getCurrentGitOrg();
     this.getCurrentOrg();
     this.getCurrentDev();
@@ -201,7 +201,7 @@ export class GitService {
     this.jiraToken = token;
   }
 
-  public setLoggedInGitDev(v: DevDetails) {
+  public setLoggedInDev(v: DevDetails) {
     if (v) {
       // if (v.GitLogin) {
       this.loggedInGitDev = new DevDetails();
@@ -221,6 +221,26 @@ export class GitService {
     }
   }
 
+  // public setLoggedInGitDev(v: DevDetails) {
+  //   if (v) {
+  //     // if (v.GitLogin) {
+  //     this.loggedInGitDev = new DevDetails();
+  //     this.loggedInGitDev.name = v.name;
+  //     this.loggedInGitDev.image = v.image;
+  //     this.loggedInGitDev.GitLogin = v.GitLogin;
+  //     this.loggedInGitDev.OrgDisplayName = v.OrgDisplayName;
+  //     this.loggedInGitDev.id = v.id;
+  //     this.loggedInGitDev.profileUrl = v.profileUrl;
+  //     this.loggedInGitDev.Login = v.Login;
+  //     this.loggedInGitDev.JiraUserName = v.JiraUserName;
+  //     this.loggedInGitDev.TfsUserName = v.TfsUserName;
+  //     this.loggedInGitDev.UserName = v.UserName;
+  //     this.loggedInGitDev.DisplayName = v.DisplayName;
+  //     this.sessionStorage.set('LOGGEDIN_GIT_USER', v);
+  //     // }
+  //   }
+  // }
+
   //Gets Current loggedIn User
   /*
       DisplayName: "Rafat Sarosh"
@@ -234,7 +254,7 @@ export class GitService {
       name: "Rafat Sarosh"
 
   */
-  public getLoggedInGitDev(): DevDetails {
+  public getLoggedInDev(): DevDetails {
     if (!this.loggedInGitDev.hasOwnProperty('name')) {
       //it is an empty object
       let data = this.sessionStorage.get('LOGGEDIN_USER');
@@ -412,20 +432,24 @@ export class GitService {
 
   /*
   This is not called very often, only called from status - So it is ok to go to git
+
+  Get Repos from Git and Saves in SQL
   */
 
   getRepoList(org: string, getFromGit: boolean = false, bustTheCache: boolean = false): any {
-    this.attachToken();
-    const q = `GetRepos?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
+    this.attachGitToken();
+    const q = `GetRepos?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   /*
   This is not called very often, only called from status - only status goes to git
+  for the org, gets the repo and then get all the PR. This is better way to fill all the PR, calling every Repo overwhelm the network
+
   */
   getPullRequest(org: string, getFromGit: boolean = false, bustTheCache: boolean = false): any {
-    this.attachToken();
-    const q = `GetPRfromGit?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
+    this.attachGitToken();
+    const q = `GetPRFromGit?org=${org}&bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
@@ -449,6 +473,13 @@ export class GitService {
   getOrgList(getFromGit: boolean = false, bustTheCache: boolean = false): any {
     this.attachToken(true);
     const q = `GetOrg?bustTheCache=${bustTheCache}&getFromGit=${getFromGit}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  //org coming in here is Orgnization org, it is for OrgLink table
+  getGitOrgList(org: string): any {
+    this.attachGitToken(true);
+    const q = `GetGitOrg?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
@@ -530,6 +561,32 @@ export class GitService {
       this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
     }
     this.token = this.storage.get('OrgToken');
+    try {
+      if (this.token) {
+        // console.log(`[S] Token Found!`);
+        this.httpOptions = {
+          headers: new HttpHeaders({
+            'X-GitHub-Delivery': 'xxx',
+            'X-Hub-Signature': 'xxx',
+            'X-GitHub-Event': 'xxx',
+            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+            'Content-Type': 'application/json', //x-www-form-urlencoded',
+            Authorization: this.token,
+          }),
+        };
+      } else {
+        console.log('[E] NO TOKEN FOUND');
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
+
+  attachGitToken(skipOrgCheck: boolean = false) {
+    if (!skipOrgCheck) {
+      this.checkOrg(); //Will not check if the call is coming from GetOrgList, else always does. Skip for GetOrg else it will be a infitite loop
+    }
+    this.token = this.storage.get('GitToken');
     try {
       if (this.token) {
         // console.log(`[S] Token Found!`);

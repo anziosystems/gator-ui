@@ -162,7 +162,7 @@ export class TopDevelopersComponent implements OnInit {
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
-  //  this.gitService.setCurrentDev(developer);
+    //  this.gitService.setCurrentDev(developer);
     //this.gitService.trigger(developer.login);
     this.gitService.broadcastDevLoginId(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
@@ -179,7 +179,6 @@ export class TopDevelopersComponent implements OnInit {
   }
 
   jiraData(developer: DevDetails) {
-
     this.gitService.broadcastJiraDevName(developer);
     this.gitService.broadcastGlobalComponentMessage('SHOW_JIRA_DETAILS');
   }
@@ -297,7 +296,12 @@ export class TopDevelopersComponent implements OnInit {
   }
   rightClick(e: any, context: string, dev: DevDetails) {
     dev = e.item;
-    let d = this.gitService.getLoggedInGitDev();
+    //notice email was empty 
+    if (!dev.email) {
+      dev.email = dev.Login;
+    }
+    this.gitService.setCurrentDev(dev); //sometime user will just right click with out a click - else click takes care of set LoggedInGitDev
+    let d = this.gitService.getLoggedInDev();
     this.gitOrg = this.gitService.getCurrentGitOrg();
     if (dev.email === 'null') {
       alert(`A watch cannot be set on ${dev.name} because his has not connected his git id with his org id. Please let your admin know`);
@@ -309,7 +313,7 @@ export class TopDevelopersComponent implements OnInit {
     }
 
     if (context === 'Kudos') {
-      this.sender = d.GitLogin;
+      this.sender = d.email;
       this.target = dev.email;
       this.kudoesText = `Please type here kudoes for ${dev.name}`;
       this.display = true;

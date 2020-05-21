@@ -39,7 +39,7 @@ export class IcReportComponent implements OnInit {
     this.textStatus = '';
     this.reviewData = [0, 0, 0];
     return new Promise((done, fail) => {
-      let loggedUser = this.gitService.getLoggedInGitDev().Login;
+      let loggedUser = this.gitService.getLoggedInDev().Login;
       // this.gitService.isUserAdmin(this.currentOrg, loggedUser).subscribe(x => {
       //   if (x === 0) {
       //     this.textStatus = 'Sorry, only admin can see this';

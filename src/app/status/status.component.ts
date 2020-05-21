@@ -32,7 +32,7 @@ export class StatusComponent implements OnInit {
     @Inject(LOCAL_STORAGE) private storage: WebStorageService,
     @Inject(SESSION_STORAGE) private sessionStorage: WebStorageService,
   ) {
-    this.bGetFromGit = sessionStorage.get('LBC');
+    this.bGetFromGit = true;
 
     this.loginAndSetup();
   }
@@ -66,39 +66,19 @@ export class StatusComponent implements OnInit {
     }, 200); //every 200 ms
 
     //Get the Tenant details - This will be logged in User
-    this.gitService.getLoggedInUSerDetails(this.bGetFromGit).subscribe(r2 => {
-      let dd = new DevDetails();
-      console.log(`loginAndSetup=> ${r2.Id}`);
-      dd.name = r2.DisplayName;
-      dd.GitLogin = r2.GitUserName;
-      dd.image = r2.Photo;
-      dd.id = r2.Id;
-      dd.profileUrl = r2.profileUrl;
-      // let buff = btoa(JSON.stringify(dd));
-      this.gitService.setLoggedInGitDev(dd);
+    this.gitService.getLoggedInUSerDetails(this.bGetFromGit).subscribe(async r2 => {
       this.hookFail = false;
-      if (this.bGetFromGit) {
-        this.messages.push('Please wait, getting Org List ...');
-      }
-      this.gitService.getOrgList(this.bGetFromGit, this.bGetFromGit).subscribe(
-        r1 => {
-          if (r1.length > 0) {
+      this.messages.push('Please wait, getting Org List ...');
+      const org = await this.gitService.getCurrentOrg();
+      //org going in here is Orgnization org, it is for OrgLink table
+      this.gitService.getGitOrgList(org).subscribe(
+        async _gitOrgs => {
+          if (_gitOrgs.length > 0) {
             this.orgStatus = true;
-            this.orgList = r1;
-
-            r1.forEach(r => {
-              if (r.OrgType === 'git') {
-                this.gitService.setCurrentGitOrg(r.Org);
-              }
-              if (r.OrgType === 'org') {
-                this.gitService.setCurrentOrg(r.Org);
-              }
-            });
-            if (this.bGetFromGit) {
-              this.successMessages.push(`Yes! Found ${r1.length} orgnization for this login`);
-            }
+            this.orgList = _gitOrgs;
+            this.successMessages.push(`Yes! Found ${_gitOrgs.length} orgnization for this login`);
             //for every org check the hook
-            this.orgList.forEach(element => {
+            await this.orgList.forEach(element => {
               // if (this.bGetFromGit) {
               //   this.messages.push('Checking Git Gator hook in ' + element.Org);
               // }
@@ -139,22 +119,22 @@ export class StatusComponent implements OnInit {
               //   }
               // });
               //Get Repos
-              if (this.bGetFromGit) {
-                this.messages.push('Please Wait! Getting Repositories for ' + element.Org);
-              }
-              this.gitService.getRepoList(element.Org, this.bGetFromGit, this.bGetFromGit).subscribe(
-                r5 => {
+              let gitOrg = element.url.substr('https://github.com/'.length);
+              this.messages.push('Please Wait! Getting Repositories for ' + element.name);
+              this.gitService.getRepoList(gitOrg, true, true).subscribe(
+                async repos => {
                   //TODO: Turn the result into true and false
-                  if (r5.length > 0) {
+                  if (repos.length > 0) {
                     this.repoStatus = true;
-                    this.repoCount = r5.length;
-                    if (this.bGetFromGit) {
-                      this.successMessages.push('Found Repositories: ' + r5.length + ' for ' + element.Org);
-                    }
+                    this.repoCount = repos.length;
+                    this.successMessages.push('Found ' + repos.length + ' Repositories for ' + element.name);
+                   
+                      this.gitService.getPullRequest(gitOrg, true, false).subscribe(pr => {
+                        this.successMessages.push(`Pulling last 25 PR for all repos in ${gitOrg}`);
+                      });
+                
                   } else {
-                    if (this.bGetFromGit) {
-                      this.warningMessages.push('No Repositories found for organization: ' + element.Org);
-                    }
+                    this.warningMessages.push('No Repositories found for organization: ' + element.name);
                   }
                 },
                 error => {
@@ -163,49 +143,25 @@ export class StatusComponent implements OnInit {
                   clearTimeout(t);
                 },
               );
-              if (this.bGetFromGit) {
-                this.messages.push('Getting last 10 pull request from all repositories for ' + element.Org + ' Please wait ..');
-              }
-
-              //Get Pull Request
-              this.gitService.getPullRequest(element.Org, this.bGetFromGit, this.bGetFromGit).subscribe(
-                r6 => {
-                  //TODO: Turn the result into true and false
-                  if (this.bGetFromGit) {
-                    this.successMessages.push('Done! Getting pull request for ' + element.Org + ' from ' + r6 + ' repositories');
-                  }
-                  this.buttonDisabled = false;
-                  let elem = document.getElementById('myBar');
-                  elem.style.width = '100%';
-                  clearTimeout(t);
-                  //Just firing an extra call to prepare the cache in BE
-                  this.gitService.getGitTopDevelopers(this.gitService.getCurrentGitOrg(), this.NO_OF_DAYS);
-                  //  this.router.navigate(['/dashboard']);  //No Need for user to click
-                },
-                error => {
-                  if (this.bGetFromGit) {
-                    this.errMessages.push('Sorry, seems like something is wrong getting PR. Please refresh the page. ');
-                    this.errMessages.push(error.statusText);
-                  }
-                  clearTimeout(t);
-                },
-              );
+              // this.successMessages.push(`Done!`);
+              // this.buttonDisabled = false;
+              // let elem = document.getElementById('myBar');
+              // elem.style.width = '100%';
+              // clearTimeout(t);
+              //Just firing an extra call to prepare the cache in BE
             }); //org list loop
           } else {
-            if (this.bGetFromGit) {
-              this.warningMessages.push('Did not get any orgnazation for this login. Please check in Git and make sure you belong to an organization.');
-              this.warningMessages.push('Exiting!!!');
-            }
+            this.warningMessages.push('Did not get any orgnazation for this login. Please check in Git and make sure you belong to an organization.');
+            this.warningMessages.push('Exiting!!!');
+
             let elem = document.getElementById('myBar');
             elem.style.width = '100%';
             clearTimeout(t);
           }
         },
         error => {
-          if (this.bGetFromGit) {
-            this.errMessages.push('Sorry, seems like something is wrong. Please refresh the page. Please feel free to send us message at support@anziosystems.com ');
-            this.errMessages.push(error.message);
-          }
+          this.errMessages.push('Sorry, seems like something is wrong. Please refresh the page. Please feel free to send us message at support@anziosystems.com ');
+          this.errMessages.push(error.message);
           clearTimeout(t);
         },
       );
