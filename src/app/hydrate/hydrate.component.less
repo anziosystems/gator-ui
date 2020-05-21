@@ -2,21 +2,21 @@
 @import '../css/style';
 @import '../css/animate.css';
 
-.Outer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: large;
-  width: 100%;
+.page-style {
+    background-color: @main-background-color;
+  
+    height: 90vh;
+    padding-top: 10px;
+    padding-left: 50px;
+    width: calc (100vw - ( @leftNavWidth + 50px));
+  }
 
-  margin-top: 50px;
-  vertical-align: 100px;
-}
-
-.inner {
-  display: inline-block;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 0px;
-}
+  .button-style {
+    width: 150px;
+    height: 30px;
+    background-color: plum;
+    border: 0px;
+    box-shadow: 4px 4px black;
+    color: black;
+    margin: 5px;
+  }

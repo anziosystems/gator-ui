@@ -1,6 +1,12 @@
-<div>
+<div class="page-style">
   <div style="padding:20px">
-    You have to do this only once. This will bring all Pull Request data from all Repositories for all the developers in the organization.
-    <a (click)="gitLogin()"> Hydrate Git Data </a>
+    You have to do this only once. This will hydrate data from various different systems to GitGator for the first use.
+    <br> 
+    <button class="button-style"  (click)="gitLogin()">Hydrate Git Data</button> 
+
+    <button class="button-style"  style = "background-color: rgb(117, 163, 133);" (click)="jiraLogin()">Hydrate Jira Data</button>
+
+    <button class="button-style"  style = "background-color: rgb(143, 125, 98);" (click)="tfsLogin()">Hydrate TFS Data</button>
+    
   </div>
 </div>
