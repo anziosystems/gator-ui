@@ -633,6 +633,12 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
+  //signup
+  signup(token: string): Observable<any> {
+    const q = `Signup?token=${token}`;
+    return this.http.get(this.gitApiUrl + q);
+  }
+
   // GetPullRequestCount for last 7 days, 30 days etc
   getPullRequestCount(org: string, login: string = null, day: number = 7): Observable<any> {
     this.attachToken();

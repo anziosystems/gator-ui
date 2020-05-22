@@ -68,6 +68,7 @@ import {HydrateComponent} from './hydrate/hydrate.component';
 
 const routes: Routes = [
   {path: 'privacy', component: PrivacyComponent},
+  {path: 'signup', component: SignupComponent},
   {path: 'cd', component: CandidateDetailComponent},
   {path: 'linebar', component: LinebarComponent},
   {path: 'help', component: HelpComponent},
