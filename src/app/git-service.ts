@@ -271,7 +271,7 @@ export class GitService {
   async fillUserMap4CurrentOrg(): Promise<boolean> {
     return new Promise((done, fail) => {
       let co = this.sessionStorage.get('CURRENT-ORG');
-      this.getDev4Org(co).subscribe(result => {
+      this.getUser4Org(co).subscribe(result => {
         if (result.code === 401) {
           fail('401');
           return;
