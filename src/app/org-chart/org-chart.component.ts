@@ -121,7 +121,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
 
   addDeveloper() {
     this.gitService.ready().then(result => {
-      this.gitService.getDev4Org(this.currentOrg).subscribe(val => {
+      this.gitService.getUser4Org(this.currentOrg).subscribe(val => {
         if (val) {
           if (val.code === 404) {
             sessionStorage.setItem('statusText', this.textStatus);

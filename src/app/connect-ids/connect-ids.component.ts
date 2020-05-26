@@ -84,7 +84,7 @@ export class ConnectIdsComponent implements OnInit {
       });
     });
 
-    this.gitService.getDev4Org(this.currentOrg).subscribe(r => {
+    this.gitService.getUser4Org(this.currentOrg).subscribe(r => {
       this.allUsers = [];
       this.allUsers = r;
     });
