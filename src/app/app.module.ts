@@ -65,6 +65,7 @@ import {ConnectIdsComponent} from './connect-ids/connect-ids.component';
 import {PrivacyComponent} from './privacy/privacy.component';
 import {SignupComponent} from './signup/signup.component';
 import {HydrateComponent} from './hydrate/hydrate.component';
+import { AllUserComponent } from './all-user/all-user.component';
 
 const routes: Routes = [
   {path: 'privacy', component: PrivacyComponent},
@@ -159,6 +160,7 @@ const routes: Routes = [
     PrivacyComponent,
     SignupComponent,
     HydrateComponent,
+    AllUserComponent,
   ],
   entryComponents: [PeopleTicketComponent],
   imports: [

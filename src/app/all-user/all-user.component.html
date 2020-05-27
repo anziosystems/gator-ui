@@ -1,0 +1,27 @@
+  <div class="flex-container">
+    <div id="container" class="flex-item-header">
+      Developers [ <label style="color:plum">{{ gitOrg }} </label> ]
+      <br />
+      <input type="text" #box (keyup)="filterDev(box.value)" style="color: black" />
+     
+      <br />
+    </div>
+    <hr style="width: 100%; color: rgb(105, 95, 95); border-style:inset;margin-top: 15px; margin-bottom: 5px; " />
+    <div *ngFor="let dev of developers" [contextMenu]="basicMenu" [contextMenuSubject]="items">
+      <div div class="flex-item">
+        <div style="display: flex; direction: row;cursor: pointer;">
+          <img
+            src="{{ dev.image }}"
+            onerror="if (this.src != '../../assets/dev2.png') this.src = '../../assets/dev2.png';"
+            style="height:40px; width:40px; margin-right:
+          7px; border-radius: 50%; cursor: pointer;"
+          />
+  
+          <div (click)="GetData(dev)" style="margin-top:8px; cursor: pointer;" [ngStyle]="getMyStyle(dev)" [contextMenu]="basicMenu" [contextMenuSubject]="dev">
+            {{ dev.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

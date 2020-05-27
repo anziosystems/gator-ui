@@ -73,16 +73,21 @@ export class DevPullDetailsComponent implements OnInit {
     this.bShowName = false;
     this.gitService.ready().then(result => {
       this.gitService.onDevLoginIdChanged.subscribe(val => {
+        this.devDetails = [];
+        if (!val) {
+          return null;
+        }
         this.bShowName = false;
         this.selectedDevName = val.DisplayName;
         this.getDeveloperDetails(val.GitLogin);
       });
 
       this.gitService.onStringEvent.subscribe((val: string) => {
-        if (val === undefined) {
-          console.log('subscription event returned undefined. Exiting');
-          return;
+        this.devDetails = [];
+        if (!val) {
+          return null;
         }
+
         if (val.lastIndexOf('+') > 0) {
           const arr = _.split(val, '+');
           this.getActionDetails(arr[0], Number(arr[1]));
@@ -110,10 +115,8 @@ export class DevPullDetailsComponent implements OnInit {
   }
 
   getDeveloperDetails(developer: string) {
-    // if (!this.gitOrg) {
-    //   console.log (`[E] gitOrg is undefined. - getDeveloperDetails`);
-    //   return;
-    // }
+    this.devDetails = [];
+    if (!developer) return null;
     this.gitService.ready().then(result => {
       this.gitService.getDeveloperDetail(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, developer, 'null', 50).subscribe(val => {
         this.devDetails = val;

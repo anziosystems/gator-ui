@@ -93,6 +93,7 @@ export class OrgDetailsComponent implements OnInit {
     let d = new DevDetails();
     d.Login = obj.node.data;
     d.name = obj.node.label;
+    
     this.gitService.getDevDetails4Login(d.Login).then(x => {
       this.GetData(x);
     });

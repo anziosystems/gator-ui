@@ -618,6 +618,9 @@ export class GitService {
   }
 
   getDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
+    if  (!login)
+       return null;
+
     if (!day) day = 7;
 
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
@@ -641,6 +644,8 @@ export class GitService {
 
   // GetPullRequestCount for last 7 days, 30 days etc
   getPullRequestCount(org: string, login: string = null, day: number = 7): Observable<any> {
+    if  (!login)
+       return null;
     this.attachToken();
     const q = `PullRequestCountForLastXDays?org=${org}&login=${login}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
@@ -658,6 +663,13 @@ export class GitService {
   getGitTopDevelopers(org: string, day: number): Observable<any> {
     this.attachToken();
     const q = `TopDevForLastXDays?org=${org}&day=${day}`;
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
+  }
+
+  //org(Tenant)
+  getAllUsers(org: string): Observable<any> {
+    this.attachToken();
+    const q = `GetAllUsers?org=${org}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
