@@ -618,11 +618,9 @@ export class GitService {
   }
 
   getDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
-    if  (!login)
-       return null;
 
     if (!day) day = 7;
-
+    //login == null is a legit call for breaking news
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
