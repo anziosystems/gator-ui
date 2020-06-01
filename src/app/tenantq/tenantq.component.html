@@ -9,11 +9,11 @@
   <div class="inner">
     <div class="brn-btn"></div>
     <div style="    font-size: larger;">
-      https://GitGator.com/ <input type="text" style="color:black; height: 25px;width:200px" [(ngModel)]="tenantName" placeholder="Your tenant name" />
+      https://GitGator.com/ <input type="text" style="color:black; height: 25px;width:200px" [(ngModel)]="tenantName" placeholder="Your tenant name" (keydown.enter)="Go()" />
     </div>
   </div>
   <div class="inner">
-    <div style="color:rgb(57, 97, 97)">{{ message }}</div>
+    <div style="color:rgb(29, 233, 233)">{{ message }}</div>
     <div style="color:rgb(197, 22, 191)">{{ errorMessage }}</div>
   </div>
   <div class="inner">

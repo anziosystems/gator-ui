@@ -1000,8 +1000,8 @@ export class GitService {
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
 
-  updateUserConnectIds(user: any): Observable<any> {
-    const q = `updateUserConnectIds`;
+  updateUserConnectIds(user: any, org: string): Observable<any> {
+    const q = `updateUserConnectIds?org=${org}`;
     this.attachToken();
     let body: any = {
       user: user,

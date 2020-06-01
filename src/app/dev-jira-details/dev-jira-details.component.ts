@@ -73,14 +73,20 @@ export class DevJiraDetailsComponent implements OnInit {
     this.bHideDetails = true;
   }
 
-  initializeData() {}
+  initializeData() {
+    this.gitService.onCustomEvent.subscribe((val: CustomEvent) => {
+      if (val.source === 'STATUS-REPORT') {
+        this.bShowAddButton = true; //+ sign is shown next to Git Details. This funcitonality is used in Status report component
+      }
+    });
+  }
 
   //addJiraDetails
   addJiraDetails(dev: any) {
     this.gitService.broadcastCustomEvent({
       source: 'JIRA',
       destination: 'STATUS-REPORT',
-      message: `${dev.title}  Created at: ${dev.created_at}  Link: ${dev.pullrequesturl}`,
+      message: `${dev.Title}  Created at: ${dev.CreatedDate} Status: ${dev.Status} Link: ${dev.PullRequestUrl}`,
     });
   }
 
@@ -100,7 +106,7 @@ export class DevJiraDetailsComponent implements OnInit {
       .toPromise()
       .then((val: any) => {
         this.devDetails = val; //cache is sending array
-        this.userLink = val[0].UserLink ;
+        this.userLink = val[0].UserLink;
       });
   }
 

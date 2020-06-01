@@ -36,7 +36,7 @@
           <a href="{{ dev.PullRequestUrl }}" target="_blank" style="text-decoration: none; color: gainsboro">{{ dev.Title }}</a>
         </div>
       </div>
-      <div style="font-size: large; color: gainsboro">{{ dev.Summary | slice: 1:400 }}</div>
+      <div style="font-size: large; color: gainsboro">{{ dev.Summary | slice: 0:400 }}</div>
 
       <div style="font-size: large; color: rgb(139, 124, 124)">Created: {{ dev.CreatedDate | date }} Updated: {{ dev.UpdatedDate | date }}</div>
       <!-- <div style="font-size: large; color: rgb(143, 173, 182)">Updated: {{ dev.updated | date }}</div> -->
