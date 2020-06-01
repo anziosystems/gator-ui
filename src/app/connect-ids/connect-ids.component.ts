@@ -24,6 +24,7 @@ export class ConnectIdsComponent implements OnInit {
   gitUserName: string;
   jiraUserName: string;
   tfsUserName: string;
+  selectedUserName: string;
   user: any;
   constructor(
     private gitService: GitService,
@@ -46,12 +47,6 @@ export class ConnectIdsComponent implements OnInit {
       this.router.navigate(['/lsauth']);
       return;
     }
-
-    this.loggedInUser = this.gitService.getLoggedInDev().GitLogin;
-    if (!this.loggedInUser) {
-      this.router.navigate(['/lsauth']);
-      return;
-    }
   }
 
   getUserids(user: any) {
@@ -59,6 +54,7 @@ export class ConnectIdsComponent implements OnInit {
       return value.Email === user.Email;
     });
     this.user = u[0];
+    this.selectedUserName = this.user.UserDisplayName;
     this.tfsUserName = this.user.TfsUserName;
     this.gitUserName = this.user.GitUserName;
     this.jiraUserName = this.user.JiraUserName;
@@ -95,9 +91,10 @@ export class ConnectIdsComponent implements OnInit {
     this.user.TfsUserName = this.tfsUserName;
     this.user.GitUserName = this.gitUserName;
     this.user.JiraUserName = this.jiraUserName;
-
-    this.gitService.updateUserConnectIds(this.user).subscribe(x => {
-      this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
+    this.gitService.getCurrentOrg().then(org => {
+      this.gitService.updateUserConnectIds(this.user, org).subscribe(x => {
+        this.alertmsgs.push({severity: 'success', summary: 'Record Updated', detail: ''});
+      });
     });
   }
 }
