@@ -339,6 +339,8 @@ export class TopDevelopersComponent implements OnInit {
   target: string;
 
   kudoesYes() {
+    let d = this.gitService.getLoggedInDev();
+    this.sender = d.email;
     this.gitService.setKudos(this.sender, this.target, this.currentOrg, this.gitOrg, this.kudoesText).subscribe(x => {
       alert(`Thanks! Your kudos is sent to ${this.target}`);
     });
