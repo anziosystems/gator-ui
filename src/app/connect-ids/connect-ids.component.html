@@ -25,12 +25,34 @@
         </div>
         <div style="margin-bottom: 30px;">
           <label style="width: 200px;color:rgb(187, 201, 207)"> Git User Name: </label> <input style="color:black" type="text" [(ngModel)]="gitUserName" />
+          <img
+            src="../../assets/git_logo.png"
+            style="width: 30px;
+          height: 30px;
+          margin-left: 10px;"
+                    title="Get your Git User Name. You can get it from your profile in GitHub."
+          />
         </div>
         <div style="margin-bottom: 30px;">
-          <label style="width: 200px;color:rgb(187, 201, 207)"> Jira User Name: </label> <input style="color:black" type="text" [(ngModel)]="jiraUserName" />
+          <label style="width: 200px;color:rgb(187, 201, 207)"> Jira User Name: </label>
+          <input style="color:black" type="text" [(ngModel)]="jiraUserName"  />
+          <img
+            src="../../assets/jira.png"
+            style="width: 30px;
+          height: 30px;
+          margin-left: 10px;"
+          title="Get your Jira User Name. You can get it from your profile in Jira."
+          />
         </div>
         <div style="margin-bottom: 30px;">
           <label style="width: 200px;color:rgb(187, 201, 207)"> TFS User Name: </label> <input style="color:black" type="text" [(ngModel)]="tfsUserName" />
+          <img
+            src="../../assets/azure-logo.png"
+            style="width: 30px;
+          height: 30px;
+          margin-left: 10px;"
+           title="Get your Azure Boards User Name. You can get it from your profile in Azure Dev Ops."
+          />
         </div>
         <div style="margin-bottom: 30px;">
           <button class="buttons-style" style="width: 90px; height: 50px; background-color: plum; " (click)="save()">Save</button>
