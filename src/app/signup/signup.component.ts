@@ -18,12 +18,14 @@ export class SignupComponent implements OnInit {
   }
 
   Go() {
+    const authURL = `${this.gitService.gatorApiUrl}/auth/lsauth/anzio?callbackUrl=${location.origin}/lsauthCallback`;
     let token = this.route.snapshot.queryParams['token'];
     if (token) {
       this.gitService.signup(token).subscribe(x => {
-        const authURL = `${this.gitService.gatorApiUrl}/auth/lsauth/anzio?callbackUrl=${location.origin}/lsauthCallback`;
-        window.location.href = authURL;
-      });
+             window.location.href = authURL;
+      }); 
+    } else {
+      window.location.href = authURL;
     }
   }
 }
