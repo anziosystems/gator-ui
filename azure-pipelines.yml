@@ -1,10 +1,10 @@
-# Node.js with Angular
+r# Node.js with Angular
 # Build a Node.js project that uses Angular.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+- DevStar
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -33,5 +33,5 @@ steps:
     #azureSubscription: 'Axle - MPN - Rafat(1c2b7486-ccf8-41e0-bdfa-ab797f153518)'
     azureSubscription: 'Rafat-Gator(87f0d394-7e24-4e5b-93b2-c48e695febe7)'
     appType: 'webApp'
-    WebAppName: 'gator-ui'
+    WebAppName: 'DevStar-ui'
     packageForLinux: '$(System.DefaultWorkingDirectory)/dist/gator'
