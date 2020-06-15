@@ -116,8 +116,8 @@ export class GitService {
   //Keeps the map od Jira display Name and accountId
   JiraUsersMap = new Map();
 
-  public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  //public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  //public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
 
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
@@ -618,7 +618,6 @@ export class GitService {
   }
 
   getDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
-
     if (!day) day = 7;
     //login == null is a legit call for breaking news
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
@@ -637,13 +636,19 @@ export class GitService {
   //signup
   signup(token: string): Observable<any> {
     const q = `Signup?token=${token}`;
-    return this.http.get(this.gitApiUrl + q);
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Type': 'application/json', //x-www-form-urlencoded',
+      }),
+    };
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   // GetPullRequestCount for last 7 days, 30 days etc
   getPullRequestCount(org: string, login: string = null, day: number = 7): Observable<any> {
-    if  (!login)
-       return null;
+    if (!login) return null;
     this.attachToken();
     const q = `PullRequestCountForLastXDays?org=${org}&login=${login}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);

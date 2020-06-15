@@ -1,45 +1,44 @@
 <div class="Outer">
-    <div class="inner">
-      <img src="../../assets/Gator-Logo.svg" style="width:120px; height: 120px;" />
-      <div style="color: ghostwhite;  font-size: xx-large">Git Gator</div>
+  <div class="inner">
+    <img src="../../assets/Gator-Logo.svg" style="width:120px; height: 120px;" />
+    <div style="color: ghostwhite;  font-size: xx-large">Dev Star</div>
+  </div>
+</div>
+
+<div class="Aligner">
+  <div>Please wait initializing your account .... First use will take time <br /></div>
+  <div class="Aligner-items">
+    <div id="myProgress">
+      <div id="myBar"></div>
+    </div>
+
+    <div *ngFor="let message of messages">
+      <div style="color: #f5f5f58f">&#8658; {{ message }}</div>
+    </div>
+
+    <div *ngFor="let message of warningMessages">
+      <div style="color: orange">&#9785; {{ message }}</div>
+    </div>
+
+    <div *ngFor="let message of successMessages">
+      <div style="color: greenyellow">&#10004; {{ message }}</div>
+    </div>
+
+    <div *ngFor="let message of errMessages">
+      <div style="color: red">&#10006; {{ message }}</div>
+      <a href="jira-login"> Click here to re-login </a>
+    </div>
+
+    <p></p>
+
+    <div *ngFor="let message of progress">
+      <div style="color: rgb(152, 241, 19)">&#10004; {{ message }}</div>
     </div>
   </div>
-  
-  <div class="Aligner">
-    <div>Please wait initializing your account .... First use will take time <br /></div>
-    <div class="Aligner-items">
-      <div id="myProgress">
-        <div id="myBar"></div>
-      </div>
-  
-      <div *ngFor="let message of messages">
-        <div style="color: #f5f5f58f">&#8658; {{ message }}</div>
-      </div>
-  
-      <div *ngFor="let message of warningMessages">
-        <div style="color: orange">&#9785; {{ message }}</div>
-      </div>
-  
-      <div *ngFor="let message of successMessages">
-        <div style="color: greenyellow">&#10004; {{ message }}</div>
-      </div>
-  
-      <div *ngFor="let message of errMessages">
-        <div style="color: red">&#10006; {{ message }}</div>
-        <a href="jira-login"> Click here to re-login </a>
-      </div>
-  
-      <p></p>
-  
-      <div *ngFor="let message of progress">
-        <div style="color: rgb(152, 241, 19)">&#10004; {{ message }}</div>
-      </div>
-    </div>
+</div>
+
+<div class="Outer">
+  <div class="inner">
+    <Button (click)="dashboard()" class="btn btn-more" style="color:black; margin-top: -45px;" [disabled]="buttonDisabled"> Get Started </Button>
   </div>
-  
-  <div class="Outer">
-    <div class="inner">
-      <Button (click)="dashboard()" class="btn btn-more" style="color:black; margin-top: -45px;" [disabled]="buttonDisabled"> Get Started </Button>
-    </div>
-  </div>
-  
+</div>

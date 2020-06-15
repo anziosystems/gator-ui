@@ -80,12 +80,12 @@ export class StatusComponent implements OnInit {
             //for every org check the hook
             await this.orgList.forEach(element => {
               // if (this.bGetFromGit) {
-              //   this.messages.push('Checking Git Gator hook in ' + element.Org);
+              //   this.messages.push('Checking Dev Star hook in ' + element.Org);
               // }
               // this.gitService.getHookStatus(element.Org).subscribe(r3 => {
               //   let hookStatus = r3.val;
               //   if (!hookStatus) {
-              //     this.errMessages.push("For GitGator to work properly, you must install the web hook manually for org: " + element.Org);
+              //     this.errMessages.push("For Dev Star to work properly, you must install the web hook manually for org: " + element.Org);
 
               //     //lets install the hook
               //     // if (this.bGetFromGit) {
@@ -95,17 +95,17 @@ export class StatusComponent implements OnInit {
               //     //   let hookReturn = r4.val;
               //     //   if (hookReturn === 201) {
               //     //     if (this.bGetFromGit) {
-              //     //       this.successMessages.push('Git Gator hook is installed for org ' + element.Org);
+              //     //       this.successMessages.push('Dev Star hook is installed for org ' + element.Org);
               //     //     }
               //     //   } else {
               //     //     if (hookReturn === 422) {
               //     //       if (this.bGetFromGit) {
-              //     //         this.messages.push('Git Gator hook is already installed for org ' + element.Org);
+              //     //         this.messages.push('Dev Star hook is already installed for org ' + element.Org);
               //     //       }
               //     //     } else {
               //     //       if (hookReturn === 404) {
               //     //         if (this.bGetFromGit) {
-              //     //           this.errMessages.push("Couldn't install Git Gator hook. Please install manually for org: " + element.Org);
+              //     //           this.errMessages.push("Couldn't install Dev Star hook. Please install manually for org: " + element.Org);
               //     //           this.hookFail = true;
               //     //         }
               //     //       }
@@ -114,7 +114,7 @@ export class StatusComponent implements OnInit {
               //     // });
               //   } else {
               //     if (this.bGetFromGit) {
-              //       this.messages.push('Git Gator hook is already installed in ' + element.Org);
+              //       this.messages.push('Dev Star hook is already installed in ' + element.Org);
               //     }
               //   }
               // });
@@ -128,11 +128,10 @@ export class StatusComponent implements OnInit {
                     this.repoStatus = true;
                     this.repoCount = repos.length;
                     this.successMessages.push('Found ' + repos.length + ' Repositories for ' + element.name);
-                   
-                      this.gitService.getPullRequest(gitOrg, true, false).subscribe(pr => {
-                        this.successMessages.push(`Pulling last 25 PR for all repos in ${gitOrg}`);
-                      });
-                
+
+                    this.gitService.getPullRequest(gitOrg, true, false).subscribe(pr => {
+                      this.successMessages.push(`Pulling last 25 PR for all repos in ${gitOrg}`);
+                    });
                   } else {
                     this.warningMessages.push('No Repositories found for organization: ' + element.name);
                   }

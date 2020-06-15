@@ -102,7 +102,7 @@ export class OrgChartComponent implements OnInit, AfterViewInit, OnChanges {
     // this.diagram.isModified = true;
     this.gitService.saveOrgChart(this.gitService.getLoggedInDev().UserName, this.currentOrg, this.diagram.model.toJson()).subscribe(x => {
       if (x.code === 401) {
-        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@gitgator.com', detail: ''});
+        this.alertmsgs.push({severity: 'error', summary: 'You are not an admin. Ask your admin for help. Or send a mail to support@Dev-Star.com', detail: ''});
         return;
       } else {
         this.alertmsgs.push({severity: 'success', summary: 'Org Chart Updated', detail: ''});

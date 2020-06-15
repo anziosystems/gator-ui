@@ -27,9 +27,9 @@ export class TenantqComponent implements OnInit {
       window.location.href = authURL;
     } else {
       if (!this.tenantName) {
-        this.errorMessage = `Invalid Tenant, If you don't know your tenant, please send a mail to support@gitgator.com. Or please read the above statement slowly and understand it.`;
+        this.errorMessage = `Invalid Tenant, If you don't know your tenant, please send a mail to support@Dev-Star.com. Or please read the above statement slowly and understand it.`;
       } else {
-        this.errorMessage = `${this.tenantName} is not found. If you don't know your tenant, please send a mail to support@gitgator.com. Or please read the above statement slowly and understand it.`;
+        this.errorMessage = `${this.tenantName} is not found. If you don't know your tenant, please send a mail to support@Dev-Star.com. Or please read the above statement slowly and understand it.`;
       }
     }
     //this.router.navigate([authURL]);

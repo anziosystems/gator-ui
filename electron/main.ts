@@ -6,7 +6,7 @@ let mainWindow: Electron.BrowserWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    title: 'GitGator',
+    title: 'Dev Star',
     width: 1024,
     height: 768,
     minWidth: 1024,
