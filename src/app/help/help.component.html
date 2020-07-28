@@ -22,119 +22,32 @@
       <div>
         To have Dev Star function properly, administration of the organization has to do the followings:
         <ul style="list-style:decimal">
-          <li>Install <a href="#webhooks">webhooks</a></li>
-          <li><a href="#hydrate">Hydrate</a> Dev Star with historical data.</li>
+          <li>Install webhooks. Send the mail to  <a href="mailto:support@Dev-Star.com"> support@Dev-Star.com </a> for details</li>
           <li>All users of Organization must login once in Dev Star.</li>
-          <li><a href="#connect"> Connect</a> their Git, Azure Boards, Jira Id's.</li>
+          <li><a href="#connect"> Connect</a> every user Git, Azure Boards, Jira Id's.</li>
           <li><a href="#org"> Create </a> the Org Structure.</li>
           <li>Connect Git Orgs with Tenant. Contact the <a href="mailto:support@Dev-Star.com" style="color:#E92987"> Dev Star Admin </a>for this last step.</li>
         </ul>
       </div>
-      <h2 id="webhooks">Webhook installation</h2>
-      You should install the webhook for the products which is used in your organization. This activity is done by the administration of your systems. This need to be done only
-      once.
-      <ul>
-        <li>
-          <a href="#Github">GitHub</a>
-        </li>
-        <li><a href="#Jira">Jira </a></li>
-        <li><a href="#TFS">TFS - Azure DevOps - Azure Boards </a></li>
-        <!-- <li><a href="#BitBucket">BitBucket </a></li>
-        <li><a href="#GitLab">GitLab </a></li> -->
 
-        <h2 id="Github">GitHub</h2>
-        <h4 class="bluestyle">Without webhooks Dev Star will not update your data. Please ask the admin of your orgnization to install webhook.</h4>
-        <P>Follow these simple steps to Manually Install web hook?</P>
-        <ul>
-          <li>Goto your organization page on the github <br /></li>
-          <li>Navigate to the "Settings" tab. <br /></li>
-          <li>Select the "Webhooks" option on the left menu. <br /></li>
-          <li>Click "Add Webhook" <br /></li>
-          <li>put 'https://gatorgithook.azurewebsites.net/api/httptrigger' in payload URL <br /></li>
-          <li>Select "application/json" as the encoding type. <br /></li>
-          <li>select radio button 'Let me select individual events.' <br /></li>
-          <li>check 'Pull requests' <br /></li>
-          <li>click on Add webhook <br /></li>
-        </ul>
+      <div id="connect">
+        <h2>Connect Your Id's With Dev Star</h2>
 
-        <h2 id="Jira">JIRA</h2>
-        <P>Follow these simple steps to Manually Install web hook?</P>
+        Log in Dev Star. Click on "Gear" Icon on the left Nav and then choose "Connect Your Id's"
+      </div>
 
-        Registering a webhook via the Jira administration console
-        <ul>
-          <li>Go to Jira administration console > System > Webhooks (in the Advanced section).</li>
-          <li>To register your webhook, click Create.</li>
+      <div id="org">
+        <h2>Create the Org Chart</h2>
+        This step is very important. With the org chart, various security settings are implemented. Org chart is used to decide which user can see who's status reports. To create
+        the Organization Chart. Log in Dev Star. Click on "Org" Icon on the left Nav.
+      </div>
 
-          <li>
-            Please make sure to add the following (https://gator-api-ppe.azurewebsites.net/service/JiraHook) in the URL as shown in below image. <img
-            src="../../assets/Jira/JiraWebHook1.png"
-          </li>
-          Please select the radio buttons as shown in the below image
-          <img src="../../assets/Jira/JiraWebHook2.png" />
-          <li>Please click save</li>
-        </ul>
-
-        <h2 id="TFS">Azure DevOps - Azure Boards</h2>
-        <P>Follow these simple steps to Manually Install web hook?</P>
-
-        <!-- Go to your project Service Hooks page: https://{orgName}/{project_name}/_settings/serviceHooks -->
-        <ul>
-          <br />
-          <br />
-          <li>
-            <img src="../../assets/TFS/TFS1.png" />
-            Click on "+" sign to add a new web hook, as shown in above image.
-            <br />
-            <br />
-            <img src="../../assets/TFS/TFS1A.png" />
-
-            <br />
-            <br />
-            Click Next
-            <br />
-            <br />
-            <img src="../../assets/TFS/TFS2.png" /> <br />
-            <br />
-            NOTE: Please remember you have to create total of three webhooks, one for created, deleted and updated.
-            <br />
-            <br />
-            Please make sure to add the following (https://gator-api-ppe.azurewebsites.net/service/TFSHook) in the URL as shown in below image.
-            <br />
-            <br />
-            <img src="../../assets/TFS/TFS3.png" /> <br />
-            <br />
-            <b> Please remember you have to create total of three webhooks, one for created, deleted and updated.</b>
-          </li>
-        </ul>
-
-        <div id="hydrate">
-          <h2>Hydrate</h2>
-          Once you installed the webhooks, data will start trickling in. Dev Star have an option to hydrate with some historical data right away. For that go to Admin screen, and
-          click on "Hydrate" option. Hydrate option will work in background and pull data in. It may take couple of minutes to hours, depending upon the data size.
-
-          <br /><br />
-          With time data in Dev Star will grow and it will become more and more valuable tool for your organization.
+      <footer id="footer">
+        <div class="row text-center">
+          <p>Copyright &copy; 2020 Anzio&nbsp;<span style="color: #E92987;">Systems</span>. All Rights Reserved.</p>
+          <p><a href="privacy">Privacy Policy</a></p>
         </div>
-
-        <div id="connect">
-          <h2>Connect Your Id's With Dev Star</h2>
-
-          Log in Dev Star. Click on "Gear" Icon on the left Nav and then choose "Connect Your Id's"
-        </div>
-
-        <div id="org">
-          <h2>Create the Org Chart</h2>
-          This step is very important. With the org chart, various security settings are implemented. Org chart is used to decide which user can see who's status reports. To create
-          the Organization Chart. Log in Dev Star. Click on "Org" Icon on the left Nav.
-        </div>
-
-        <footer id="footer">
-          <div class="row text-center">
-            <p>Copyright &copy; 2020 Anzio&nbsp;<span style="color: #E92987;">Systems</span>. All Rights Reserved.</p>
-            <p><a href="privacy">Privacy Policy</a></p>
-          </div>
-        </footer>
-      </ul>
+      </footer>
     </div>
   </div>
 </div>

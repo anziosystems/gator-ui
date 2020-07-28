@@ -129,16 +129,19 @@ export class StatusComponent implements OnInit {
                     this.repoCount = repos.length;
                     this.successMessages.push('Found ' + repos.length + ' Repositories for ' + element.name);
 
-                    this.gitService.getPullRequest(gitOrg, true, false).subscribe(pr => {
+                    this.gitService.getPullRequest(gitOrg, true, true).subscribe(pr => {
                       this.successMessages.push(`Pulling last 25 PR for all repos in ${gitOrg}`);
+                      this.buttonDisabled = true;
                     });
                   } else {
                     this.warningMessages.push('No Repositories found for organization: ' + element.name);
+                    this.buttonDisabled = true;
                   }
                 },
                 error => {
                   this.errMessages.push('Sorry, seems like something is wrong getting repository list. Please refresh the page. ');
                   this.errMessages.push(error.statusText);
+                  this.buttonDisabled = true;
                   clearTimeout(t);
                 },
               );
@@ -155,12 +158,14 @@ export class StatusComponent implements OnInit {
 
             let elem = document.getElementById('myBar');
             elem.style.width = '100%';
+            this.buttonDisabled = true;
             clearTimeout(t);
           }
         },
         error => {
           this.errMessages.push('Sorry, seems like something is wrong. Please refresh the page. Please feel free to send us message at support@anziosystems.com ');
           this.errMessages.push(error.message);
+          this.buttonDisabled = true;
           clearTimeout(t);
         },
       );
