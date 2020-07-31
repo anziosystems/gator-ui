@@ -281,6 +281,7 @@ export class StatusReportsComponent implements OnInit {
     this.gitService
       .GetSR4User4Review(
         this.gitService.getLoggedInDev().Login,
+        this.currentOrg,
         status, //inreview
         userFilter ? userFilter.toString() : null,
         dateFilter ? dateFilter : null,
