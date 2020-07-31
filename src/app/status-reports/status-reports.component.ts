@@ -64,21 +64,21 @@ export class StatusReportsComponent implements OnInit {
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       if (!this.currentOrg) {
-        console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
+        console.log(`[E] No LoggedInUser found, status-report heading lsAuth`);
         this.router.navigate(['/lsauth']);
         return;
       }
     });
 
     if (!this.gitService.getLoggedInDev()) {
-      console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
+      console.log(`[E] No LoggedInUser found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
 
     let loggedInUser = this.gitService.getLoggedInDev().Login;
     if (!loggedInUser) {
-      console.log (`[E] No LoggedInUser.Login found, status-report heading lsAuth`);
+      console.log(`[E] No LoggedInUser.Login found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
@@ -638,9 +638,9 @@ export class StatusReportsComponent implements OnInit {
   }
 
   downloadPDF() {
-    const PDF_TYPE = 'application/pdf';
+    const PDF_TYPE = 'application/pdf;charset=utf-8';
     const PDF_EXTENSION = '.pdf';
-    const byteCharacters = atob(btoa(this.textStatus + '<br /> ------------- Manager Comment ---------------<br />' + this.managerComment));
+    const byteCharacters = atob(btoa(this.textStatus)); //+ '<br /> ------------- Manager Comment ---------------<br />' + this.managerComment));
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
