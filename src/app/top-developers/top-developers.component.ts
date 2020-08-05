@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Inject, Output, Injectable, ViewChild} from '@angular/core';
+import {Component, OnInit, EventEmitter, Inject, Output, Injectable, ViewChild, Input} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {GitService, DevDetails} from '../git-service';
 import {LOCAL_STORAGE, WebStorageService} from 'ngx-webstorage-service';
@@ -49,6 +49,10 @@ export class TopDevelopersComponent implements OnInit {
   selectedDev: string;
   gitOrg: string;
   currentOrg: string;
+  //context is set for "DashBoard" when TopDevelopers used for dashboard. so the list of devs comes sorted by the last updated
+  //else the list comes sorted by Name
+  @Input('context')
+  context:string;
   //items = [{label: 'Send Kudos'}, {label: 'Start a Watch'}];
   items = [
     {name: 'John', otherProperty: 'Foo'},
@@ -201,12 +205,13 @@ export class TopDevelopersComponent implements OnInit {
   initializeData() {
     this.developers = [];
     /* GitHub introduced a new AvatarURL link for new data, and thats making us bring duplicate names of dev
-    I am using this map to filter out the array of Dev names, so the UI showsa only one name
+    I am using this map to filter out the array of Dev names, so the UI shows only one name
     */
+   // console.log (`context is ${this.context}`);
     let map = new Map<string, string>();
     this.gitService.ready().then(result => {
       this.gitOrg = this.gitService.getCurrentGitOrg();
-      this.gitService.getGitTopDevelopers(this.gitOrg, 30).subscribe(r => {
+      this.gitService.getGitTopDevelopers(this.gitOrg, 30, this.context).subscribe(r => {
         r.forEach(r2 => {
           let dd = new DevDetails();
           dd.name = r2.UserDisplayName;

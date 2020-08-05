@@ -663,9 +663,9 @@ export class GitService {
   }
 
   //Login,Name, Avatar_Url,UserName,UserDisplayName,Email, GitUserName,JiraUserName,TfsUserName
-  getGitTopDevelopers(org: string, day: number): Observable<any> {
+  getGitTopDevelopers(org: string, day: number, context: string): Observable<any> {
     this.attachToken();
-    const q = `TopDevForLastXDays?org=${org}&day=${day}`;
+    const q = `TopDevForLastXDays?org=${org}&day=${day}&context=${context}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
