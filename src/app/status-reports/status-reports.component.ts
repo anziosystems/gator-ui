@@ -637,6 +637,10 @@ export class StatusReportsComponent implements OnInit {
     this.bNeed = true;
   }
 
+  help() {
+    this.router.navigate(['/help'])
+  }
+
   downloadPDF() {
     const PDF_TYPE = 'application/pdf;charset=utf-8';
     const PDF_EXTENSION = '.pdf';
