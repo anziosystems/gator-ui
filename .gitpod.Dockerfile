@@ -5,3 +5,6 @@ FROM gitpod/workspace-full
 # RUN brew install bastet
 #
 # More information: https://www.gitpod.io/docs/config-docker/
+
+# install NG CLI
+RUN echo npm i @angular/cli -g
