@@ -52,7 +52,7 @@ export class TopDevelopersComponent implements OnInit {
   //context is set for "DashBoard" when TopDevelopers used for dashboard. so the list of devs comes sorted by the last updated
   //else the list comes sorted by Name
   @Input('context')
-  context:string;
+  context: string;
   //items = [{label: 'Send Kudos'}, {label: 'Start a Watch'}];
   items = [
     {name: 'John', otherProperty: 'Foo'},
@@ -143,7 +143,7 @@ export class TopDevelopersComponent implements OnInit {
 
   getMyStyle(val: DevDetails) {
     if (!val.GitLogin) {
-      return 
+      return;
     }
     let clr = 'white';
     if (this.gitService.getCurrentContext() === 'JIRA') {
@@ -207,7 +207,7 @@ export class TopDevelopersComponent implements OnInit {
     /* GitHub introduced a new AvatarURL link for new data, and thats making us bring duplicate names of dev
     I am using this map to filter out the array of Dev names, so the UI shows only one name
     */
-   // console.log (`context is ${this.context}`);
+    // console.log (`context is ${this.context}`);
     let map = new Map<string, string>();
     this.gitService.ready().then(result => {
       this.gitOrg = this.gitService.getCurrentGitOrg();
@@ -224,8 +224,8 @@ export class TopDevelopersComponent implements OnInit {
           dd.GitLogin = r2.GitUserName;
           dd.JiraUserName = r2.JiraUserName;
           dd.TfsUserName = r2.TfsUserName;
-          let v = map.get(dd.name);
-          if (!v) {
+          if (!map.has(dd.name)) {
+            //skips duplicate entries
             map.set(dd.name, dd.name);
             this.developers.push(dd);
           }
