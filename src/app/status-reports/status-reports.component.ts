@@ -156,6 +156,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   //When review listbox is clicked
+  //id is srId of MSR table
   getReportData4Review(id: number) {
     //hide submit button and show close in its place
     this.bInReview = true;
@@ -198,6 +199,7 @@ export class StatusReportsComponent implements OnInit {
     this.alertmsgs.push({severity: 'info', summary: 'Please type your MSR below. After the report is written please add reviewer and submit.', detail: ''});
   }
 
+  //Id is srId for MSR Table
   getReportForId(id: number) {
     const self = this;
     this.gitService.getSR4Id(id, true).subscribe(val => {
