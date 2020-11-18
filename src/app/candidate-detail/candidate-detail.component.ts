@@ -19,11 +19,11 @@ export class CandidateDetailComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    this.urlLink = this.sanitizer.bypassSecurityTrustResourceUrl('https://Gitgator.com');
+    this.urlLink = this.sanitizer.bypassSecurityTrustResourceUrl('https://Dev-Star.com');
   }
 
   resume() {
-    this.urlLink = this.sanitizer.bypassSecurityTrustResourceUrl('https://Gitgator.com');
+    this.urlLink = this.sanitizer.bypassSecurityTrustResourceUrl('https://Dev-Star.com');
   }
   linkedIn() {
     this.urlLink = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.linkedin.com/in/rafatsarosh/`);

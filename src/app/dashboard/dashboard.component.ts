@@ -38,6 +38,7 @@ export class DashboardComponent implements OnInit {
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
   isShowOD: boolean = false;
+  dashboard_Context = "DashBoard"
   constructor(
     private gitService: GitService,
     private router: Router,

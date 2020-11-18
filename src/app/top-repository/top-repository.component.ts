@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {toArray} from 'rxjs/operators';
 
 import {Router, NavigationEnd} from '@angular/router';
+
 import * as _ from 'lodash';
 // import { UsageService } from '@labshare/ngx-core-services';
 

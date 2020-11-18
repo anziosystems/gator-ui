@@ -80,7 +80,7 @@ export class OrgDetailsComponent implements OnInit {
       }
       if (val === 'SHOW_OD') {
         this.gitService.getCurrentOrg().then(x => {
-          let p = this.gitService.getCurrentDev();
+          let p = this.gitService.getLoggedInUSerDetails();
           this.gitService.getOrgTree(x, p.Login, false).subscribe(x => {
             this.data = x;
           });

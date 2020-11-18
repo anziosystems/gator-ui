@@ -64,21 +64,21 @@ export class StatusReportsComponent implements OnInit {
     this.gitService.getCurrentOrg().then(r => {
       this.currentOrg = r;
       if (!this.currentOrg) {
-        console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
+        console.log(`[E] No LoggedInUser found, status-report heading lsAuth`);
         this.router.navigate(['/lsauth']);
         return;
       }
     });
 
     if (!this.gitService.getLoggedInDev()) {
-      console.log (`[E] No LoggedInUser found, status-report heading lsAuth`);
+      console.log(`[E] No LoggedInUser found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
 
     let loggedInUser = this.gitService.getLoggedInDev().Login;
     if (!loggedInUser) {
-      console.log (`[E] No LoggedInUser.Login found, status-report heading lsAuth`);
+      console.log(`[E] No LoggedInUser.Login found, status-report heading lsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
@@ -156,6 +156,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   //When review listbox is clicked
+  //id is srId of MSR table
   getReportData4Review(id: number) {
     //hide submit button and show close in its place
     this.bInReview = true;
@@ -198,6 +199,7 @@ export class StatusReportsComponent implements OnInit {
     this.alertmsgs.push({severity: 'info', summary: 'Please type your MSR below. After the report is written please add reviewer and submit.', detail: ''});
   }
 
+  //Id is srId for MSR Table
   getReportForId(id: number) {
     const self = this;
     this.gitService.getSR4Id(id, true).subscribe(val => {
@@ -281,6 +283,7 @@ export class StatusReportsComponent implements OnInit {
     this.gitService
       .GetSR4User4Review(
         this.gitService.getLoggedInDev().Login,
+        this.currentOrg,
         status, //inreview
         userFilter ? userFilter.toString() : null,
         dateFilter ? dateFilter : null,
@@ -636,10 +639,14 @@ export class StatusReportsComponent implements OnInit {
     this.bNeed = true;
   }
 
+  help() {
+    this.router.navigate(['/help'])
+  }
+
   downloadPDF() {
-    const PDF_TYPE = 'application/pdf';
+    const PDF_TYPE = 'application/pdf;charset=utf-8';
     const PDF_EXTENSION = '.pdf';
-    const byteCharacters = atob(btoa(this.textStatus + '<br /> ------------- Manager Comment ---------------<br />' + this.managerComment));
+    const byteCharacters = atob(btoa(this.textStatus)); //+ '<br /> ------------- Manager Comment ---------------<br />' + this.managerComment));
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);

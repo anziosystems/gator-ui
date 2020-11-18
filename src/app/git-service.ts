@@ -618,7 +618,6 @@ export class GitService {
   }
 
   getDeveloperDetail(org: string, day: number = 7, login: string, action: string, pageSize: number = 20): Observable<any> {
-
     if (!day) day = 7;
     //login == null is a legit call for breaking news
     const q = `PullRequest4Dev?org=${org}&day=${day}&login=${login}&action=${action}&pageSize=${pageSize}`;
@@ -637,13 +636,19 @@ export class GitService {
   //signup
   signup(token: string): Observable<any> {
     const q = `Signup?token=${token}`;
-    return this.http.get(this.gitApiUrl + q);
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Content-Type': 'application/json', //x-www-form-urlencoded',
+      }),
+    };
+    return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
   // GetPullRequestCount for last 7 days, 30 days etc
   getPullRequestCount(org: string, login: string = null, day: number = 7): Observable<any> {
-    if  (!login)
-       return null;
+    if (!login) return null;
     this.attachToken();
     const q = `PullRequestCountForLastXDays?org=${org}&login=${login}&day=${day}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
@@ -658,9 +663,9 @@ export class GitService {
   }
 
   //Login,Name, Avatar_Url,UserName,UserDisplayName,Email, GitUserName,JiraUserName,TfsUserName
-  getGitTopDevelopers(org: string, day: number): Observable<any> {
+  getGitTopDevelopers(org: string, day: number, context: string): Observable<any> {
     this.attachToken();
-    const q = `TopDevForLastXDays?org=${org}&day=${day}`;
+    const q = `TopDevForLastXDays?org=${org}&day=${day}&context=${context}`;
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
@@ -776,7 +781,9 @@ export class GitService {
     // body = encodeURIComponent(JSON.stringify (body));
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
-
+//Called from Review (ic-reports) of UI to see the report of the user - Gets all reports for the user clicked, 
+//the user who is asking for report is in AuthHeader  
+//the user whoes reports are asked in query
   getSR4User(userId: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
     const q = `getSR4User?userid=${userId}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();
@@ -789,8 +796,9 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  GetSR4User4Review(userId: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
-    const q = `GetSR4User4Review?userid=${userId}&status=${status}&userFilter=${userFilter}&dateFilter=${dateFilter}
+  //Manager wants to see all reports he need to review 
+  GetSR4User4Review(userId: string, org: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+    const q = `GetSR4User4Review?userid=${userId}&org=${org}&status=${status}&userFilter=${userFilter}&dateFilter=${dateFilter}
     &pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();
     return this.http.get(this.gitApiUrl + q, this.httpOptions);

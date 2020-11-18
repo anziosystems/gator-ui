@@ -22,7 +22,7 @@ export class SettingsComponent implements OnInit {
     //Get the Admin from DB
     // this.gitService.getAdmins().subscribe(admins => {
     //   if (!admins.find(currentDev)) {
-    //     alert('For admin eyes only. Please send the mail to admin@gitgator.com');
+    //     alert('For admin eyes only. Please send the mail to admin@Dev Star.com');
     //     this.router.navigate(['/dashboard']);
     //   }
     // });

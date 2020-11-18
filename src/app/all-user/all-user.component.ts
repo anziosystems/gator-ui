@@ -183,9 +183,10 @@ export class AllUserComponent implements OnInit {
     this.gitService.ready().then(result => {
       this.gitService.getCurrentOrg().then(org => {
         this.gitService.getAllUsers(org).subscribe(r => {
+          this.developers = [];
           r.forEach(r2 => {
             let dd = new DevDetails();
-            dd.name = r2.UserDisplayName;
+            dd.name = r2.UserDisplayName.trim();
             dd.UserName = r2.UserName;
             dd.DisplayName = r2.UserDisplayName;
             dd.Login = r2.Email;
@@ -195,15 +196,14 @@ export class AllUserComponent implements OnInit {
             dd.GitLogin = r2.GitUserName;
             dd.JiraUserName = r2.JiraUserName;
             dd.TfsUserName = r2.TfsUserName;
-            let v = map.get(dd.name);
-            if (!v) {
+            if (!map.has(dd.name)) {
               map.set(dd.name, dd.name);
               this.developers.push(dd);
             }
           });
+          this.OrgDevelopers = this.developers;
         });
       });
-      this.OrgDevelopers = this.developers;
     });
   }
 

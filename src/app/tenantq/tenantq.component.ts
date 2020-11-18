@@ -21,18 +21,21 @@ export class TenantqComponent implements OnInit {
   }
 
   Go() {
-    this.tenantName = this.tenantName.toLowerCase();
-    if (this.gitService.tenantMap.has(this.tenantName)) {
-      const authURL = `${this.gitService.gatorApiUrl}/auth/lsauth/${this.tenantName}?callbackUrl=${location.origin}/lsauthCallback`;
-      window.location.href = authURL;
-    } else {
-      if (!this.tenantName) {
-        this.errorMessage = `Invalid Tenant, If you don't know your tenant, please send a mail to support@gitgator.com. Or please read the above statement slowly and understand it.`;
-      } else {
-        this.errorMessage = `${this.tenantName} is not found. If you don't know your tenant, please send a mail to support@gitgator.com. Or please read the above statement slowly and understand it.`;
-      }
-    }
+    // this.tenantName = this.tenantName.toLowerCase();
+    // if (this.gitService.tenantMap.has(this.tenantName)) {
+    //   const authURL = `${this.gitService.gatorApiUrl}/auth/lsauth/${this.tenantName}?callbackUrl=${location.origin}/lsauthCallback`;
+    //   window.location.href = authURL;
+    // } else {
+    //   if (!this.tenantName) {
+    //     this.errorMessage = `Invalid Tenant, If you don't know your tenant, please send a mail to support@Dev-Star.com. Or please read the above statement slowly and understand it.`;
+    //   } else {
+    //     this.errorMessage = `${this.tenantName} is not found. If you don't know your tenant, please send a mail to support@Dev-Star.com. Or please read the above statement slowly and understand it.`;
+    //   }
+    // }
     //this.router.navigate([authURL]);
+
+    const authURL = `${this.gitService.gatorApiUrl}/auth/lsauth/anzio?callbackUrl=${location.origin}/lsauthCallback`;
+    window.location.href = authURL;
   }
 
   // Go() {

@@ -29,7 +29,14 @@
     <div *ngFor="let dev of devDetails; let i = index" style="margin-bottom:13px">
       <!-- <div style="font-size: large; color:rgb(26, 129, 226);">{{ dev.Login }}</div> -->
 
-      <div style="font-size: large; color:#9c678f;">{{ dev.OrgName }} - {{ dev.Key }} - {{ dev.Status }}</div>
+      <!-- <div style="font-size: large; color:#9c678f;">{{ dev.OrgName }} - {{ dev.Key }} - {{ dev.Status }}</div> -->
+
+      <div *ngIf="dev.Status != 'Done'">
+        <div style="font-size: large; color:#9c678f;">{{ dev.OrgName }} - {{ dev.Key }} - {{ dev.Status }} - Story Point: {{ dev.Story }}</div>
+      </div>
+      <div *ngIf="dev.Status === 'Done'">
+        <div style="font-size: large; color:#98ad77">{{ dev.OrgName }} - {{ dev.Key }} - {{ dev.Status }} - Story Point: {{ dev.Story }}</div>
+      </div>
 
       <div style="display: flex;flex-direction: row;">
         <div style="font-size: large; color: white ">
