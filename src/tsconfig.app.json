@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "types": [],
-    "inlineSourceMap": true
-  
+    "inlineSourceMap": true,
+    "target": "es5"
   },
   "files": [
     "app.ts",

@@ -15,7 +15,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@labshare/shell-ui:browser",
           "options": {
             "aot": true,
             "outputPath": "dist/gator",
@@ -69,7 +69,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@labshare/shell-ui:dev-server",
           "options": {
             "browserTarget": "Gator:build",
             "port": 8080
@@ -87,7 +87,7 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@labshare/shell-ui:karma",
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
@@ -113,6 +113,51 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        },
+        "electron": {
+          "builder": "@labshare/shell-ui:electron",
+          "options": {
+            "browserTarget": "Gator:build",
+            "baseHref": "./"
+          }
+        },
+        "pack-electron": {
+          "builder": "@labshare/shell-ui:pack-electron",
+          "options": {
+            "browserTarget": "Gator:build",
+            "outputPath": "dist/Gator/electron",
+            "plaform": "mac",
+            "baseHref": "./"
+          }
+        },
+        "pack-cordova": {
+          "builder": "@labshare/shell-ui:pack-cordova",
+          "options": {
+            "browserTarget": "Gator:build",
+            "outputPath": "dist/Gator/cordova",
+            "plaform": "ios",
+            "baseHref": "./",
+            "cordovaAssets": false
+          }
+        },
+        "pack-sharepoint": {
+          "builder": "@labshare/shell-ui:pack-sharepoint",
+          "options": {
+            "browserTarget": "Gator:build",
+            "baseHref": "./",
+            "outputPath": "dist/Gator/sharepoint",
+            "spVersion": "online",
+            "sharepoint": {
+              "solutionName": "Gator",
+              "solutionGuid": "4c874b09-7940-4c1c-9203-d1b6c3f1d74d",
+              "zippedPackage": "solution/Gator.sppkg",
+              "webPartGuid": "c3ad6298-a085-4269-9b94-357640cdcf69",
+              "webPartAlias": "Gator",
+              "webPartTitle": "Gator",
+              "webPartDescription": "Gator description",
+              "webPartPropertiesDescription": "Gator properties description"
+            }
           }
         }
       }
