@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { JiraLoginInComponent } from './jira-login-in.component';
+import {JiraLoginInComponent} from './jira-login-in.component';
 
 describe('JiraLoginInComponent', () => {
   let component: JiraLoginInComponent;
@@ -8,9 +10,9 @@ describe('JiraLoginInComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JiraLoginInComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [JiraLoginInComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -22,8 +22,8 @@ export class SignupComponent implements OnInit {
     let token = this.route.snapshot.queryParams['token'];
     if (token) {
       this.gitService.signup(token).subscribe(x => {
-             window.location.href = authURL;
-      }); 
+        window.location.href = authURL;
+      });
     } else {
       window.location.href = authURL;
     }

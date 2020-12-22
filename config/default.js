@@ -1,4 +1,3 @@
 module.exports = {
-    serviceUrl: 'https://gator-ui.azurewebsites.net/'
-  };
-  
+  serviceUrl: 'https://gator-ui.azurewebsites.net/',
+};

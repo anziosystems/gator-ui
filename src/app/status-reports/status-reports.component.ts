@@ -5,7 +5,7 @@ import * as FileSaver from 'file-saver';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
-const _ = require('lodash');
+import * as _ from 'lodash';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
@@ -640,7 +640,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   help() {
-    this.router.navigate(['/help'])
+    this.router.navigate(['/help']);
   }
 
   downloadPDF() {

@@ -60,13 +60,13 @@ export class BreakingnewsComponent implements OnInit {
         let x = this.bkNewsDetails[this.ctr];
         this.login = x.Login;
         // this.gitService.getGitDisplayName4GitId(this.login).then(r => {
-         // this.login = r;
-          this.repo = this.bkNewsDetails[this.ctr].Repo;
-          this.desc = this.bkNewsDetails[this.ctr].title;
-          this.pullReqUrl = this.bkNewsDetails[this.ctr].pullrequesturl;
-          this.breakingNews = `${this.desc} - ${this.login} - ${this.repo}`;
-          this.breakingNews = this.breakingNews.trim();
-          this.cd.detectChanges();
+        // this.login = r;
+        this.repo = this.bkNewsDetails[this.ctr].Repo;
+        this.desc = this.bkNewsDetails[this.ctr].title;
+        this.pullReqUrl = this.bkNewsDetails[this.ctr].pullrequesturl;
+        this.breakingNews = `${this.desc} - ${this.login} - ${this.repo}`;
+        this.breakingNews = this.breakingNews.trim();
+        this.cd.detectChanges();
         // });
       }, 8000);
     });

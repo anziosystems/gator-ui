@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { TfscallbackComponent } from './tfscallback.component';
+import {TfscallbackComponent} from './tfscallback.component';
 
 describe('TfscallbackComponent', () => {
   let component: TfscallbackComponent;
@@ -8,9 +10,9 @@ describe('TfscallbackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TfscallbackComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [TfscallbackComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

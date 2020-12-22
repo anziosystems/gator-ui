@@ -96,8 +96,8 @@ export class DevPullDetailsComponent implements OnInit {
           if (val.startsWith('repo-')) {
             this.bShowName = true;
             const arr = _.split(val, 'repo-');
-            this.gitService.getRepositoryPR(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, arr[1], 50).subscribe(val => {
-              this.devDetails = val;
+            this.gitService.getRepositoryPR(this.gitService.getCurrentGitOrg(), this.DEFAULT_DAYS, arr[1], 50).subscribe(gitResult => {
+              this.devDetails = gitResult;
               this.devDetails.map(v => {
                 let s = v.pullrequesturl;
                 s = s.replace('https://api.github.com/repos', 'https://github.com');

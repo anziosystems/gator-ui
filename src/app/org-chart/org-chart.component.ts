@@ -9,7 +9,7 @@ import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 import * as go from 'gojs';
-const _ = require('lodash');
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-org-chart',

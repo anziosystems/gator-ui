@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng';
 
-import { PeopleTicketComponent } from './people-ticket.component';
+import {PeopleTicketComponent} from './people-ticket.component';
 
 describe('PeopleTicketComponent', () => {
   let component: PeopleTicketComponent;
@@ -8,9 +11,20 @@ describe('PeopleTicketComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PeopleTicketComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [PeopleTicketComponent],
+      providers: [
+        DynamicDialogRef,
+        {
+          provide: DynamicDialogConfig,
+          useValue: {
+            data: {
+              options: [],
+            },
+          },
+        },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

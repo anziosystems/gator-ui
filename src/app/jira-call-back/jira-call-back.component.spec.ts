@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { JiraCallBackComponent } from './jira-call-back.component';
+import {JiraCallBackComponent} from './jira-call-back.component';
 
 describe('JiraCallBackComponent', () => {
   let component: JiraCallBackComponent;
@@ -8,9 +10,9 @@ describe('JiraCallBackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JiraCallBackComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [JiraCallBackComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

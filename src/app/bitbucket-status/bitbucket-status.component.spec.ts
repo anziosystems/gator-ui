@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { BitbucketStatusComponent } from './bitbucket-status.component';
+import {BitbucketStatusComponent} from './bitbucket-status.component';
 
 describe('BitbucketStatusComponent', () => {
   let component: BitbucketStatusComponent;
@@ -8,9 +10,9 @@ describe('BitbucketStatusComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BitbucketStatusComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [BitbucketStatusComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

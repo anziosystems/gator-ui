@@ -21,12 +21,11 @@ export class LsauthCallbackComponent implements OnInit {
       const OrgToken = params['OrgToken'];
       if (OrgToken) {
         this.storage.set('OrgToken', OrgToken);
-        console.log ("[S] Token is set");
-        //ignoring 404 of checkOrg here, as the first call is getting 404 but then this is called again in 
+        console.log('[S] Token is set');
+        //ignoring 404 of checkOrg here, as the first call is getting 404 but then this is called again in
         //Org-List by the RE-FILL-ORG-LIST Broadcast
         this.gitService.checkOrg();
         this.go();
-       
       }
     });
   }
@@ -50,7 +49,7 @@ export class LsauthCallbackComponent implements OnInit {
       dd.TfsUserName = r2.TfsUserName;
       this.gitService.setLoggedInDev(dd);
       this.gitService.broadcastGlobalComponentMessage('RE-FILL-ORG-LIST');
-      
+
       this.router.navigate(['/dashboard']);
       return true;
     });
