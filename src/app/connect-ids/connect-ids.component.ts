@@ -6,7 +6,7 @@ import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-
 import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
 import {filter} from 'rxjs/internal/operators/filter';
 import {Message} from '@angular/compiler/src/i18n/i18n_ast';
-const _ = require('lodash');
+import * as _ from 'lodash';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
