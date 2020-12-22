@@ -4,11 +4,10 @@
 
 export const environment = {
   production: false,
-  usage: { 
-    url: `http://127.0.0.1:8000/usage`,  //mandatory
-    application: `gator`  // mandatory}
-  }
- 
+  usage: {
+    url: `http://127.0.0.1:8000/usage`, //mandatory
+    application: `gator`, // mandatory}
+  },
 };
 
 /*

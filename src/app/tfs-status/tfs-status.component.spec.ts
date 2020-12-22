@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { TfsStatusComponent } from './tfs-status.component';
+import {TfsStatusComponent} from './tfs-status.component';
 
 describe('TfsStatusComponent', () => {
   let component: TfsStatusComponent;
@@ -8,9 +10,9 @@ describe('TfsStatusComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TfsStatusComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [TfsStatusComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -56,7 +56,7 @@ export class LinebarComponent implements OnInit {
   constructor(private gitService: GitService) {}
   _total: number;
   ngOnInit(): void {
-    this.gitService.onDevLoginIdChanged.subscribe((val) => {
+    this.gitService.onDevLoginIdChanged.subscribe(val => {
       let _currentOrg = this.gitService.getCurrentGitOrg();
       this.gitService.GetRepoParticipation4Login(_currentOrg, val.GitLogin, 30, false).subscribe(data => {
         /*data[0]

@@ -7,7 +7,7 @@ import {ChildActivationEnd} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {ConfirmationService} from 'primeng/api';
 import {DialogService} from 'primeng/dynamicdialog';
-import { from, Observable } from 'rxjs';
+import {from, Observable} from 'rxjs';
 @Component({
   selector: 'app-org-details',
   templateUrl: './org-details.component.html',
@@ -80,14 +80,14 @@ export class OrgDetailsComponent implements OnInit {
         this.isShowDetail = false;
       }
       if (val === 'SHOW_OD') {
-         from(this.getOrgInformation()).subscribe(x => {
+        from(this.getOrgInformation()).subscribe(x => {
           this.data = x;
         });
       }
     });
   }
 
-  async getOrgInformation():Promise<any>{
+  async getOrgInformation(): Promise<any> {
     const x = await this.gitService.getCurrentOrg();
     const p = await this.gitService.getLoggedInUSerDetails().toPromise();
     return this.gitService.getOrgTree(x, p.Login, false).toPromise();
@@ -97,7 +97,7 @@ export class OrgDetailsComponent implements OnInit {
     let d = new DevDetails();
     d.Login = obj.node.data;
     d.name = obj.node.label;
-    
+
     this.gitService.getDevDetails4Login(d.Login).then(x => {
       this.GetData(x);
     });

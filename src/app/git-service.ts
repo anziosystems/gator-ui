@@ -3,13 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of, Subject, interval} from 'rxjs';
 import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
 import {Router} from '@angular/router';
-import {promise} from 'protractor';
-import {resolve} from 'path';
-import {reject} from 'q';
-import {typeWithParameters} from '@angular/compiler/src/render3/util';
-import {timingSafeEqual} from 'crypto';
 import * as _ from 'lodash';
-import {FindValueOperator} from 'rxjs/internal/operators/find';
 
 /*
 Jira calls must have following in the header
@@ -781,9 +775,9 @@ export class GitService {
     // body = encodeURIComponent(JSON.stringify (body));
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
   }
-//Called from Review (ic-reports) of UI to see the report of the user - Gets all reports for the user clicked, 
-//the user who is asking for report is in AuthHeader  
-//the user whoes reports are asked in query
+  //Called from Review (ic-reports) of UI to see the report of the user - Gets all reports for the user clicked,
+  //the user who is asking for report is in AuthHeader
+  //the user whoes reports are asked in query
   getSR4User(userId: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
     const q = `getSR4User?userid=${userId}&pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();
@@ -796,7 +790,7 @@ export class GitService {
     return this.http.get(this.gitApiUrl + q, this.httpOptions);
   }
 
-  //Manager wants to see all reports he need to review 
+  //Manager wants to see all reports he need to review
   GetSR4User4Review(userId: string, org: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
     const q = `GetSR4User4Review?userid=${userId}&org=${org}&status=${status}&userFilter=${userFilter}&dateFilter=${dateFilter}
     &pageSize=${pageSize}&bustTheCache=${bustTheCache}`;

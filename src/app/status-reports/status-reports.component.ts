@@ -640,7 +640,7 @@ export class StatusReportsComponent implements OnInit {
   }
 
   help() {
-    this.router.navigate(['/help'])
+    this.router.navigate(['/help']);
   }
 
   downloadPDF() {

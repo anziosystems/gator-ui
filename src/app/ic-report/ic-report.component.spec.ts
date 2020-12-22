@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { IcReportComponent } from './ic-report.component';
+import {IcReportComponent} from './ic-report.component';
 
 describe('IcReportComponent', () => {
   let component: IcReportComponent;
@@ -8,9 +10,9 @@ describe('IcReportComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IcReportComponent ]
-    })
-    .compileComponents();
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      declarations: [IcReportComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

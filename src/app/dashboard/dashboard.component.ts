@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
   isShowDetail: boolean = false;
   isJiraShowDetail: boolean = false;
   isShowOD: boolean = false;
-  dashboard_Context = "DashBoard"
+  dashboard_Context = 'DashBoard';
   constructor(
     private gitService: GitService,
     private router: Router,
@@ -57,17 +57,17 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     let token = this.storage.get('OrgToken');
     if (!token) {
-      console.log (`[E] From dashboard, did not found OrgToken, heading to LsAuth`);
+      console.log(`[E] From dashboard, did not found OrgToken, heading to LsAuth`);
       this.router.navigate(['/lsauth']);
       return;
     }
-    this.gitService.checkOrg().then ( x => {
+    this.gitService.checkOrg().then(x => {
       if (x === '404') {
-        console.log (`[E] From dashboard, did not found Org, heading to LsAuth`);
+        console.log(`[E] From dashboard, did not found Org, heading to LsAuth`);
         this.router.navigate(['/lsauth']); //May be right login
       }
     });
-    
+
     this.gitService.triggerIsLoggedIn(true);
 
     // //Jira
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
     //this trigger kicks dev-pull-details components as it is subscribed to
     //this trigger, which in turn goes and fill the devloper details for git
     //this.gitService.trigger(this.gitService.getCurrentDev().login);
-    this.gitService.broadcastDevLoginId (this.gitService.getCurrentDev());
+    this.gitService.broadcastDevLoginId(this.gitService.getCurrentDev());
     this.gitService.broadcastGlobalComponentMessage('SHOW_PULL_DETAILS');
   }
 
@@ -118,7 +118,6 @@ export class DashboardComponent implements OnInit {
     const date = new Date();
     this.gitService.setCurrentContext('JIRA');
     // this.usageService.send ({event: 'Dev Details', info: 'Dev: ' + developer,  LogTime: date.toUTCString()});
- 
 
     // }
     this.gitService.broadcastJiraDevName(this.gitService.getCurrentDev());

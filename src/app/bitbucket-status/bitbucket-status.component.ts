@@ -77,14 +77,14 @@ export class BitbucketStatusComponent implements OnInit {
               this.orgList = result;
               this.gitService.jiraOrgList = result;
               if (this.gitService.getJiraCurrentOrg() == undefined) {
-                this.gitService.setJiraCurrentOrg (this.orgList[0].id);
+                this.gitService.setJiraCurrentOrg(this.orgList[0].id);
               }
               this.successMessages.push(`Yes! Found ${result.length} orgnization for this login`);
               //for every org check the hook
               this.orgList.forEach(element => {
                 this.messages.push(`Get Dev list for :${element.name}`);
-                this.gitService.getJiraUsers(element.id, true).subscribe(result => {
-                  if (result.code === 401) {
+                this.gitService.getJiraUsers(element.id, true).subscribe(gitResult => {
+                  if (gitResult.code === 401) {
                     clearTimeout(t);
                     this.errMessages.push('Unauthorized. Token Expired');
                     this.sleep(5000).then(() => {
@@ -93,7 +93,7 @@ export class BitbucketStatusComponent implements OnInit {
                     });
                   }
 
-                  result.forEach(e2 => {
+                  gitResult.forEach(e2 => {
                     this.gitService.JiraUsersMap.set(e2.displayName, e2.accountId);
                   });
 
@@ -104,7 +104,7 @@ export class BitbucketStatusComponent implements OnInit {
                    Object {self: "https://api.atlassian.com/ex/jira/786d2410-0054-41…", accountId: "5d53f3cbc6b9320d9ea5bdc2", accountType: "app", avatarUrls: Object, displayName: "Jira Outlook", …}
    
                   */
-                  this.successMessages.push(`Yes! Found ${result.length} users for org: ${element.name}`);
+                  this.successMessages.push(`Yes! Found ${gitResult.length} users for org: ${element.name}`);
                   this.buttonDisabled = false;
                 });
               }); //org list loop

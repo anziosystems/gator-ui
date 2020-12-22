@@ -6,14 +6,12 @@ import {GitService} from '../git-service';
 @Component({
   selector: 'app-jira-login-in',
   templateUrl: './jira-login-in.component.html',
-  styleUrls: ['./jira-login-in.component.less']
+  styleUrls: ['./jira-login-in.component.less'],
 })
 export class JiraLoginInComponent implements OnInit {
+  constructor(private router: Router, location: Location, private gitService: GitService) {}
 
-  constructor(private router: Router, location: Location, private gitService: GitService) { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   Jiralogin() {
     const authURL = this.gitService.gatorApiUrl + '/auth/atlassian?callbackUrl=' + location.origin + '/jiraCallback';

@@ -118,7 +118,7 @@ export class OrgListComponent implements OnInit {
         console.log('[S] org-list.component-refill  getOrgList - Success');
       }
       this.orgList = result;
-      console.log (`[I] setting up ORG=LIST ${result}`);
+      console.log(`[I] setting up ORG=LIST ${result}`);
       this.sessionStorage.set('ORG-LIST', result);
 
       result.forEach(r => {
