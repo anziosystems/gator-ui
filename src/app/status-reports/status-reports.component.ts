@@ -527,6 +527,11 @@ export class StatusReportsComponent implements OnInit {
               this.manager,
               this.managerComment,
               this.managerStatus,
+              
+              this.reportYear,
+              this.reportMonth,
+              this.reportNumber
+
             )
             .subscribe(v => {
               console.log(v);
