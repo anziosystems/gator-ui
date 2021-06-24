@@ -213,6 +213,9 @@ export class StatusReportsComponent implements OnInit {
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
     this.quillManagerDisable = true;
+    this.reportYear =  new Date().getFullYear();
+    this.reportMonth =  new Date().getMonth();
+    
   }
 
   alertmsgs = [];
