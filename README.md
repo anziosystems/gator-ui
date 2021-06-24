@@ -14,6 +14,16 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+or 
+
+npm run-script build
+for ng error 
+npm install -g @angular/cli
+
+execution error
+Set-ExecutionPolicy -Scope "CurrentUser" -ExecutionPolicy "RemoteSigned"
+
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
@@ -28,3 +38,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 serve
 ng serve
+
+## Production brach
+Today DevStar branch is in production 
+

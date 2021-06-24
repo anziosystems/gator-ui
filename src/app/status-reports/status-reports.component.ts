@@ -52,6 +52,15 @@ export class StatusReportsComponent implements OnInit {
   NEEDIMPROVEMENT: number = 1;
   EXCEED: number = 7;
 
+  ReportYears = [];
+  ReportMonths = [];
+  ReportNumbers = [];
+  reportYear = 0;
+  reportMonth = 0;
+  reportNumber = 1;
+  
+  
+
   constructor(
     private gitService: GitService,
     private router: Router,
@@ -68,6 +77,22 @@ export class StatusReportsComponent implements OnInit {
         this.router.navigate(['/lsauth']);
         return;
       }
+
+      let CurrentYear = new Date().getFullYear();
+      this.ReportYears.push (CurrentYear - 1);
+      for (let i = 0; i < 10; i++) {
+        this.ReportYears.push (CurrentYear + i);
+      }
+      
+      
+      for (let i = 1; i < 13; i++) {
+        this.ReportMonths.push (i);
+      }
+
+      for (let i = 1; i < 32; i++) {
+        this.ReportNumbers.push (i);
+      }
+
     });
 
     if (!this.gitService.getLoggedInDev()) {
@@ -214,6 +239,10 @@ export class StatusReportsComponent implements OnInit {
       self.currentOrg = val[0].Org;
       self.textStatus = val[0].StatusDetails;
       self.textReviewer = val[0].Reviewer;
+      self.reportYear = val[0].ReportYear;
+      self.reportMonth = val[0].ReportMonth;
+      self.reportNumber = val[0].ReportNumber;
+      
       self.manager = val[0].Manager;
       self.managerComment = val[0].ManagerComment;
       if (val[0].ManagerStatus === null) val[0].ManagerStatus = this.ACHIEVED;
@@ -269,7 +298,8 @@ export class StatusReportsComponent implements OnInit {
         }
 
         //item.LastUpdated = item.LastUpdated.substring(0, 10);
-        item.ReportDate = item.ReportDate.substring(0, 10);
+       // item.ReportDate = item.ReportDate.substring(0, 10);
+       item.ReportDate = item.ReportYear + "-" + item.ReportMonth + "-" + item.ReportNumber ;
         this.srList.push(item);
       });
     });
@@ -310,7 +340,8 @@ export class StatusReportsComponent implements OnInit {
               break;
           }
 
-          x.ReportDate = x.ReportDate.substring(0, 10);
+          //x.ReportDate = x.ReportDate.substring(0, 10);
+          x.ReportDate = x.ReportYear + "-" + x.ReportMonth + "-" + x.ReportNumber ;
           this.srReviewList.push(x);
         });
       });
@@ -400,6 +431,8 @@ export class StatusReportsComponent implements OnInit {
   }
 
   save(status: number) {
+
+    
     if (this.textStatus.trim() === '') {
       this.alertmsgs.push({severity: 'error', summary: 'Please fill in status first', detail: ''});
       return;
@@ -454,6 +487,7 @@ export class StatusReportsComponent implements OnInit {
         this.manager,
         this.managerComment,
         this.managerStatus,
+        this.reportYear, this.reportMonth, this.reportNumber
       )
       .subscribe(v => {
         this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'Your Report is saved'});
@@ -573,6 +607,9 @@ export class StatusReportsComponent implements OnInit {
         this.manager,
         this.managerComment,
         this.managerStatus,
+        this.reportYear,
+        this.reportMonth,
+        this.reportNumber
       )
       .subscribe(v => {
         console.log(v);

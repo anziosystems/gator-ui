@@ -95,10 +95,23 @@
         <div style="font-size: large; margin-bottom: 10px;     margin-left: 7px;">
           <p></p>
           <!-- Status Report for organization: {{ currentOrg }} -->
-          Select your Git Org
+          Select Git Org
           <select style="color:black" (change)="gitOrgSelection($event.target.value)">
             <option *ngFor="let org of gitOrgs" [ngValue]="org" style="color:black">{{ org }}</option>
           </select>
+          Report Year
+          <select style="color:black" [(ngModel)] = "reportYear" name="ReportYearCtl">
+            <option *ngFor="let _year of ReportYears" [ngValue]="_year" style="color:black">{{ _year }}</option>
+          </select>
+          Month
+          <select style="color:black" [(ngModel)] = "reportMonth" name="ReportMonthCtl">
+            <option *ngFor="let _month of ReportMonths" [ngValue]="_month"   style="color:black">{{ _month }}</option>
+          </select>
+          Day
+          <select style="color:black" [(ngModel)] = "reportNumber">
+            <option *ngFor="let _reportnumber of ReportNumbers" [ngValue]="_reportnumber"   style="color:black">{{ _reportnumber }}</option>
+          </select>
+
         </div>
 
         <div>
