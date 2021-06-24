@@ -64,7 +64,7 @@
   },
   "packageDependencies": {},
   "devDependencies": {
-    "@angular/cli": "^9.1.0-rc.0",
+    "@angular/cli": "^9.1.15",
     "@angular/compiler-cli": "^9.1.0",
     "@angular/language-service": "^9.1.0-rc.2",
     "@ngtools/webpack": "^6.2.9",

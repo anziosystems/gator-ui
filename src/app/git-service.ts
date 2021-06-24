@@ -762,6 +762,9 @@ export class GitService {
     manager: string,
     managerComment: string,
     managerStatus: number,
+    reportYear:number, 
+    reportMonth: number, 
+    reportNumber: number
   ): Observable<any> {
     const q = `SaveMSR`;
 
@@ -777,6 +780,9 @@ export class GitService {
       manager: manager,
       managerComment: managerComment,
       managerStatus: managerStatus,
+      reportYear:reportYear, 
+      reportMonth: reportMonth, 
+      reportNumber: reportNumber
     };
     // body = encodeURIComponent(JSON.stringify (body));
     return this.http.post(this.gitApiUrl + q, body, this.httpOptions);
