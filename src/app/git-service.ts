@@ -803,7 +803,7 @@ export class GitService {
   }
 
   //Manager wants to see all reports he need to review 
-  getSR4User4Review(userId: string, org: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+  GetSR4User4Review(userId: string, org: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
     const q = `GetSR4User4Review?userid=${userId}&org=${org}&status=${status}&userFilter=${userFilter}&dateFilter=${dateFilter}
     &pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();

@@ -1,24 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { GitService, CustomEvent } from '../git-service';
+import {Component, OnInit, ChangeDetectorRef, Inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {GitService, CustomEvent, DevDetails} from '../git-service';
 import * as FileSaver from 'file-saver';
-import { SESSION_STORAGE, WebStorageService } from 'ngx-webstorage-service';
-import { PeopleTicketComponent } from '../people-ticket/people-ticket.component';
-import { filter } from 'rxjs/internal/operators/filter';
-import { MessageService } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
-import { split } from 'lodash';
-
-export enum ReviewStatus {
-  IN_PROGRESS = 1,
-  IN_REVIEW = 2,
-  CLOSED = 3,
-  REJECTED = 4,
-  ARCHIVED = 5,
-  DELETE = 6,
-  ALL = 99,
-}
+import {LOCAL_STORAGE, SESSION_STORAGE, WebStorageService} from 'ngx-webstorage-service';
+import {PeopleTicketComponent} from '../people-ticket/people-ticket.component';
+import {filter} from 'rxjs/internal/operators/filter';
+const _ = require('lodash');
+import {MessageService} from 'primeng/api';
+import {ConfirmationService} from 'primeng/api';
+import {DialogService} from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-status-reports',
@@ -49,8 +39,14 @@ export class StatusReportsComponent implements OnInit {
   prevStatus: number = 0;
   comingFromStatusReportWindow: boolean = false;
   quillManagerDisable: boolean = false;
-
-
+  //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
+  IN_PROGRESS: number = 1;
+  IN_REVIEW: number = 2;
+  CLOSED: number = 3;
+  REJECTED: number = 4;
+  ARCHIVED: number = 5;
+  DELETE: number = 6;
+  ALL: number = 99;
   author: string;
   ACHIEVED: number = 3;
   NEEDIMPROVEMENT: number = 1;
@@ -62,10 +58,8 @@ export class StatusReportsComponent implements OnInit {
   reportYear = 0;
   reportMonth = 0;
   reportNumber = 1;
-
-  bAchieved: boolean = true;
-  bExceed: boolean = false;
-  bNeed: boolean = false;
+  
+  
 
   constructor(
     private gitService: GitService,
@@ -85,18 +79,18 @@ export class StatusReportsComponent implements OnInit {
       }
 
       let CurrentYear = new Date().getFullYear();
-      this.ReportYears.push(CurrentYear - 1);
+      this.ReportYears.push (CurrentYear - 1);
       for (let i = 0; i < 10; i++) {
-        this.ReportYears.push(CurrentYear + i);
+        this.ReportYears.push (CurrentYear + i);
       }
-
-
+      
+      
       for (let i = 1; i < 13; i++) {
-        this.ReportMonths.push(i);
+        this.ReportMonths.push (i);
       }
 
       for (let i = 1; i < 32; i++) {
-        this.ReportNumbers.push(i);
+        this.ReportNumbers.push (i);
       }
 
     });
@@ -147,7 +141,7 @@ export class StatusReportsComponent implements OnInit {
 
     this.currentGitOrg = this.gitService.getCurrentGitOrg();
 
-    this.status = ReviewStatus.IN_PROGRESS;
+    this.status = this.IN_PROGRESS;
     this.srId = -1;
 
     this.srList = [];
@@ -183,7 +177,7 @@ export class StatusReportsComponent implements OnInit {
         if ((val.destination = 'STATUS-REPORT')) this.textStatus = val.message + ' <br /> ' + this.textStatus;
       }
     });
-    this.messageService.add({ severity: 'success', summary: `Current Organization:${this.currentOrg}`, detail: `Current Organization:${this.currentOrg}` });
+    this.messageService.add({severity: 'success', summary: `Current Organization:${this.currentOrg}`, detail: `Current Organization:${this.currentOrg}`});
   }
 
   //When review listbox is clicked
@@ -206,7 +200,7 @@ export class StatusReportsComponent implements OnInit {
 
   reset() {
     this.srId = -1;
-    this.status = ReviewStatus.IN_PROGRESS;
+    this.status = this.IN_PROGRESS;
     this.currentOrg = this.currentOrg;
     this.textStatus = '';
     this.textReviewer = '';
@@ -219,9 +213,9 @@ export class StatusReportsComponent implements OnInit {
     this.comingFromStatusReportWindow = false;
     this.bClosedReport = false;
     this.quillManagerDisable = true;
-    this.reportYear = new Date().getFullYear();
-    this.reportMonth = new Date().getMonth();
-
+    this.reportYear =  new Date().getFullYear();
+    this.reportMonth =  new Date().getMonth();
+    
   }
 
   alertmsgs = [];
@@ -230,7 +224,7 @@ export class StatusReportsComponent implements OnInit {
     this.reset();
     // this.messageService.add({severity: 'success', summary: `Please type your MSR below. After the report is written please add reviewer and submit.`, detail: ``});
 
-    this.alertmsgs.push({ severity: 'info', summary: 'Please type your MSR below. After the report is written please add reviewer and submit.', detail: '' });
+    this.alertmsgs.push({severity: 'info', summary: 'Please type your MSR below. After the report is written please add reviewer and submit.', detail: ''});
   }
 
   //Id is srId for MSR Table
@@ -251,7 +245,7 @@ export class StatusReportsComponent implements OnInit {
       self.reportYear = val[0].ReportYear;
       self.reportMonth = val[0].ReportMonth;
       self.reportNumber = val[0].ReportNumber;
-
+      
       self.manager = val[0].Manager;
       self.managerComment = val[0].ManagerComment;
       if (val[0].ManagerStatus === null) val[0].ManagerStatus = this.ACHIEVED;
@@ -259,13 +253,13 @@ export class StatusReportsComponent implements OnInit {
       self.bNeed = self.managerStatus === this.NEEDIMPROVEMENT;
       self.bExceed = self.managerStatus === this.EXCEED;
       self.bAchieved = self.managerStatus === this.ACHIEVED;
-      self.quillDisable = self.status === ReviewStatus.IN_REVIEW || self.status === ReviewStatus.CLOSED || self.status === ReviewStatus.ARCHIVED;
-      if (self.status === ReviewStatus.ARCHIVED || self.status === ReviewStatus.CLOSED) {
+      self.quillDisable = self.status === self.IN_REVIEW || self.status === self.CLOSED || self.status === self.ARCHIVED;
+      if (self.status === self.ARCHIVED || self.status === self.CLOSED) {
         self.bClosedReport = true;
       } else {
         self.bClosedReport = false;
       }
-      if (self.status === ReviewStatus.IN_REVIEW) {
+      if (self.status === self.IN_REVIEW) {
         self.bInReview = true;
         if (self.comingFromStatusReportWindow) {
           //it is in review and the user is seeing his own status report. He should not be able to save it or send back
@@ -307,20 +301,20 @@ export class StatusReportsComponent implements OnInit {
         }
 
         //item.LastUpdated = item.LastUpdated.substring(0, 10);
-        // item.ReportDate = item.ReportDate.substring(0, 10);
-        item.ReportDate = item.ReportYear + "-" + item.ReportMonth + "-" + item.ReportNumber;
+       // item.ReportDate = item.ReportDate.substring(0, 10);
+       item.ReportDate = item.ReportYear + "-" + item.ReportMonth + "-" + item.ReportNumber ;
         this.srList.push(item);
       });
     });
 
-    this.getReviewReports(ReviewStatus.IN_REVIEW);
+    this.getReviewReports(this.IN_REVIEW);
   }
 
-  getReviewReports(status: ReviewStatus, userFilter: string[] = null, dateFilter: string = null) {
+  getReviewReports(status: number, userFilter: string[] = null, dateFilter: string = null) {
     this.srReviewList = [];
     //review reports
     this.gitService
-      .getSR4User4Review(
+      .GetSR4User4Review(
         this.gitService.getLoggedInDev().Login,
         this.currentOrg,
         status, //inreview
@@ -328,36 +322,36 @@ export class StatusReportsComponent implements OnInit {
         dateFilter ? dateFilter : null,
         true,
       )
-      .subscribe((val) => {
-        val.forEach(x => {
-          switch (x.Status as ReviewStatus) {
-            case ReviewStatus.IN_PROGRESS:
+      .subscribe(val => {
+        val.map(x => {
+          //status -- 1=inProgress, 2=InReviw, 3=closed 4=Rejected 5=Archived
+          switch (x.Status) {
+            case 1:
               x.Status = 'In Progress';
               break;
-            case ReviewStatus.IN_REVIEW:
+            case 2:
               x.Status = 'In Review';
               break;
-            case ReviewStatus.CLOSED:
+            case 3:
               x.Status = 'Closed';
               break;
-            case ReviewStatus.REJECTED:
+            case 4:
               x.Status = 'Rejected';
               break;
-            case ReviewStatus.ARCHIVED:
+            case 5:
               x.Status = 'Archived';
               break;
           }
 
           //x.ReportDate = x.ReportDate.substring(0, 10);
-          x.ReportDate = x.ReportYear + "-" + x.ReportMonth + "-" + x.ReportNumber;
+          x.ReportDate = x.ReportYear + "-" + x.ReportMonth + "-" + x.ReportNumber ;
           this.srReviewList.push(x);
         });
       });
   }
-
   //Show all the reports for the reviewer -
   showAllReview() {
-    this.getReviewReports(ReviewStatus.ALL, null, null);
+    this.getReviewReports(this.ALL, null, null);
   }
 
   showByDate() {
@@ -365,7 +359,7 @@ export class StatusReportsComponent implements OnInit {
     let month = prompt('Enter the YEAR-MONTH', current_datetime.getFullYear() + '-' + current_datetime.getMonth());
 
     let formatted_date = month + '-01';
-    this.getReviewReports(ReviewStatus.ALL, null, formatted_date);
+    this.getReviewReports(this.ALL, null, formatted_date);
   }
 
   showByPeople() {
@@ -380,7 +374,7 @@ export class StatusReportsComponent implements OnInit {
           }
         }),
       );
-      this.getReviewReports(ReviewStatus.ALL, peopleList, null);
+      this.getReviewReports(this.ALL, peopleList, null);
     });
   }
 
@@ -403,7 +397,7 @@ export class StatusReportsComponent implements OnInit {
           }
           const devs = val.map(item => item.UserDisplayName + '--' + item.UserName).filter((value, index, self) => self.indexOf(value) === index);
           const developerNames = devs.map(item => {
-            const arr = split(item, '--');
+            const arr = _.split(item, '--');
             if (arr[0] === 'null' || arr[0] === undefined) arr[0] = arr[1]; //some time there is no Name
             return arr[0] + '  --  ' + arr[1];
           });
@@ -440,18 +434,31 @@ export class StatusReportsComponent implements OnInit {
   }
 
   save(status: number) {
+
+
+     
+    if (this.reportYear === 0 || this.reportYear === null ) {
+      this.alertmsgs.push({severity: 'error', summary: 'Year cannot be zero', detail: ''});
+      return;
+    }
+
+    if (this.reportMonth === 0 || this.reportMonth === null ) {
+      this.alertmsgs.push({severity: 'error', summary: 'Month cannot be zero', detail: ''});
+      return;
+    }
+
     if (this.textStatus.trim() === '') {
-      this.alertmsgs.push({ severity: 'error', summary: 'Please fill in status first', detail: '' });
+      this.alertmsgs.push({severity: 'error', summary: 'Please fill in status first', detail: ''});
       return;
     }
 
     if (this.textReviewer.trim() === '') {
-      this.alertmsgs.push({ severity: 'warn', summary: 'Reviwer Missing!', detail: 'Please add your manager as a reviewer' });
+      this.alertmsgs.push({severity: 'warn', summary: 'Reviwer Missing!', detail: 'Please add your manager as a reviewer'});
       return;
     }
 
     if (!this.currentOrg) {
-      this.alertmsgs.push({ severity: 'error', summary: 'Please select an organization before you submit the report.', detail: '' });
+      this.alertmsgs.push({severity: 'error', summary: 'Please select an organization before you submit the report.', detail: ''});
       return;
     }
 
@@ -459,10 +466,10 @@ export class StatusReportsComponent implements OnInit {
       status = this.status;
     }
 
-    if (this.prevStatus === ReviewStatus.IN_PROGRESS) {
+    if (this.prevStatus === this.IN_PROGRESS) {
       //if it is coming from In_progress then let it go
     } else {
-      if (this.comingFromStatusReportWindow && this.status === ReviewStatus.IN_REVIEW) {
+      if (this.comingFromStatusReportWindow && this.status === this.IN_REVIEW) {
         this.alertmsgs.push({
           severity: 'warning',
           summary: 'Report In-Review',
@@ -472,7 +479,7 @@ export class StatusReportsComponent implements OnInit {
       }
     }
 
-    if (this.status === ReviewStatus.IN_PROGRESS) {
+    if (this.status === this.IN_PROGRESS) {
       if (!this.author) {
         //dont just blindly update the autor, some time reviewer is looking at the In_Progress reports
         //to, as he is mentioned in the reviewer field.
@@ -497,28 +504,28 @@ export class StatusReportsComponent implements OnInit {
         this.reportYear, this.reportMonth, this.reportNumber
       )
       .subscribe(v => {
-        this.alertmsgs.push({ severity: 'info', summary: 'Success', detail: 'Your Report is saved' });
+        this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'Your Report is saved'});
         this.reset();
       });
   }
 
   submit() {
     if (this.author === this.gitService.getLoggedInDev().Login) {
-      if (this.status === ReviewStatus.IN_REVIEW) {
-        this.alertmsgs.push({ severity: 'info', summary: 'Success', detail: 'This report is already submitted' });
+      if (this.status === this.IN_REVIEW) {
+        this.alertmsgs.push({severity: 'info', summary: 'Success', detail: 'This report is already submitted'});
         return;
       }
     }
     this.confirmationService.confirm({
       message: 'Once you submit you can not edit the report afterwards.',
       accept: () => {
-        this.save(ReviewStatus.IN_REVIEW);
+        this.save(this.IN_REVIEW);
       },
     });
   }
 
   delete() {
-    if (this.status === ReviewStatus.IN_PROGRESS) {
+    if (this.status === this.IN_PROGRESS) {
       this.confirmationService.confirm({
         message: 'Are you sure? You want to delete this report?',
         accept: () => {
@@ -529,12 +536,12 @@ export class StatusReportsComponent implements OnInit {
               this.currentOrg,
               '',
               '',
-              ReviewStatus.DELETE,
+              this.DELETE,
               '', //links
               this.manager,
               this.managerComment,
               this.managerStatus,
-
+              
               this.reportYear,
               this.reportMonth,
               this.reportNumber
@@ -547,7 +554,7 @@ export class StatusReportsComponent implements OnInit {
             });
         },
         reject: () => {
-          this.alertmsgs.push({ severity: 'warning', summary: 'Sorry!', detail: 'You can delete only reports which are in-progress status.' });
+          this.alertmsgs.push({severity: 'warning', summary: 'Sorry!', detail: 'You can delete only reports which are in-progress status.'});
         },
       });
 
@@ -575,12 +582,12 @@ export class StatusReportsComponent implements OnInit {
       // this.alertmsgs.push({severity: 'warning', summary: 'Sorry!', detail: 'You can delete only reports which are in-progress status.'});
       // }
     } else {
-      this.alertmsgs.push({ severity: 'error', summary: 'Only reports which are in In-Progress Status can be deleted.', detail: '' });
+      this.alertmsgs.push({severity: 'error', summary: 'Only reports which are in In-Progress Status can be deleted.', detail: ''});
     }
   }
 
   close() {
-    if (this.comingFromStatusReportWindow && this.status === ReviewStatus.IN_REVIEW) {
+    if (this.comingFromStatusReportWindow && this.status === this.IN_REVIEW) {
       this.alertmsgs.push({
         severity: 'warning',
         summary: 'Sorry!',
@@ -592,7 +599,7 @@ export class StatusReportsComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Once you submit you can not edit the report afterwards.',
       accept: () => {
-        this.save(ReviewStatus.CLOSED);
+        this.save(this.CLOSED);
       },
     });
   }
@@ -602,11 +609,11 @@ export class StatusReportsComponent implements OnInit {
   }
 
   sendBack() {
-    if (this.comingFromStatusReportWindow && this.status === ReviewStatus.IN_REVIEW) {
+    if (this.comingFromStatusReportWindow && this.status === this.IN_REVIEW) {
       alert('You cannot send this report back. Only receiver can send back the report.');
       return;
     }
-    this.status = ReviewStatus.IN_PROGRESS; //Go back to start
+    this.status = this.IN_PROGRESS; //Go back to start
     this.gitService
       .saveMSR(
         this.srId,
@@ -666,6 +673,10 @@ export class StatusReportsComponent implements OnInit {
     this.bShowJira = -1;
   }
 
+  bAchieved: boolean = true;
+  bExceed: boolean = false;
+  bNeed: boolean = false;
+
   achieved() {
     this.bAchieved = true;
     this.bExceed = false;
@@ -690,13 +701,14 @@ export class StatusReportsComponent implements OnInit {
 
   downloadPDF() {
     const PDF_TYPE = 'application/pdf;charset=utf-8';
+    const PDF_EXTENSION = '.pdf';
     const byteCharacters = atob(btoa(this.textStatus)); //+ '<br /> ------------- Manager Comment ---------------<br />' + this.managerComment));
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: PDF_TYPE });
+    const blob = new Blob([byteArray], {type: PDF_TYPE});
 
     FileSaver.saveAs(blob, 'MSR-' + new Date().getDay() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear() + '.html');
   }
