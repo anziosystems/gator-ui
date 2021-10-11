@@ -117,7 +117,7 @@ export class GitService {
   JiraUsersMap = new Map();
 
   public gatorApiUrl = 'https://gator-api-ppe.azurewebsites.net'; //'https://gator-api.azurewebsites.net'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
-  //public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
+  // public gatorApiUrl = 'https://localhost:3000'; // process.env.SERVICE_URL; // 'https://gator-api.azurewebsites.net';
 
   public gitApiUrl: string = this.gatorApiUrl + '/service/';
 
@@ -803,7 +803,7 @@ export class GitService {
   }
 
   //Manager wants to see all reports he need to review 
-  GetSR4User4Review(userId: string, org: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
+  getSR4User4Review(userId: string, org: string, status: number, userFilter: string, dateFilter: string, bustTheCache: boolean = false, pageSize: number = 100): Observable<any> {
     const q = `GetSR4User4Review?userid=${userId}&org=${org}&status=${status}&userFilter=${userFilter}&dateFilter=${dateFilter}
     &pageSize=${pageSize}&bustTheCache=${bustTheCache}`;
     this.attachToken();
