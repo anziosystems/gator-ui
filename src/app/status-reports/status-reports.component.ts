@@ -435,7 +435,18 @@ export class StatusReportsComponent implements OnInit {
 
   save(status: number) {
 
-    
+
+     
+    if (this.reportYear === 0 || this.reportYear === null ) {
+      this.alertmsgs.push({severity: 'error', summary: 'Year cannot be zero', detail: ''});
+      return;
+    }
+
+    if (this.reportMonth === 0 || this.reportMonth === null ) {
+      this.alertmsgs.push({severity: 'error', summary: 'Month cannot be zero', detail: ''});
+      return;
+    }
+
     if (this.textStatus.trim() === '') {
       this.alertmsgs.push({severity: 'error', summary: 'Please fill in status first', detail: ''});
       return;
