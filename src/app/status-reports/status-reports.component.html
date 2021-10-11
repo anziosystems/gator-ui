@@ -32,26 +32,32 @@
         <button
           class="buttons-style"
           style="background-color: rgb(51, 48, 51); color:white;
-      margin-right: 0px; width: 70%;"
+      margin-right: 0px; width: 55%;"
           (click)="showAllReview()"
           title="Show all reports where I am mentioned as reviewer regardless of status."
         >
           Review
         </button>
-
+        <img
+          src="../../assets/inbox.svg"
+          class="buttons-style"
+          style="background-color: rgb(92, 86, 92); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
+          (click)="refresh()"
+          title="My Queue"
+        />
         <img
           src="../../assets/people.png"
           class="buttons-style"
           style="background-color: rgb(92, 86, 92); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
           (click)="showByPeople()"
-          title="Filter by People."
+          title="Filter by People"
         />
         <img
           src="../../assets/Calendar.png"
           class="buttons-style"
           style="background-color:rgb(144, 133, 144); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
           (click)="showByDate()"
-          title="Filter by Date."
+          title="Filter by Date"
         />
 
         <div>
