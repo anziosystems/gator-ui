@@ -275,6 +275,7 @@ export class StatusReportsComponent implements OnInit {
     });
   }
 
+  //this fills user own reports list box which he is working on and can be of any status - the top list box
   getReports4User() {
     this.srList = [];
     this.srReviewList = [];
@@ -299,17 +300,15 @@ export class StatusReportsComponent implements OnInit {
             item.Status = 'Archived';
             break;
         }
-
-        //item.LastUpdated = item.LastUpdated.substring(0, 10);
-       // item.ReportDate = item.ReportDate.substring(0, 10);
        item.ReportDate = item.ReportYear + "-" + item.ReportMonth + "-" + item.ReportNumber ;
-        this.srList.push(item);
+       this.srList.push(item);
       });
     });
 
     this.getReviewReports(this.IN_REVIEW);
   }
 
+  //this fills user review reports list box which is of his/her report 
   getReviewReports(status: number, userFilter: string[] = null, dateFilter: string = null) {
     this.srReviewList = [];
     //review reports
@@ -606,6 +605,14 @@ export class StatusReportsComponent implements OnInit {
 
   refresh() {
     this.getReports4User();
+  }
+
+  showAllReports(){
+    this.getReviewReports(this.ALL);
+  }
+
+  myQueue() {
+    this.getReviewReports(this.IN_REVIEW);
   }
 
   sendBack() {
