@@ -32,17 +32,24 @@
         <button
           class="buttons-style"
           style="background-color: rgb(51, 48, 51); color:white;
-      margin-right: 0px; width: 55%;"
+      margin-right: 0px; width: 40%;"
           (click)="showAllReview()"
           title="Show all reports where I am mentioned as reviewer regardless of status."
         >
           Review
         </button>
+          <img
+          src="../../assets/archive.svg"
+          class="buttons-style"
+          style="background-color: rgb(92, 86, 92); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
+          (click)="showAllReports()"
+          title="Show all"
+        />
         <img
           src="../../assets/inbox.svg"
           class="buttons-style"
           style="background-color: rgb(92, 86, 92); margin-right: 0px; padding-top: 1px; padding-bottom: 1px; margin-top: 4px; width: 15%; border-left-color: black;"
-          (click)="refresh()"
+          (click)="myQueue()"
           title="My Queue"
         />
         <img
